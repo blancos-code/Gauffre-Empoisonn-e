@@ -2,6 +2,12 @@
 
 
 ## Description 
+### Projet de Licence
+UGA, [IM2AG](https://im2ag.univ-grenoble-alpes.fr/)
+
+### Gaufre-Empoisonnée
+
+
 
 ## Fonctionnalités
 
