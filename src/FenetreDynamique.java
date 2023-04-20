@@ -76,7 +76,7 @@ public class FenetreDynamique {
         jouerParametresPanel.setOpaque(false);
         jouerParametresPanel.setLayout(new BoxLayout(jouerParametresPanel, BoxLayout.X_AXIS));
         gbc.gridx = 0;
-        gbc.gridy = 2; // Changez la position gridy à 2 pour prendre en compte l'espace vertical ajouté
+        gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.SOUTHWEST;
         panel.add(jouerParametresPanel, gbc);
 
@@ -99,7 +99,7 @@ public class FenetreDynamique {
         // Bouton "Quitter"
         JButton quitterButton = createButton("Quitter", new Color(244, 67, 54), new Font("Roboto", Font.BOLD, 28), e -> System.exit(0));
         gbc.gridx = 2;
-        gbc.gridy = 2; // Changez la position gridy à 2 pour prendre en compte l'espace vertical ajouté
+        gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.SOUTHEAST;
         panel.add(quitterButton, gbc);
 
@@ -137,7 +137,7 @@ public class FenetreDynamique {
     private static void updateInsets(JFrame frame, JPanel panel, JPanel jouerParametresPanel, JButton quitterButton) {
         int width = frame.getWidth();
         int height = frame.getHeight();
-        int insetSize = Math.min(width, height) / 10; // Vous pouvez ajuster la division pour modifier le rapport des insets
+        int insetSize = Math.min(width, height) / 10;
 
         GridBagConstraints gbc = ((GridBagLayout) panel.getLayout()).getConstraints(jouerParametresPanel);
         gbc.insets = new Insets(0, insetSize, insetSize, 0);
