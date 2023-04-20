@@ -1,18 +1,14 @@
 # Gauffre-Empoisonnée
 
-Voici les différents fonctionnalités à implémenter :
-- [ ] Gaufre fonctionnelle : lorsqu'on clique sur une case, elle est correctement croquée
+## Fonctionnalités
 
-- [ ] Affichage visuel de la gaufre
-
-- [ ] Menu de jeu
-
-- [ ] Bouton "coup précédent" qui fonctionne (historique des coups)
-
-- [ ] Sauvegarde de la partie
-
-- [ ] Charger la partie
-
-- [ ] IA aléatoire
-
-- [ ] IA intelligente utilisant un arbre ET/OU
+| Priorité | Description |
+| --- | --- |
+| 1 | <ul><li> - [ ] Gaufre fonctionnelle : lorsqu'on clique sur une case, elle est correctement croquée </li></ul>
+| 1 | <ul><li> - [ ] Affichage visuel de la gaufre                                                       </li></ul>
+| 2 | <ul><li> - [ ] Bouton "coup précédent" qui fonctionne (historique des coups)                       </li></ul>
+| 3 | <ul><li> - [ ] Sauvegarde de la partie                                                             </li></ul>
+| 3 | <ul><li> - [ ] Charger la partie                                                                   </li></ul>
+| 3 | <ul><li> - [ ] IA aléatoire                                                                        </li></ul>
+| 3 | <ul><li> - [ ] IA intelligente utilisant un arbre ET/OU                                            </li></ul>
+| 4 | <ul><li> - [ ] Menu de jeu                                                                         </li></ul>
