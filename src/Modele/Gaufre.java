@@ -42,5 +42,6 @@ public class Gaufre {
                 System.out.print(cases[i][j] + " ");
             System.out.println();
         }
+        System.out.println();
     }
 }
