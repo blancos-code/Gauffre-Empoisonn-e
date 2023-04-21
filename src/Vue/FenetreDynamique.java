@@ -1,3 +1,5 @@
+package Vue;
+
 import Modele.Jeu;
 
 import javax.swing.*;
