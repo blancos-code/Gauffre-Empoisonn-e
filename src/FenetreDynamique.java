@@ -1,3 +1,5 @@
+import Modele.Jeu;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -83,6 +85,11 @@ public class FenetreDynamique {
         // Bouton "Jouer"
         JButton jouerButton = createButton("Jouer", new Color(76, 175, 80), new Font("Roboto", Font.BOLD, 32), e -> System.out.println("Jouer"));
         jouerParametresPanel.add(jouerButton);
+        jouerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Jeu jeu = new Jeu();
+            }
+        });
 
         // Espace fixe entre les boutons "Jouer" et "Paramètres"
         jouerParametresPanel.add(Box.createRigidArea(new Dimension(10, 0)));
