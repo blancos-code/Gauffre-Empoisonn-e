@@ -34,7 +34,7 @@ public class FenetreDynamique {
     }
 
 
-    private static void createAndShowGUI() {
+    public static void createAndShowGUI() {
         JFrame frame = new JFrame("Fenêtre Dynamique");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -87,16 +87,6 @@ public class FenetreDynamique {
         // Bouton "Jouer"
         JButton jouerButton = createButton("Jouer", new Color(76, 175, 80), new Font("Roboto", Font.BOLD, 32), e -> System.out.println("Jouer"));
         jouerParametresPanel.add(jouerButton);
-        jouerButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Jeu jeu = new Jeu();
-                } catch (IOException ex) {
-                    System.out.println("Erreur lors de la création du jeu");
-                    throw new RuntimeException(ex);
-                }
-            }
-        });
 
         // Espace fixe entre les boutons "Jouer" et "Paramètres"
         jouerParametresPanel.add(Box.createRigidArea(new Dimension(10, 0)));

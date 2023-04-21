@@ -41,19 +41,9 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur, Obser
     }
 
     @Override
-    public void changeEtatIA(boolean b) {
-
-    }
-
-    @Override
-    public void changeEtatAnimations(boolean b) {
-
-    }
-
-    @Override
     public void run() {
         // Eléments de l'interface
-        frame = new JFrame("Gaufre pleine de foutre");
+        frame = new JFrame("Gaufre empoisonnée");
 
         // Mise en place de l'interface
 
