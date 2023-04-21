@@ -53,7 +53,7 @@ public class InterfaceGraphique implements Runnable, InterfaceUtilisateur, Obser
     @Override
     public void run() {
         // Eléments de l'interface
-        frame = new JFrame("Sokoban");
+        frame = new JFrame("Gaufre pleine de foutre");
 
         // Mise en place de l'interface
 
