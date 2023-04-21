@@ -5,6 +5,7 @@ import Patterns.Observable;
 public class Jeu extends Observable {
     Gaufre g;
     Joueur joueur1, joueur2;
+    int joueurCourant;
     Parametres p;
 
 
@@ -19,16 +20,25 @@ public class Jeu extends Observable {
     }
 
     public void lancePartie(){
-        g.affiche();
-        joue(new Coup(3, 5, 0, 1));
-        g.affiche();
-        joue(new Coup(2, 4, 0, 1));
+        //random entre 0 et 1 pr choisir joueur courant
+        joueurCourant = (int) (Math.random() * 2);
+        System.out.println("Joueur courant : " + joueurCourant);
+
+    }
+
+    public int joueurCourant(){
+        return joueurCourant;
     }
 
     public void joue(Coup c){
         g.joue(c);
+        g.affiche();
         metAJour();
         //commentaire
+    }
+
+    public Gaufre gaufre() {
+        return g;
     }
 
     public Coup annuler() {

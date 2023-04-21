@@ -1,9 +1,13 @@
 package Vue;
 
+import Modele.Jeu;
+import Modele.Parametres;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
 
 public class MenuListener implements MouseListener {
 
@@ -14,6 +18,7 @@ public class MenuListener implements MouseListener {
         m = menu;
         DetectionSurvol survol = new DetectionSurvol();
         m.addMouseMotionListener(survol);
+        m.frame.repaint();
     }
 
     public boolean estCurseurSurBouton_JcJ(MouseEvent e){
@@ -51,9 +56,20 @@ public class MenuListener implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if(estCurseurSurBouton_JcJ(e)){
-            System.out.println("JcJ");
+            //efface tout le contenu de la frame
+            m.frame.getContentPane().removeAll();
+            //ajoute une gaufregraphique à la frame
+            Parametres p;
+            try {
+                p = new Parametres();
+                Jeu jeu = new Jeu(p);
+                m.frame.add(new GaufreGraphique(jeu));
+                m.frame.revalidate();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
-
+        m.repaint();
     }
 
     @Override

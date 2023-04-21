@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Menu extends JPanel{
     boolean maximized;
@@ -19,17 +20,15 @@ public class Menu extends JPanel{
     public Menu(JFrame f) throws IOException {
         //Chargement des images
         String CHEMIN = "ressources/";
-        background = ImageIO.read(new File(CHEMIN + "background.png"));
-        bouton_joueurContreJoueur = ImageIO.read(new File(CHEMIN + "Jcj.png"));
-        bouton_joueurContreIA = ImageIO.read(new File(CHEMIN + "JcIA.png"));
-        bouton_IAContreIA = ImageIO.read(new File(CHEMIN + "IAcIA.png"));
-        bouton_quitter = ImageIO.read(new File(CHEMIN + "Quitter.png"));
+        background = lisImage("background");
+        bouton_joueurContreJoueur = lisImage("Jcj");
+        bouton_joueurContreIA = lisImage("JcIA");
+        bouton_IAContreIA = lisImage("IAcIA");
+        bouton_quitter = lisImage("Quitter");
         // Eléments de l'interface
-        //frame = new JFrame("Gaufre empoisonnée");
         frame = f;
 
         // Mise en place de l'interface
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1280, 720);
 
@@ -48,6 +47,11 @@ public class Menu extends JPanel{
         //Ajout d'une interaction avec les boutons
         addMouseListener(new MenuListener(this));
 
+    }
+
+    private Image lisImage(String nom) throws IOException {
+        String CHEMIN = "ressources/";
+        return ImageIO.read(new File(CHEMIN + nom + ".png"));
     }
 
     public void afficheBackground(Graphics g) {
