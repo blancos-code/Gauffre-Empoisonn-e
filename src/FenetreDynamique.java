@@ -87,7 +87,12 @@ public class FenetreDynamique {
         jouerParametresPanel.add(jouerButton);
         jouerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Jeu jeu = new Jeu();
+                try {
+                    Jeu jeu = new Jeu();
+                } catch (IOException ex) {
+                    System.out.println("Erreur lors de la création du jeu");
+                    throw new RuntimeException(ex);
+                }
             }
         });
 

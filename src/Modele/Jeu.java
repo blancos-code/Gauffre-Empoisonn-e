@@ -1,17 +1,21 @@
 package Modele;
 
 import Patterns.Observable;
+import Modele.Parametres;
+
+import java.io.IOException;
 
 public class Jeu extends Observable {
     Gaufre g;
     Joueur joueur1, joueur2;
 
 
-    public Jeu(){
-        int lignes = 5;
-        int colonnes = 8;
-        joueur1 = new Joueur("Joueur 1");
-        joueur2 = new Joueur("Joueur 2");
+    public Jeu() throws IOException {
+        Parametres p = new Parametres();
+        int lignes = p.getLignes();
+        int colonnes = p.getColonnes();
+        joueur1 = new Joueur(p.getPrenom1());
+        joueur2 = new Joueur(p.getPrenom2());
         g = new Gaufre(lignes, colonnes);
         lancePartie();
     }
