@@ -45,6 +45,9 @@ public class Menu extends JPanel{
         frameWidth=tailleFenetre.width;
         frameHeight=tailleFenetre.width;
 
+        //Ajout d'une interaction avec les boutons
+        addMouseListener(new MenuListener(this));
+
     }
 
     public void afficheBackground(Graphics g) {
