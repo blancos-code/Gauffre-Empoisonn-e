@@ -24,6 +24,7 @@ public class Jeu extends Observable {
         g.affiche();
         joue(new Coup(3, 5, 0, 1));
         g.affiche();
+        joue(new Coup(2, 4, 0, 1));
     }
 
     public void joue(Coup c){
