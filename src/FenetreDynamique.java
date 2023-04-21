@@ -1,3 +1,5 @@
+import Modele.Jeu;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,7 +10,6 @@ import java.net.URL;
 import java.io.InputStream;
 import java.io.IOException;
 import javax.swing.Box.Filler;
-
 
 
 public class FenetreDynamique {
@@ -32,10 +33,10 @@ public class FenetreDynamique {
 
 
     private static void createAndShowGUI() {
-        JFrame frame = new JFrame("FenÃªtre Dynamique");
+        JFrame frame = new JFrame("Fenêtre Dynamique");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Taille dynamique en fonction de la taille de l'Ã©cran
+        // Taille dynamique en fonction de la taille de l'écran
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(screenSize.width / 2, screenSize.height / 2);
         frame.setLocationRelativeTo(null);
@@ -50,7 +51,7 @@ public class FenetreDynamique {
         gbc.weightx = 1;
         gbc.weighty = 1;
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 60, 60, 60); // Ajout des insets pour Ã©loigner les boutons des bords
+        gbc.insets = new Insets(0, 60, 60, 60); // Ajout des insets pour éloigner les boutons des bords
 
         // Ajout d'un espace vertical avant le titre
         Dimension verticalMargin = new Dimension(0, 50); // 50 pixels d'espace vertical
@@ -59,9 +60,9 @@ public class FenetreDynamique {
         panel.add(new Filler(verticalMargin, verticalMargin, verticalMargin), gbc);
 
 
-        // Titre "Gaufre EmpoisonnÃ©e"
+        // Titre "Gaufre Empoisonnée"
         Font titleFont = new Font("Roboto", Font.BOLD, 48);
-        JLabel titleLabel = new JLabel("La Gaufre EmpoisonnÃ©e");
+        JLabel titleLabel = new JLabel("La Gaufre Empoisonnée");
         titleLabel.setFont(titleFont);
         titleLabel.setForeground(Color.WHITE);
         gbc.gridx = 0;
@@ -69,9 +70,9 @@ public class FenetreDynamique {
         gbc.gridwidth = 3;
         gbc.anchor = GridBagConstraints.NORTH;
         panel.add(titleLabel, gbc);
-        gbc.gridwidth = 1; // RÃ©initialise la largeur de la grille
+        gbc.gridwidth = 1; // Réinitialise la largeur de la grille
 
-        // Panneau pour les boutons "Jouer" et "ParamÃ¨tres"
+        // Panneau pour les boutons "Jouer" et "Paramètres"
         JPanel jouerParametresPanel = new JPanel();
         jouerParametresPanel.setOpaque(false);
         jouerParametresPanel.setLayout(new BoxLayout(jouerParametresPanel, BoxLayout.X_AXIS));
@@ -81,18 +82,22 @@ public class FenetreDynamique {
         panel.add(jouerParametresPanel, gbc);
 
 
-
         // Bouton "Jouer"
         JButton jouerButton = createButton("Jouer", new Color(76, 175, 80), new Font("Roboto", Font.BOLD, 32), e -> System.out.println("Jouer"));
         jouerParametresPanel.add(jouerButton);
+        jouerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Jeu jeu = new Jeu();
+            }
+        });
 
-        // Espace fixe entre les boutons "Jouer" et "ParamÃ¨tres"
+        // Espace fixe entre les boutons "Jouer" et "Paramètres"
         jouerParametresPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 
-        // Bouton "ParamÃ¨tres"
+        // Bouton "Paramètres"
         URL iconParametresUrl = FenetreDynamique.class.getResource("/settings.png");
         ImageIcon iconParametres = new ImageIcon(iconParametresUrl);
-        JButton parametresButton = createIconButton(iconParametres, e -> System.out.println("ParamÃ¨tres"));
+        JButton parametresButton = createIconButton(iconParametres, e -> System.out.println("Paramètres"));
         parametresButton.setPreferredSize(new Dimension(jouerButton.getPreferredSize().height, jouerButton.getPreferredSize().height));
         jouerParametresPanel.add(parametresButton);
 
@@ -111,7 +116,7 @@ public class FenetreDynamique {
             }
         });
 
-        // Affiche la fenÃªtre
+        // Affiche la fenêtre
         updateInsets(frame, panel, jouerParametresPanel, quitterButton);
         frame.setVisible(true);
     }
@@ -126,6 +131,7 @@ public class FenetreDynamique {
 
         return button;
     }
+
     private static JButton createIconButton(ImageIcon icon, ActionListener actionListener) {
         JButton button = new JButton(icon);
         button.setFocusable(false);
