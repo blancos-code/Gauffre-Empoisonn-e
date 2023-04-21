@@ -30,6 +30,7 @@ public class Jeu extends Observable {
     public void joue(Coup c){
         g.joue(c);
         metAJour();
+        //commentaire
     }
 
     public Coup annuler() {
