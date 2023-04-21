@@ -8,17 +8,17 @@ public class Jeu extends Observable {
 
 
     public Jeu(){
-        int longueur = 8;
-        int largeur = 5;
+        int lignes = 5;
+        int colonnes = 8;
         joueur1 = new Joueur("Joueur 1");
         joueur2 = new Joueur("Joueur 2");
-        g = new Gaufre(longueur, largeur);
+        g = new Gaufre(lignes, colonnes);
         lancePartie();
     }
 
     public void lancePartie(){
         g.affiche();
-        joue(new Coup(0, 0, 0, 1));
+        joue(new Coup(3, 5, 0, 1));
         g.affiche();
     }
 
