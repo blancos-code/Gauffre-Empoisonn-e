@@ -14,6 +14,9 @@ public abstract class IA {
             case "Aléatoire":
                 resultat = new IAAleatoire();
                 break;
+            case "tropSmart":
+                resultat = new IAIntelligente();
+                break;
             default:
                 System.out.println("IA non supportée.");
         }
