@@ -1,39 +1,40 @@
 package Patterns;
 /*
- * Sokoban - Encore une nouvelle version (à but pédagogique) du célèbre jeu
+ * Sokoban - Encore une nouvelle version (ï¿½ but pï¿½dagogique) du cï¿½lï¿½bre jeu
  * Copyright (C) 2018 Guillaume Huard
  *
  * Ce programme est libre, vous pouvez le redistribuer et/ou le
- * modifier selon les termes de la Licence Publique Générale GNU publiée par la
- * Free Software Foundation (version 2 ou bien toute autre version ultérieure
+ * modifier selon les termes de la Licence Publique Gï¿½nï¿½rale GNU publiï¿½e par la
+ * Free Software Foundation (version 2 ou bien toute autre version ultï¿½rieure
  * choisie par vous).
  *
- * Ce programme est distribué car potentiellement utile, mais SANS
+ * Ce programme est distribuï¿½ car potentiellement utile, mais SANS
  * AUCUNE GARANTIE, ni explicite ni implicite, y compris les garanties de
- * commercialisation ou d'adaptation dans un but spécifique. Reportez-vous à la
- * Licence Publique Générale GNU pour plus de détails.
+ * commercialisation ou d'adaptation dans un but spï¿½cifique. Reportez-vous ï¿½ la
+ * Licence Publique Gï¿½nï¿½rale GNU pour plus de dï¿½tails.
  *
- * Vous devez avoir reçu une copie de la Licence Publique Générale
- * GNU en même temps que ce programme ; si ce n'est pas le cas, écrivez à la Free
+ * Vous devez avoir reï¿½u une copie de la Licence Publique Gï¿½nï¿½rale
+ * GNU en mï¿½me temps que ce programme ; si ce n'est pas le cas, ï¿½crivez ï¿½ la Free
  * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
- * États-Unis.
+ * ï¿½tats-Unis.
  *
  * Contact:
  *          Guillaume.Huard@imag.fr
  *          Laboratoire LIG
  *          700 avenue centrale
  *          Domaine universitaire
- *          38401 Saint Martin d'Hères
+ *          38401 Saint Martin d'Hï¿½res
  */
 
 /*
- * Pattern Observateur tel que présenté dans le livre de Gamma et Al.
- * Ce pattern existe déjà dans la bibliothèque standard de Java sous une forme
- * légèrement différente. Il est réimplémenté ici à des fins pédagogiques
+ * Pattern Observateur tel que prï¿½sentï¿½ dans le livre de Gamma et Al.
+ * Ce pattern existe dï¿½jï¿½ dans la bibliothï¿½que standard de Java sous une forme
+ * lï¿½gï¿½rement diffï¿½rente. Il est rï¿½implï¿½mentï¿½ ici ï¿½ des fins pï¿½dagogiques
  */
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Observable {
     List<Observateur> observateurs;

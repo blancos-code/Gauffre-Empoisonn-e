@@ -27,7 +27,7 @@ public class MenuListener implements MouseListener {
         int startx = m.posX_boutons;
         int starty = m.posY_jcj;
         if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
-            this.type_jeu = "JCJ";
+            this.type_jeu = "JcJ";
             return true;
         }else return false;
     }
@@ -36,7 +36,7 @@ public class MenuListener implements MouseListener {
         int startx = m.posX_boutons;
         int starty = m.posY_jcia;
         if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
-            this.type_jeu = "JCAI";
+            this.type_jeu = "JcAI";
             return true;
         }else return false;
     }
@@ -45,7 +45,7 @@ public class MenuListener implements MouseListener {
         int startx = m.posX_boutons;
         int starty = m.posY_ia;
         if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
-            this.type_jeu = "AICAI";
+            this.type_jeu = "AIcAI";
             return true;
         }else return false;
     }
@@ -60,7 +60,7 @@ public class MenuListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(estCurseurSurBouton_JcJ(e)){
+        if(estCurseurSurBouton_JcJ(e) || estCurseurSurBouton_JcIA(e)){
             //efface tout le contenu de la frame
             m.frame.getContentPane().removeAll();
             //ajoute une gaufregraphique � la frame
@@ -68,6 +68,7 @@ public class MenuListener implements MouseListener {
             try {
                 p = new Parametres();
                 p.setType_jeu(this.type_jeu);
+                p.sauvegarderParametres();
                 p.lireFichierParametres();
                 Jeu jeu = new Jeu(p);
                 CollecteurEvenements collecteur = new ControleurMediateur(jeu);

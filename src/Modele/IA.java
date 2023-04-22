@@ -9,12 +9,13 @@ public abstract class IA {
         IA resultat = null;
 
         String type = p.getType_IA();
+        System.out.println(type);
         switch (type) {
-            case "AlÃ©atoire":
+            case "Aléatoire":
                 resultat = new IAAleatoire();
                 break;
             default:
-                System.out.println("IA non supportÃ©e.");
+                System.out.println("IA non supportée.");
         }
         if (resultat != null) {
             resultat.jeu = j;

@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, annuler, refaire, save, load;
