@@ -19,58 +19,76 @@ public class GaufreGraphiqueListener implements MouseListener {
         g.addMouseMotionListener(survol);
     }
 
-    public boolean estCurseurSurBouton_Quitter(MouseEvent e){
-        int startx = g.posX_boutons;
-        int starty = g.posY_bouton_quitter;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
-            g.setToolTipText("Quitter la partie et revenir au menu du jeu");
-            return true;
-        }else return false;
-    }
-
-    public boolean estCurseurSurBouton_Annuler(MouseEvent e){
-        int startx = g.posX_boutons;
-        int starty = g.posY_bouton_annuler;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
-            g.setToolTipText("Annuler le coup");
-            return true;
-        }else return false;
-    }
-
-    public boolean estCurseurSurBouton_Refaire(MouseEvent e){
-        int startx = g.posX_boutons;
-        int starty = g.posY_bouton_refaire;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
-            g.setToolTipText("Refaire le coup");
-            return true;
-        }else return false;
-    }
-
     public boolean estCurseurSurBouton_Save(MouseEvent e){
         int startx = g.posX_save;
         int starty = g.posY_save_load;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_load_save && e.getY() >= starty && e.getY() <= starty+g.largeur_load_save) {
+            g.select_save = true;
             g.setToolTipText("Sauvegarder la partie");
             return true;
-        }else return false;
+        }
+        g.select_save = false;
+        return false;
     }
 
     public boolean estCurseurSurBouton_Load(MouseEvent e){
         int startx = g.posX_load;
         int starty = g.posY_save_load;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_load_save && e.getY() >= starty && e.getY() <= starty+g.largeur_load_save) {
+            g.select_load = true;
             g.setToolTipText("Charger une partie");
             return true;
-        }else return false;
+        }
+        g.select_load = false;
+        return false;
+    }
+
+    public boolean estCurseurSurBouton_Quitter(MouseEvent e){
+        int startx = g.posX_boutons;
+        int starty = g.posY_bouton_quitter;
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.select_quitter = true;
+            g.setToolTipText("Quitter la partie et revenir au menu du jeu");
+            return true;
+        }
+        g.select_quitter = false;
+        return false;
+    }
+
+    public boolean estCurseurSurBouton_Annuler(MouseEvent e){
+        int startx = g.posX_boutons;
+        int starty = g.posY_bouton_annuler;
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.select_annuler = true;
+            g.setToolTipText("Annuler le coup");
+            return true;
+        }
+        g.select_annuler = false;
+        return false;
+    }
+
+    public boolean estCurseurSurBouton_Refaire(MouseEvent e){
+        int startx = g.posX_boutons;
+        int starty = g.posY_bouton_refaire;
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.select_refaire = true;
+            g.setToolTipText("Refaire le coup");
+            return true;
+        }
+        g.select_refaire = false;
+        return false;
     }
 
     public boolean estCurseurSurBouton_Reset(MouseEvent e){
         int startx = g.posX_boutons;
         int starty = g.posY_reset;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.select_reset = true;
             g.setToolTipText("Recommencer la partie");
             return true;
-        }else return false;
+        }
+        g.select_reset = false;
+        return false;
     }
 
     public boolean estCurseurSurGaufre(MouseEvent e){
@@ -171,6 +189,7 @@ public class GaufreGraphiqueListener implements MouseListener {
             if (estCurseurSurBouton_Quitter(e)||estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||
                     estCurseurSurBouton_Save(e)||estCurseurSurBouton_Load(e)||estCurseurSurGaufre(e)||estCurseurSurBouton_Reset(e)) {
                 g.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                g.miseAJour();
             }else{
                 if(!estCurseurSur_Poison(e)) {
                     g.setToolTipText(null);

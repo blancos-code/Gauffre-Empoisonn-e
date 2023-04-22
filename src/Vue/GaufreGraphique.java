@@ -12,8 +12,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class GaufreGraphique extends JComponent implements Observateur {
-    Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, case_quitter_select,
-            case_annuler_select, case_refaire_select, case_save_select, case_load_select, case_reset_select;
+    Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, quitter_select,
+            annuler_select, refaire_select, save_select, load_select, reset_select;
     Jeu j;
     int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load,
     largeur_load_save, posY_bouton_quitter, posY_reset;
@@ -22,6 +22,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
     Graphics2D drawable;
     JFrame f;
     public int l, c;
+    boolean select_quitter, select_annuler, select_refaire, select_save, select_load, select_reset;
 
     public GaufreGraphique(JFrame frame, Jeu jeu, CollecteurEvenements col) throws IOException {
         f = frame;
@@ -37,16 +38,22 @@ public class GaufreGraphique extends JComponent implements Observateur {
         load = lisImage("load");
         reset = lisImage("reinitialiser");
         case_saine_select = lisImage("case_saine_select");
-        case_quitter_select = lisImage("quitter_partie_select");
-        case_annuler_select = lisImage("annuler_select");
-        case_refaire_select = lisImage("refaire_select");
-        case_save_select = lisImage("save_select");
-        case_load_select = lisImage("load_select");
-        case_reset_select = lisImage("reinitialiser_select");
+        quitter_select = lisImage("quitter_partie_select");
+        annuler_select = lisImage("annuler_select");
+        refaire_select = lisImage("refaire_select");
+        save_select = lisImage("save_select");
+        load_select = lisImage("load_select");
+        reset_select = lisImage("reinitialiser_select");
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
         l = j.gaufre().lignes();
         c = j.gaufre().colonnes();
+        select_quitter = false;
+        select_annuler = false;
+        select_refaire = false;
+        select_save = false;
+        select_load = false;
+        select_reset = false;
     }
 
     public void paintComponent(Graphics g) {
@@ -95,23 +102,42 @@ public class GaufreGraphique extends JComponent implements Observateur {
         largeur_bouton= (int) (largeurCase*1.8);
         hauteur_bouton= (int) (largeur_bouton*rapport_bouton);
         posY_bouton_quitter = (int) (hauteur*.10);
-        tracer(drawable, quitter, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
+        if(select_quitter) {
+            System.out.println("select_quitter");
+            tracer(drawable, quitter_select, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
+        }else
+            tracer(drawable, quitter, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
         //affiche les boutons annuler et refaire
         posY_bouton_annuler = (int) (hauteur*.22);
         posY_bouton_refaire = (int) (hauteur*.34);
-        tracer(drawable, annuler, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
-        tracer(drawable, refaire, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
+        if(select_annuler)
+            tracer(drawable, annuler_select, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
+        else
+            tracer(drawable, annuler, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
+        if(select_refaire)
+            tracer(drawable, refaire_select, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
+        else
+            tracer(drawable, refaire, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
         //affiche le bouton reset
         posY_reset = (int) (hauteur*.46);
-        tracer(drawable, reset, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
+        if(select_reset)
+            tracer(drawable, reset_select, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
+        else
+            tracer(drawable, reset, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
         //affiche les boutons save et load
         double rapport_bouton_save_load = 1.0;
         largeur_load_save = (int) (largeurCase*0.55);
         posY_save_load = 0;
         posX_save = posX_boutons + (int) (largeur_bouton*0.12);
         posX_load = posX_save + (int) (largeur_bouton*0.45);
-        tracer(drawable, save, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
-        tracer(drawable, load, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
+        if(select_save)
+            tracer(drawable, save_select, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
+        else
+            tracer(drawable, save, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
+        if(select_load)
+            tracer(drawable, load_select, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
+        else
+            tracer(drawable, load, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
 
         //créer une barre de progression
         int progress = (int) (gaufre.progression());
