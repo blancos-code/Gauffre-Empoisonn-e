@@ -31,7 +31,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public void clicRefaire() {
-
+        jeu.refaire();
     }
 
     @Override

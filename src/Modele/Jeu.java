@@ -40,7 +40,7 @@ public class Jeu extends Observable {
 
     public void joue(Coup c){
         g.joue(c);
-        g.affiche();
+        //g.affiche();
         metAJour();
         changeJoueurCourant();
     }
@@ -49,18 +49,16 @@ public class Jeu extends Observable {
         return g;
     }
 
-    public Coup annuler() {
+    public void annuler() {
         System.out.println("Annuler");
-        Coup cp = g.annuler();
+        g.annuler();
         metAJour();
-        return cp;
     }
 
-    public Coup refaire() {
+    public void refaire() {
         System.out.println("Refaire");
-        Coup cp = g.refaire();
+        g.refaire();
         metAJour();
-        return cp;
     }
 
     public void reinitialiseGaufre() {

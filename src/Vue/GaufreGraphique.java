@@ -58,15 +58,15 @@ public class GaufreGraphique extends JComponent implements Observateur {
             }
         }
         //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
-        Font font = new Font("Roboto", Font.BOLD, 40);
+        Font font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.4));
         drawable.setFont(font);
         posX_boutons = (int) (gaufre.colonnes()*largeurCase+largeurCase*0.2);
         if (j.joueurCourant() == 1) {
             drawable.setColor(Color.RED);
-            drawable.drawString("Joueur 1", posX_boutons, (int) (hauteur*.60));
+            drawable.drawString("Joueur 1", (int)(posX_boutons*1.015), (int) (hauteur*.60));
         } else {
             drawable.setColor(Color.ORANGE);
-            drawable.drawString("Joueur 2", posX_boutons, (int) (hauteur*.60));
+            drawable.drawString("Joueur 2", (int)(posX_boutons*1.015), (int) (hauteur*.60));
         }
         double rapport_bouton = (double) 207/603;
         largeur_bouton=(int) (largeurCase*1.8);
