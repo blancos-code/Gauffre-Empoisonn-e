@@ -86,14 +86,17 @@ public class GaufreGraphiqueListener implements MouseListener {
                     g.setToolTipText("Manger ce morceau");
                     g.l=l;
                     g.c=c;
-                    System.out.println("l="+l+" c="+c);
                     g.miseAJour();
                     return true;
                 }else{
                     return false;
                 }
             }
-        }else return false;
+        }
+        g.l=g.lignes();
+        g.c=g.colonnes();
+        g.miseAJour();
+        return false;
     }
 
     public boolean estCurseurSur_Poison(MouseEvent e){
