@@ -12,7 +12,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class GaufreGraphique extends JComponent implements Observateur {
-    Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset;
+    Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, case_quitter_select,
+            case_annuler_select, case_refaire_select, case_save_select, case_load_select, case_reset_select;
     Jeu j;
     int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load,
     largeur_load_save, posY_bouton_quitter, posY_reset;
@@ -20,11 +21,12 @@ public class GaufreGraphique extends JComponent implements Observateur {
     CollecteurEvenements collecteur;
     Graphics2D drawable;
     JFrame f;
+    public int l, c;
 
-    public GaufreGraphique(JFrame frame, Jeu jeu, CollecteurEvenements c) throws IOException {
+    public GaufreGraphique(JFrame frame, Jeu jeu, CollecteurEvenements col) throws IOException {
         f = frame;
         j = jeu;
-        collecteur = c;
+        collecteur = col;
         j.ajouteObservateur(this);
         case_saine = lisImage("case_saine");
         case_poison = lisImage("case_poison");
@@ -34,8 +36,17 @@ public class GaufreGraphique extends JComponent implements Observateur {
         save = lisImage("save");
         load = lisImage("load");
         reset = lisImage("reinitialiser");
+        case_saine_select = lisImage("case_saine_select");
+        case_quitter_select = lisImage("quitter_partie_select");
+        case_annuler_select = lisImage("annuler_select");
+        case_refaire_select = lisImage("refaire_select");
+        case_save_select = lisImage("save_select");
+        case_load_select = lisImage("load_select");
+        case_reset_select = lisImage("reinitialiser_select");
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
+        l = j.gaufre().lignes();
+        c = j.gaufre().colonnes();
     }
 
     public void paintComponent(Graphics g) {
@@ -60,7 +71,10 @@ public class GaufreGraphique extends JComponent implements Observateur {
                     tracer(drawable, case_poison, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                 } else {
                     if(!gaufre.estMangee(i,j)) {
-                        tracer(drawable, case_saine, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
+                        if(i>=l && j>=c)
+                            tracer(drawable, case_saine_select, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
+                        else
+                            tracer(drawable, case_saine, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                     }
                 }
             }
