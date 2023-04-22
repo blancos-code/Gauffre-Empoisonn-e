@@ -1,8 +1,10 @@
 package Modele;
 
 import java.util.LinkedList;
+import java.io.Serializable;
 
-public class ListeCoups {
+
+public class ListeCoups implements Serializable {
     LinkedList<Coup> liste_coups;
 
     public ListeCoups(){

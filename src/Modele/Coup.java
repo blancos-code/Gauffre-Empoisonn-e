@@ -1,6 +1,8 @@
 package Modele;
 
-public class Coup {
+import java.io.Serializable;
+
+public class Coup implements Serializable {
     int i, j;
     int old_valeur;
     int new_valeur;

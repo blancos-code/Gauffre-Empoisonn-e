@@ -1,8 +1,8 @@
 package Modele;
 
 import java.util.LinkedList;
-
-public class Historique {
+import java.io.Serializable;
+public class Historique implements Serializable {
     LinkedList<ListeCoups> passe;
     LinkedList<ListeCoups> futur;
 
