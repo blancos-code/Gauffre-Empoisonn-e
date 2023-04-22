@@ -84,7 +84,6 @@ public class Jeu extends Observable {
 
 
     public void joueJoueur(Coup c) {
-        System.out.println(joueurs[0]);
 
         if (estJoueurCourantUneIA()) {
             return;
