@@ -61,6 +61,18 @@ public class Jeu extends Observable {
         metAJour();
     }
 
+    public void sauvegarder() {
+        System.out.println("Sauvegarder");
+        g.sauvegarder();
+        metAJour();
+    }
+
+    public void charger() {
+        System.out.println("Charger");
+        g.charger();
+        metAJour();
+    }
+
     public void reinitialiseGaufre() {
         g.reinitialise();
         metAJour();

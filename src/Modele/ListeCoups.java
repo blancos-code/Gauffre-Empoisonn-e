@@ -9,6 +9,15 @@ public class ListeCoups {
         liste_coups = new LinkedList<>();
     }
 
+    public String toString(){
+        String s = "";
+        for(int k=0; k<liste_coups.size(); k++){
+            s += liste_coups.get(k).toString();
+            s += "/";
+        }
+        return s;
+    }
+
     public void ajoute(Coup h) {
         liste_coups.addFirst(h);
     }

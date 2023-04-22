@@ -83,8 +83,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
         double rapport_bouton_save_load = 1.0;
         largeur_load_save = (int) (largeurCase*0.55);
         posY_save_load = 0;
-        posX_save = (int) posX_boutons + (int) (largeur_bouton*0.12);
-        posX_load = (int) posX_save + (int) (largeur_bouton*0.45);
+        posX_save = posX_boutons + (int) (largeur_bouton*0.12);
+        posX_load = posX_save + (int) (largeur_bouton*0.45);
         tracer(drawable, save, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
         tracer(drawable, load, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
 

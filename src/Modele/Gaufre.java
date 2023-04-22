@@ -1,5 +1,6 @@
 package Modele;
 
+import java.io.*;
 import java.util.LinkedList;
 
 public class Gaufre {
@@ -96,6 +97,29 @@ public class Gaufre {
 
     public void fixeValeurCase(int v, int i, int j) {
         cases[i][j] = v;
+    }
+
+    public void sauvegarder() {
+        try {
+            File f = new File("sauvegarde.txt");
+            OutputStream out = new FileOutputStream(f);
+            out.write((lignes() + System.lineSeparator()).getBytes());
+            //ajoute un saut de ligne avec System.lineSeparator()
+            out.write((colonnes() + System.lineSeparator()).getBytes());
+            String chaine = "";
+            for (int i = 0; i <= lignes - 1; i++)
+                for (int j = 0; j <= colonnes - 1; j++)
+                    chaine += cases[i][j] + "|";
+            out.write(chaine.getBytes());
+            out.write(System.lineSeparator().getBytes());
+            out.write(historique.toString().getBytes());
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void charger() {
     }
 
     public void reinitialise() {

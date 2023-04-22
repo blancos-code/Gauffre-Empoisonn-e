@@ -11,6 +11,22 @@ public class Historique {
         futur = new LinkedList<>();
     }
 
+    public String toString(){
+        String s = "";
+        String s_passe = "";
+        for(int i = 0; i < passe.size(); i++){
+            s_passe += passe.get(i).toString();
+            s_passe += " # ";
+        }
+        String s_futur = "";
+        for(int i = 0; i < futur.size(); i++){
+            s_futur += futur.get(i).toString();
+            s_futur += " # ";
+        }
+        s += s_passe + "\n" + s_futur;
+        return s;
+    }
+
     public void afficheFutur(){
         System.out.println("Affiche futur :");
         for(int k=0; k<futur.size(); k++){
