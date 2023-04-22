@@ -88,9 +88,11 @@ public class Jeu extends Observable {
         if (estJoueurCourantUneIA()) {
             return;
         }
+        if (gaufre().estMangee(c.i, c.j)) {
+            return;
+        }
 
         joue(c);
-
 
         // Attendez un certain temps avant d'exécuter l'action finale
         int delai = 500; // delai en millisecondes (500 ms = 0.5 s)
@@ -110,6 +112,9 @@ public class Jeu extends Observable {
             return;
         }
         Coup c = ((IA)joueurs[joueurCourant]).joue();
+        if (gaufre().estMangee(c.i, c.j)) {
+            return;
+        }
         joue(c);
     }
 

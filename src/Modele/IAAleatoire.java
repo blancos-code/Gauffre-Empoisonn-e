@@ -19,7 +19,7 @@ class IAAleatoire extends IA {
             i = r.nextInt(this.jeu.gaufre().lignes());
             j = r.nextInt(this.jeu.gaufre().colonnes());
 
-            if (!this.jeu.gaufre().estMangee(i, j)) {
+            if (!this.jeu.gaufre().estMangee(i, j) && !(i == 0 && j == 0)) {
                 estJouable = true;
             }
         }
