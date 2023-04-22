@@ -92,21 +92,25 @@ public class GaufreGraphiqueListener implements MouseListener {
     }
 
     public boolean estCurseurSurGaufre(MouseEvent e){
+        if(g.largeurCase == 0 || g.hauteurCase == 0) return false;
         int startx = 0;
         int starty = 0;
         int c = e.getX()/g.largeurCase;
         int l = e.getY()/g.hauteurCase;
         if(e.getX() >= startx && e.getX() <= startx+g.largeurCase*g.colonnes() && e.getY() >= starty && e.getY() <= starty+g.hauteurCase*g.lignes()){
             if(e.getX()<=startx+g.largeurCase && e.getY()<=starty+g.hauteurCase){
+                g.miseAJour();
                 return false;
             }else{
                 if(l<g.j.gaufre().lignes() && c<g.j.gaufre().colonnes() && !g.j.gaufre().estMangee(l,c)) {
-                    g.setToolTipText("Manger ce morceau");
                     g.l=l;
                     g.c=c;
                     g.miseAJour();
                     return true;
                 }else{
+                    g.l=g.lignes();
+                    g.c=g.colonnes();
+                    g.miseAJour();
                     return false;
                 }
             }

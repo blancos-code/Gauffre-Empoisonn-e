@@ -103,7 +103,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
         hauteur_bouton= (int) (largeur_bouton*rapport_bouton);
         posY_bouton_quitter = (int) (hauteur*.10);
         if(select_quitter) {
-            System.out.println("select_quitter");
             tracer(drawable, quitter_select, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
         }else
             tracer(drawable, quitter, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
