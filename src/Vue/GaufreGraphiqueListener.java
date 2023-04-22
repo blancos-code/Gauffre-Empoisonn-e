@@ -1,5 +1,6 @@
 package Vue;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,6 +22,7 @@ public class GaufreGraphiqueListener implements MouseListener {
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_annuler;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.setToolTipText("Annuler le coup");
             return true;
         }else return false;
     }
@@ -29,6 +31,7 @@ public class GaufreGraphiqueListener implements MouseListener {
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_refaire;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.setToolTipText("Refaire le coup");
             return true;
         }else return false;
     }
@@ -37,6 +40,19 @@ public class GaufreGraphiqueListener implements MouseListener {
         int startx = g.posX_save;
         int starty = g.posY_save_load;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_load_save && e.getY() >= starty && e.getY() <= starty+g.largeur_load_save) {
+            g.setToolTipText("Sauvegarder la partie");
+            //modifie la couleur du tooltiptext en BLUE
+            //g.toolTip.setBackground(Color.BLUE);
+
+            return true;
+        }else return false;
+    }
+
+    public boolean estCurseurSurBouton_Load(MouseEvent e){
+        int startx = g.posX_load;
+        int starty = g.posY_save_load;
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_load_save && e.getY() >= starty && e.getY() <= starty+g.largeur_load_save) {
+            g.setToolTipText("Charger une partie");
             return true;
         }else return false;
     }
@@ -48,9 +64,21 @@ public class GaufreGraphiqueListener implements MouseListener {
             if(e.getX()<=startx+g.largeurCase && e.getY()<=starty+g.hauteurCase){
                 return false;
             }else{
+                g.setToolTipText("Manger ce morceau");
                 return true;
             }
         }else return false;
+    }
+
+    public boolean estCurseurSur_Poison(MouseEvent e){
+        int startx = 0;
+        int starty = 0;
+        if(e.getX()<=startx+g.largeurCase && e.getY()<=starty+g.hauteurCase){
+            g.setToolTipText("Vous ne pouvez pas manger ce morceau !");
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
@@ -66,6 +94,9 @@ public class GaufreGraphiqueListener implements MouseListener {
         }
         if(estCurseurSurBouton_Save(e)) {
             g.collecteur.clicSauvegarder();
+        }
+        if(estCurseurSurBouton_Load(e)) {
+            g.collecteur.clicCharger();
         }
 
     }
@@ -93,9 +124,12 @@ public class GaufreGraphiqueListener implements MouseListener {
     public class DetectionSurvol extends MouseMotionAdapter {
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||estCurseurSurBouton_Save(e)||estCurseurSurGaufre(e)) {
+            if (estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||estCurseurSurBouton_Save(e)||estCurseurSurBouton_Load(e)||estCurseurSurGaufre(e)) {
                 g.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }else{
+                if(!estCurseurSur_Poison(e)) {
+                    g.setToolTipText(null);
+                }
                 g.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         }

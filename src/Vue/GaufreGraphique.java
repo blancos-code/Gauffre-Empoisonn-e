@@ -19,6 +19,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
     largeur_load_save;
     JProgressBar progressBar;
     CollecteurEvenements collecteur;
+    Graphics2D drawable;
 
     public GaufreGraphique(Jeu jeu, CollecteurEvenements c) throws IOException {
         j = jeu;
@@ -35,7 +36,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
     }
 
     public void paintComponent(Graphics g) {
-        Graphics2D drawable = (Graphics2D) g;
+        drawable = (Graphics2D) g;
         drawable.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         Gaufre gaufre = j.gaufre();
         int largeur = getSize().width;
