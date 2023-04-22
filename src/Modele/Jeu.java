@@ -56,7 +56,6 @@ public class Jeu extends Observable {
 
         if (estJoueurCourantUneIA()) {
             // Pour pas que l'IA joue directement
-            metAJour();
             // Attendez un certain temps avant d'exécuter l'action finale
             int delai = 1000; // delai en millisecondes (1à00 ms = 1 s)
             Timer timer = new Timer(delai, new ActionListener() {
