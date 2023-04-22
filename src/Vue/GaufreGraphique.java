@@ -14,7 +14,7 @@ import java.io.IOException;
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, annuler, refaire;
     Jeu j;
-    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons;
+    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire;
     JProgressBar progressBar;
     CollecteurEvenements collecteur;
 
@@ -27,6 +27,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
         annuler = lisImage("annuler");
         refaire = lisImage("refaire");
         progressBar = new JProgressBar(0, 100);
+        addMouseListener(new GaufreGraphiqueListener(this));
     }
 
     public void paintComponent(Graphics g) {
@@ -70,8 +71,10 @@ public class GaufreGraphique extends JComponent implements Observateur {
         double rapport_bouton = (double) 207/603;
         largeur_bouton=(int) (largeurCase*1.8);
         hauteur_bouton=(int) (largeur_bouton*rapport_bouton);
-        tracer(drawable, annuler, posX_boutons, (int) (hauteur*.10), largeur_bouton, hauteur_bouton);
-        tracer(drawable, refaire, posX_boutons, (int) (hauteur*.30), largeur_bouton, hauteur_bouton);
+        posY_bouton_annuler = (int) (hauteur*.10);
+        posY_bouton_refaire = (int) (hauteur*.30);
+        tracer(drawable, annuler, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
+        tracer(drawable, refaire, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
 
         //créer une barre de progression
         int progress = (int) (gaufre.progression());

@@ -50,12 +50,14 @@ public class Jeu extends Observable {
     }
 
     public Coup annuler() {
+        System.out.println("Annuler");
         Coup cp = g.annuler();
         metAJour();
         return cp;
     }
 
     public Coup refaire() {
+        System.out.println("Refaire");
         Coup cp = g.refaire();
         metAJour();
         return cp;

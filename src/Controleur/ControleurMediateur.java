@@ -25,13 +25,18 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     }
 
+    public void clicAnnuler(){
+        jeu.annuler();
+    }
+
+    @Override
+    public void clicRefaire() {
+
+    }
+
     @Override
     public void ajouteInterfaceUtilisateur(GaufreGraphique v) {
         vue = v;
     }
 
-    @Override
-    public void tictac() {
-
-    }
 }
