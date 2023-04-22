@@ -29,4 +29,4 @@ La taille standard de la gaufre est $6*8 (a=5, b=7)$.
 | 3 | <ul><li> - [x] IA aléatoire                                                                        </li></ul>
 | 3 | <ul><li> - [ ] IA intelligente utilisant un arbre ET/OU                                            </li></ul>
 | 4 | <ul><li> - [x] Menu de jeu                                                                         </li></ul>
-| 4 | <ul><li> - [] des boutons qui changent d'apparence si la souris les survole                        </li></ul>
+| 4 | <ul><li> - [ ] des boutons qui changent d'apparence si la souris les survole                        </li></ul>
