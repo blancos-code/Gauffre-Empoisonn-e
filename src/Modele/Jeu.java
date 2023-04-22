@@ -30,11 +30,19 @@ public class Jeu extends Observable {
         return joueurCourant;
     }
 
+    public void changeJoueurCourant(){
+        if(joueurCourant == 0){
+            joueurCourant = 1;
+        }else{
+            joueurCourant = 0;
+        }
+    }
+
     public void joue(Coup c){
         g.joue(c);
         g.affiche();
         metAJour();
-        //commentaire
+        changeJoueurCourant();
     }
 
     public Gaufre gaufre() {
