@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/src/Modele/IA.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/Modele/Jeu.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/Vue/FenetreDynamique.java" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/src/Vue/GaufreGraphique.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/Vue/Menu.java" charset="windows-1252" />
   </component>
 </project>
