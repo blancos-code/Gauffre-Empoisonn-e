@@ -1,8 +1,9 @@
 package Modele;
 
+import javax.imageio.stream.FileImageInputStream;
 import java.io.*;
 import java.util.LinkedList;
-
+import java.io.ObjectOutputStream;
 public class Gaufre {
     protected int[][] cases;
     protected int lignes, colonnes;
@@ -105,18 +106,17 @@ public class Gaufre {
 
     public void sauvegarder() {
         try {
-            File f = new File("sauvegarde.txt");
-            OutputStream out = new FileOutputStream(f);
-            out.write((lignes() + System.lineSeparator()).getBytes());
-            //ajoute un saut de ligne avec System.lineSeparator()
-            out.write((colonnes() + System.lineSeparator()).getBytes());
-            String chaine = "";
-            for (int i = 0; i <= lignes - 1; i++)
-                for (int j = 0; j <= colonnes - 1; j++)
-                    chaine += cases[i][j] + "|";
-            out.write(chaine.getBytes());
-            out.write(System.lineSeparator().getBytes());
-            out.write(historique.toString().getBytes());
+
+            FileOutputStream  f = new FileOutputStream("sauvegarde.txt");
+            ObjectOutputStream out = new ObjectOutputStream(f);
+            out.writeInt(lignes);
+            out.writeInt(colonnes);
+            for (int i = 0 ; i<lignes ; i++){
+                for (int j = 0 ; j<colonnes ; j++){
+                    out.writeInt(cases[i][j]);
+                }
+            }
+            out.writeObject(historique);
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -124,6 +124,20 @@ public class Gaufre {
     }
 
     public void charger() {
+        try{
+            FileInputStream fichier = new FileInputStream("sauvegarde.txt");
+            ObjectInputStream in = new ObjectInputStream(fichier);
+            lignes= in.readInt();
+            colonnes= in.readInt();
+            for (int i = 0 ; i<lignes ; i++){
+                for (int j = 0 ; j<colonnes ; j++){
+                    cases[i][j]=in.readInt();
+                }
+            }
+            historique = (Historique)in.readObject();
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
     }
 
     public void reinitialise() {
