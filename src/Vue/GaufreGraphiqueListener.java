@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
 
 public class GaufreGraphiqueListener implements MouseListener {
 
@@ -16,6 +17,15 @@ public class GaufreGraphiqueListener implements MouseListener {
         g = gaufre;
         DetectionSurvol survol = new DetectionSurvol();
         g.addMouseMotionListener(survol);
+    }
+
+    public boolean estCurseurSurBouton_Quitter(MouseEvent e){
+        int startx = g.posX_boutons;
+        int starty = g.posY_bouton_quitter;
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.setToolTipText("Quitter la partie et revenir au menu du jeu");
+            return true;
+        }else return false;
     }
 
     public boolean estCurseurSurBouton_Annuler(MouseEvent e){
@@ -41,9 +51,6 @@ public class GaufreGraphiqueListener implements MouseListener {
         int starty = g.posY_save_load;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_load_save && e.getY() >= starty && e.getY() <= starty+g.largeur_load_save) {
             g.setToolTipText("Sauvegarder la partie");
-            //modifie la couleur du tooltiptext en BLUE
-            //g.toolTip.setBackground(Color.BLUE);
-
             return true;
         }else return false;
     }
@@ -57,15 +64,30 @@ public class GaufreGraphiqueListener implements MouseListener {
         }else return false;
     }
 
+    public boolean estCurseurSurBouton_Reset(MouseEvent e){
+        int startx = g.posX_boutons;
+        int starty = g.posY_reset;
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.setToolTipText("Recommencer la partie");
+            return true;
+        }else return false;
+    }
+
     public boolean estCurseurSurGaufre(MouseEvent e){
         int startx = 0;
         int starty = 0;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeurCase*g.colonnes() && e.getY() >= starty && e.getY() <= starty+g.hauteurCase*g.lignes()) {
+        int c = e.getX()/g.largeurCase;
+        int l = e.getY()/g.hauteurCase;
+        if(e.getX() >= startx && e.getX() <= startx+g.largeurCase*g.colonnes() && e.getY() >= starty && e.getY() <= starty+g.hauteurCase*g.lignes()){
             if(e.getX()<=startx+g.largeurCase && e.getY()<=starty+g.hauteurCase){
                 return false;
             }else{
-                g.setToolTipText("Manger ce morceau");
-                return true;
+                if(l<g.j.gaufre().lignes() && c<g.j.gaufre().colonnes() && !g.j.gaufre().estMangee(l,c)) {
+                    g.setToolTipText("Manger ce morceau");
+                    return true;
+                }else{
+                    return false;
+                }
             }
         }else return false;
     }
@@ -81,9 +103,18 @@ public class GaufreGraphiqueListener implements MouseListener {
         }
     }
 
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
+    public void verif(MouseEvent e){
+        if(estCurseurSurBouton_Quitter(e)) {
+            g.f.getContentPane().removeAll();
+            Menu menu = null;
+            try {
+                menu = new Menu(g.f);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            g.f.add(menu);
+            g.f.revalidate();//redessine la fenetre
+        }
         if(estCurseurSurBouton_Annuler(e)) {
             g.collecteur.clicAnnuler();
             g.miseAJour();
@@ -98,6 +129,16 @@ public class GaufreGraphiqueListener implements MouseListener {
         if(estCurseurSurBouton_Load(e)) {
             g.collecteur.clicCharger();
         }
+        if(estCurseurSurBouton_Reset(e)) {
+            g.collecteur.clicRecommencer();
+            g.miseAJour();
+        }
+    }
+
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        verif(e);
     }
 
     @Override
@@ -106,6 +147,7 @@ public class GaufreGraphiqueListener implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        verif(e);
     }
 
     @Override
@@ -119,7 +161,8 @@ public class GaufreGraphiqueListener implements MouseListener {
     public class DetectionSurvol extends MouseMotionAdapter {
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||estCurseurSurBouton_Save(e)||estCurseurSurBouton_Load(e)||estCurseurSurGaufre(e)) {
+            if (estCurseurSurBouton_Quitter(e)||estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||
+                    estCurseurSurBouton_Save(e)||estCurseurSurBouton_Load(e)||estCurseurSurGaufre(e)||estCurseurSurBouton_Reset(e)) {
                 g.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }else{
                 if(!estCurseurSur_Poison(e)) {

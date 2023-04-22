@@ -17,8 +17,6 @@ public class MainGaufre {
         frame.setSize(1280, 720);
         Menu menu = new Menu(frame);
         frame.add(menu);
-        //frame.pack();
         frame.setVisible(true);
-        //InterfaceGraphique.demarrer(j);
     }
 }

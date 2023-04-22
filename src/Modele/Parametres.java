@@ -30,7 +30,7 @@ public class Parametres {
             prenom2 = s.nextLine();
             type_jeu = s.nextLine();
             type_IA = s.nextLine();
-            System.out.println("Type IA: " + type_IA);
+            //System.out.println("Type IA: " + type_IA);
         }
         in.close();
         s.close();

@@ -12,24 +12,28 @@ import java.io.File;
 import java.io.IOException;
 
 public class GaufreGraphique extends JComponent implements Observateur {
-    Image case_saine, case_poison, annuler, refaire, save, load;
+    Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset;
     Jeu j;
     int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load,
-    largeur_load_save;
+    largeur_load_save, posY_bouton_quitter, posY_reset;
     JProgressBar progressBar;
     CollecteurEvenements collecteur;
     Graphics2D drawable;
+    JFrame f;
 
-    public GaufreGraphique(Jeu jeu, CollecteurEvenements c) throws IOException {
+    public GaufreGraphique(JFrame frame, Jeu jeu, CollecteurEvenements c) throws IOException {
+        f = frame;
         j = jeu;
         collecteur = c;
         j.ajouteObservateur(this);
         case_saine = lisImage("case_saine");
         case_poison = lisImage("case_poison");
+        quitter = lisImage("quitter_partie");
         annuler = lisImage("annuler");
         refaire = lisImage("refaire");
         save = lisImage("save");
         load = lisImage("load");
+        reset = lisImage("reinitialiser");
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
     }
@@ -67,19 +71,25 @@ public class GaufreGraphique extends JComponent implements Observateur {
         posX_boutons = (int) (gaufre.colonnes()*largeurCase+largeurCase*0.2);
         if (j.joueurCourant() == 1) {
             drawable.setColor(Color.RED);
-            drawable.drawString("Joueur 1", (int)(posX_boutons*1.015), (int) (hauteur*.60));
+            drawable.drawString("Joueur 1", (int)(posX_boutons*1.015), (int) (hauteur*.70));
         } else {
             drawable.setColor(Color.ORANGE);
-            drawable.drawString("Joueur 2", (int)(posX_boutons*1.015), (int) (hauteur*.60));
+            drawable.drawString("Joueur 2", (int)(posX_boutons*1.015), (int) (hauteur*.70));
         }
-        //affiche les boutons annuler et refaire
+        //affiche le bouton quitter la partie
         double rapport_bouton = (double) 207/603;
         largeur_bouton= (int) (largeurCase*1.8);
         hauteur_bouton= (int) (largeur_bouton*rapport_bouton);
-        posY_bouton_annuler = (int) (hauteur*.15);
-        posY_bouton_refaire = (int) (hauteur*.30);
+        posY_bouton_quitter = (int) (hauteur*.10);
+        tracer(drawable, quitter, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
+        //affiche les boutons annuler et refaire
+        posY_bouton_annuler = (int) (hauteur*.22);
+        posY_bouton_refaire = (int) (hauteur*.34);
         tracer(drawable, annuler, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
         tracer(drawable, refaire, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
+        //affiche le bouton reset
+        posY_reset = (int) (hauteur*.46);
+        tracer(drawable, reset, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
         //affiche les boutons save et load
         double rapport_bouton_save_load = 1.0;
         largeur_load_save = (int) (largeurCase*0.55);

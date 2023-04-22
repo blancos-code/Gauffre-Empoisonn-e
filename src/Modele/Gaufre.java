@@ -20,8 +20,8 @@ public class Gaufre {
         historique = new Historique();
     }
 
-    public Historique getHistorique() {
-        return historique;
+    public boolean estFinit() {
+        return nb_cases_pleines == 0;
     }
 
     public boolean estMangee(int i, int j) {
@@ -41,6 +41,10 @@ public class Gaufre {
             }
         }
         historique.ajoute(lc);
+    }
+
+    public void resetHistorique(){
+        historique = new Historique();
     }
 
     public double progression() {
@@ -148,9 +152,10 @@ public class Gaufre {
     }
 
     public void reinitialise() {
-        for (int i = 0; i<= lignes -1; i++)
-            for (int j = 0; j<= colonnes -1; j++)
-                fixeValeurCase(0, i, j);
+        cases = new int[lignes][colonnes];
+        nb_cases = lignes * colonnes;
+        nb_cases_pleines = nb_cases-1;
+        historique = new Historique();
     }
 
     public void affiche(){

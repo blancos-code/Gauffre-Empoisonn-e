@@ -72,7 +72,7 @@ public class MenuListener implements MouseListener {
                 p.lireFichierParametres();
                 Jeu jeu = new Jeu(p);
                 CollecteurEvenements collecteur = new ControleurMediateur(jeu);
-                GaufreGraphique vue = new GaufreGraphique(jeu, collecteur);
+                GaufreGraphique vue = new GaufreGraphique(m.frame, jeu, collecteur);
                 m.frame.add(vue);
                 collecteur.ajouteInterfaceUtilisateur(vue);
                 vue.addMouseListener(new AdaptateurSouris(vue, collecteur));
@@ -89,12 +89,35 @@ public class MenuListener implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
+        if(estCurseurSurBouton_JcJ(e) || estCurseurSurBouton_JcIA(e)){
+            //efface tout le contenu de la frame
+            m.frame.getContentPane().removeAll();
+            //ajoute une gaufregraphique � la frame
+            Parametres p;
+            try {
+                p = new Parametres();
+                p.setType_jeu(this.type_jeu);
+                p.sauvegarderParametres();
+                p.lireFichierParametres();
+                Jeu jeu = new Jeu(p);
+                CollecteurEvenements collecteur = new ControleurMediateur(jeu);
+                GaufreGraphique vue = new GaufreGraphique(m.frame, jeu, collecteur);
+                m.frame.add(vue);
+                collecteur.ajouteInterfaceUtilisateur(vue);
+                vue.addMouseListener(new AdaptateurSouris(vue, collecteur));
+                m.frame.revalidate();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        if(estCurseurSurBouton_Quitter(e)){
+            System.exit(0);
+        }
+        m.repaint();
     }
 
     @Override

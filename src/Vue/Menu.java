@@ -90,6 +90,7 @@ public class Menu extends JPanel{
     }
 
     public void paint(Graphics g) {
+        System.out.println("paint");
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         frameWidth=frame.getWidth();

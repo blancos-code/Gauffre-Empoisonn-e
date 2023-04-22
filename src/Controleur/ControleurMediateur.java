@@ -15,9 +15,9 @@ public class ControleurMediateur implements CollecteurEvenements {
 
 
     @Override
-    public void clicSouris(int l, int c) {
+    public boolean clicSouris(int l, int c) {
         Coup cp = new Coup(l, c, 1, 0);
-        jeu.joueJoueur(cp);
+        return jeu.joueJoueur(cp);
     }
 
     @Override
@@ -41,6 +41,11 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void clicCharger() {
         jeu.charger();
+    }
+
+    @Override
+    public void clicRecommencer() {
+        jeu.reinitialiseGaufre();
     }
 
     @Override
