@@ -55,7 +55,6 @@ public class Historique implements Serializable {
     }
 
     public ListeCoups annuler(){
-        //System.out.println("On annule, taille de passe : " + passe.size());
         ListeCoups tete = passe.removeFirst();
         futur.addFirst(tete);
         //System.out.println("On retire un élément de passe, taille de futur : " + futur.size());

@@ -176,7 +176,6 @@ public class GaufreGraphiqueListener implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        verif(e);
     }
 
     @Override

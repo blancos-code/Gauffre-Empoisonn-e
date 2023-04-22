@@ -109,7 +109,6 @@ public class MenuListener implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        verif(e);
     }
 
     @Override
