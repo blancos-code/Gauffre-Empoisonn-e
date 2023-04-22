@@ -129,9 +129,16 @@ public class Gaufre {
             ObjectInputStream in = new ObjectInputStream(fichier);
             lignes= in.readInt();
             colonnes= in.readInt();
+            nb_cases = lignes * colonnes;
+            nb_cases_pleines = nb_cases-1;
             for (int i = 0 ; i<lignes ; i++){
                 for (int j = 0 ; j<colonnes ; j++){
-                    cases[i][j]=in.readInt();
+                    int valeur = in.readInt();
+                    if(valeur==1){
+                        nb_cases_pleines--;
+                    }
+                    cases[i][j]=valeur;
+
                 }
             }
             historique = (Historique)in.readObject();
