@@ -83,16 +83,18 @@ public class Jeu extends Observable {
     }
 
 
-    public void joueJoueur(Coup c) {
+    public boolean joueJoueur(Coup c) {
 
         if (estJoueurCourantUneIA()) {
-            return;
+            return false;
         }
         if (gaufre().estMangee(c.i, c.j)) {
-            return;
+            return false;
         }
 
-        joue(c);
+        if(joue(c)){
+            return true;
+        }
 
         // Attendez un certain temps avant d'exécuter l'action finale
         int delai = 500; // delai en millisecondes (500 ms = 0.5 s)
@@ -105,6 +107,7 @@ public class Jeu extends Observable {
 
         timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-la une seule fois
         timer.start(); // Démarrez le timer
+        return false;
     }
 
     public void joueIA() {
@@ -118,11 +121,16 @@ public class Jeu extends Observable {
         joue(c);
     }
 
-    public void joue(Coup c){
+    public boolean joue(Coup c){
         g.joue(c);
-        //g.affiche();
-        metAJour();
+        if(g.estFinit()){
+            g.resetHistorique();
+            metAJour();
+            return true;
+        }
         changeJoueurCourant();
+        metAJour();
+        return false;
     }
 
     public boolean estJoueurCourantUneIA() {
@@ -155,6 +163,7 @@ public class Jeu extends Observable {
 
     public void reinitialiseGaufre() {
         g.reinitialise();
+        lancePartie();
         metAJour();
     }
 }
