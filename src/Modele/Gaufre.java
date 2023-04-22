@@ -47,8 +47,7 @@ public class Gaufre {
         historique = new Historique();
     }
 
-    public double progression() {
-        return ((double)nb_cases_pleines / ((double)nb_cases-1))*100;
+    public double progression() { return ((double)nb_cases_pleines / ((double)nb_cases-1))*100;
     }
 
     public int colonnes() {

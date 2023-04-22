@@ -26,11 +26,11 @@ package Structures;
  *          38401 Saint Martin d'Hères
  */
 
-class Maillon<E> {
+public class Maillon<E> {
     E element;
     Maillon<E> suivant;
 
-    Maillon(E element, Maillon<E> suivant) {
+    public Maillon(E element, Maillon<E> suivant) {
         this.element = element;
         this.suivant = suivant;
     }
