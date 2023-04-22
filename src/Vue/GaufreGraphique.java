@@ -10,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, annuler, refaire, save, load;
@@ -43,14 +42,14 @@ public class GaufreGraphique extends JComponent implements Observateur {
         int hauteur = getSize().height;
         largeurCase = largeur / gaufre.colonnes();
         hauteurCase = (int) (hauteur*.8) / gaufre.lignes();
-        // On prend des cases carrï¿½es
+        // On prend des cases carr?es
         largeurCase = Math.min(largeurCase, hauteurCase);
         hauteurCase = largeurCase;
         //dessine un rectangle qui fait toute la frame
         g.setColor(new Color(69, 69, 69));
         g.fillRect(0, 0, largeur, hauteur);
 
-        // Tracï¿½ de la gaufre
+        // Tracé de la gaufre
         for (int i = 0; i < gaufre.lignes(); i++) {
             for (int j = 0; j < gaufre.colonnes(); j++) {
                 if (i ==0 && j == 0) {
@@ -90,7 +89,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
         tracer(drawable, save, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
         tracer(drawable, load, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
 
-        //crï¿½er une barre de progression
+        //créer une barre de progression
         int progress = (int) (gaufre.progression());
         progressBar.setValue(progress);
         progressBar.setStringPainted(true);
