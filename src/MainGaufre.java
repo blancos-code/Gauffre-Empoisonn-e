@@ -11,6 +11,8 @@ public class MainGaufre {
 
     public static void main(String[] args) throws IOException {
         JFrame frame = new JFrame("La gaugaufre mmh");
+        ImageIcon icon = new ImageIcon("ressources/icon.png");
+        frame.setIconImage(icon.getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1280, 720);
         Menu menu = new Menu(frame);

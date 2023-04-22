@@ -6,4 +6,6 @@ public interface CollecteurEvenements {
     void ajouteInterfaceUtilisateur(GaufreGraphique vue);
     void clicAnnuler();
     void clicRefaire();
+    void clicSauvegarder();
+    void clicCharger();
 }

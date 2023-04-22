@@ -28,6 +28,10 @@ public class Coup {
         return new_valeur;
     }
 
+    public String toString(){
+        return getI() + "," + getJ() + ":" + getOldValeur() + ">" + getNewValeur();
+    }
+
     public void affiche() {
         System.out.println("Coup : (" + getI() + ", " + getJ() + ") : " + getOldValeur() + " -> " + getNewValeur());
     }

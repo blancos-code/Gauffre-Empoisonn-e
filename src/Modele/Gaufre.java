@@ -1,5 +1,6 @@
 package Modele;
 
+import java.io.*;
 import java.util.LinkedList;
 
 public class Gaufre {
@@ -61,7 +62,7 @@ public class Gaufre {
         return historique.peutRefaire();
     }
 
-    public void annuler() {
+    public boolean annuler() {
         if(peutAnnuler()) {
             LinkedList<Coup> liste_coups = historique.annuler().getListe_coups();
             LinkedList<Coup> liste_coups_copie = new LinkedList<>();
@@ -74,11 +75,13 @@ public class Gaufre {
                 fixeValeurCase(oldValeur, i, j);
                 nb_cases_pleines++;
             }
+            return true;
         }
+        return false;
     }
 
 
-    public void refaire() {
+    public boolean refaire() {
         if(peutRefaire()) {
             LinkedList<Coup> liste_coups = historique.refaire().getListe_coups();
             LinkedList<Coup> liste_coups_copie = new LinkedList<>();
@@ -91,11 +94,36 @@ public class Gaufre {
                 fixeValeurCase(oldValeur, i, j);
                 nb_cases_pleines--;
             }
+            return true;
         }
+        return false;
     }
 
     public void fixeValeurCase(int v, int i, int j) {
         cases[i][j] = v;
+    }
+
+    public void sauvegarder() {
+        try {
+            File f = new File("sauvegarde.txt");
+            OutputStream out = new FileOutputStream(f);
+            out.write((lignes() + System.lineSeparator()).getBytes());
+            //ajoute un saut de ligne avec System.lineSeparator()
+            out.write((colonnes() + System.lineSeparator()).getBytes());
+            String chaine = "";
+            for (int i = 0; i <= lignes - 1; i++)
+                for (int j = 0; j <= colonnes - 1; j++)
+                    chaine += cases[i][j] + "|";
+            out.write(chaine.getBytes());
+            out.write(System.lineSeparator().getBytes());
+            out.write(historique.toString().getBytes());
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void charger() {
     }
 
     public void reinitialise() {

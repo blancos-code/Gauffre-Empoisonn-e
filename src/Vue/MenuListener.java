@@ -80,6 +80,9 @@ public class MenuListener implements MouseListener {
                 throw new RuntimeException(ex);
             }
         }
+        if(estCurseurSurBouton_Quitter(e)){
+            System.exit(0);
+        }
         m.repaint();
     }
 

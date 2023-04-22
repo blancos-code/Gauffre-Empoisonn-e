@@ -22,7 +22,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public void toucheClavier(String t) {
-
     }
 
     public void clicAnnuler(){
@@ -32,6 +31,16 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void clicRefaire() {
         jeu.refaire();
+    }
+
+    @Override
+    public void clicSauvegarder() {
+        jeu.sauvegarder();
+    }
+
+    @Override
+    public void clicCharger() {
+        jeu.charger();
     }
 
     @Override

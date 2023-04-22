@@ -12,9 +12,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class GaufreGraphique extends JComponent implements Observateur {
-    Image case_saine, case_poison, annuler, refaire;
+    Image case_saine, case_poison, annuler, refaire, save, load;
     Jeu j;
-    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire;
+    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load,
+    largeur_load_save;
     JProgressBar progressBar;
     CollecteurEvenements collecteur;
 
@@ -26,6 +27,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
         case_poison = lisImage("case_poison");
         annuler = lisImage("annuler");
         refaire = lisImage("refaire");
+        save = lisImage("save");
+        load = lisImage("load");
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
     }
@@ -68,13 +71,22 @@ public class GaufreGraphique extends JComponent implements Observateur {
             drawable.setColor(Color.ORANGE);
             drawable.drawString("Joueur 2", (int)(posX_boutons*1.015), (int) (hauteur*.60));
         }
+        //affiche les boutons annuler et refaire
         double rapport_bouton = (double) 207/603;
-        largeur_bouton=(int) (largeurCase*1.8);
-        hauteur_bouton=(int) (largeur_bouton*rapport_bouton);
-        posY_bouton_annuler = (int) (hauteur*.10);
+        largeur_bouton= (int) (largeurCase*1.8);
+        hauteur_bouton= (int) (largeur_bouton*rapport_bouton);
+        posY_bouton_annuler = (int) (hauteur*.15);
         posY_bouton_refaire = (int) (hauteur*.30);
         tracer(drawable, annuler, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
         tracer(drawable, refaire, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
+        //affiche les boutons save et load
+        double rapport_bouton_save_load = 1.0;
+        largeur_load_save = (int) (largeurCase*0.55);
+        posY_save_load = 0;
+        posX_save = posX_boutons + (int) (largeur_bouton*0.12);
+        posX_load = posX_save + (int) (largeur_bouton*0.45);
+        tracer(drawable, save, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
+        tracer(drawable, load, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
 
         //cr�er une barre de progression
         int progress = (int) (gaufre.progression());
