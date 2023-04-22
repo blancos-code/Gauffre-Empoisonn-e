@@ -46,7 +46,6 @@ public class Menu extends JPanel{
 
         //Ajout d'une interaction avec les boutons
         addMouseListener(new MenuListener(this));
-
     }
 
     private Image lisImage(String nom) throws IOException {
@@ -60,7 +59,6 @@ public class Menu extends JPanel{
         double rapport = 0.5625;// rapport de 2160/3840
         double rapport_actuel = (double)frameHeight/(double)frameWidth;
         if(rapport_actuel>rapport) {// si la fenêtre est plus haute que large
-            System.out.println(rapport_actuel);
             largeur_background=frameWidth;
             hauteur_background=(int)(largeur_background*rapport);
             posX_background=0;

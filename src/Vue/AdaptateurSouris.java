@@ -18,8 +18,7 @@ public class AdaptateurSouris extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         int l = e.getY() / g.largeurCase();
         int c = e.getX() / g.hauteurCase();
-        if(l<=g.largeurCase()*g.colonnes() && c<=g.hauteurCase()*g.lignes() && l!=0 && c!=0){
-            System.out.println("clic en " + l + " " + c);
+        if(l<g.lignes() && c<g.colonnes() && !(l==0 && c==0)){
             collecteur.clicSouris(l, c);
         }
     }

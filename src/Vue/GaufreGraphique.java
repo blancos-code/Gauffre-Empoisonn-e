@@ -10,24 +10,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, annuler, refaire;
     Jeu j;
     int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons;
     JProgressBar progressBar;
+    CollecteurEvenements collecteur;
 
-    public GaufreGraphique(Jeu jeu) throws IOException {
+    public GaufreGraphique(Jeu jeu, CollecteurEvenements c) throws IOException {
         j = jeu;
+        collecteur = c;
         j.ajouteObservateur(this);
         case_saine = lisImage("case_saine");
         case_poison = lisImage("case_poison");
         annuler = lisImage("annuler");
         refaire = lisImage("refaire");
         progressBar = new JProgressBar(0, 100);
-        CollecteurEvenements c = new ControleurMediateur(j);
-        addMouseListener(new AdaptateurSouris(this, c));
     }
 
     public void paintComponent(Graphics g) {
@@ -51,7 +50,9 @@ public class GaufreGraphique extends JComponent implements Observateur {
                 if (i ==0 && j == 0) {
                     tracer(drawable, case_poison, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                 } else {
-                    tracer(drawable, case_saine, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
+                    if(!gaufre.estMangee(i,j)) {
+                        tracer(drawable, case_saine, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
+                    }
                 }
             }
         }
@@ -74,7 +75,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
 
         //créer une barre de progression
         int progress = (int) (gaufre.progression());
-        System.out.println("gaufre.progression() : " + gaufre.progression());
         progressBar.setValue(progress);
         progressBar.setStringPainted(true);
         progressBar.setBounds(0, (int) (hauteur*.85), largeur, (int) (hauteurCase*0.3));

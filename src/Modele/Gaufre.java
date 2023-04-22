@@ -14,17 +14,23 @@ public class Gaufre {
         nb_cases_pleines = nb_cases-1;
     }
 
+    public boolean estMangee(int i, int j) {
+        return cases[i][j] == 1;
+    }
+
 
     public void joue(Coup c) {
-        for (int i = c.getI(); i<= lignes -1; i++)
-            for (int j = c.getJ(); j<= colonnes -1; j++) {
-                fixeValeurCase(1, i, j);
-                nb_cases_pleines--;
+        for (int i = c.getI(); i<= lignes-1; i++)
+            for (int j = c.getJ(); j<= colonnes-1; j++) {
+                if(cases[i][j] == 0){
+                    fixeValeurCase(1, i, j);
+                    nb_cases_pleines--;
+                }
             }
     }
 
     public double progression() {
-        return (double) (nb_cases_pleines / (nb_cases-1))/100;
+        return ((double)nb_cases_pleines / ((double)nb_cases-1))*100;
     }
 
     public int colonnes() {

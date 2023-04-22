@@ -3,12 +3,11 @@ package Controleur;
 import Modele.Coup;
 import Modele.Jeu;
 import Vue.CollecteurEvenements;
-import Vue.InterfaceUtilisateur;
+import Vue.GaufreGraphique;
 
 public class ControleurMediateur implements CollecteurEvenements {
     Jeu jeu;
-    InterfaceUtilisateur vue;
-
+    GaufreGraphique vue;
 
     public ControleurMediateur(Jeu j) {
         jeu = j;
@@ -27,8 +26,8 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     @Override
-    public void ajouteInterfaceUtilisateur(InterfaceUtilisateur vue) {
-
+    public void ajouteInterfaceUtilisateur(GaufreGraphique v) {
+        vue = v;
     }
 
     @Override

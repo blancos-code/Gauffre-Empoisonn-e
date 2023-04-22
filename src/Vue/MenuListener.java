@@ -1,5 +1,6 @@
 package Vue;
 
+import Controleur.ControleurMediateur;
 import Modele.Jeu;
 import Modele.Parametres;
 
@@ -63,7 +64,11 @@ public class MenuListener implements MouseListener {
             try {
                 p = new Parametres();
                 Jeu jeu = new Jeu(p);
-                m.frame.add(new GaufreGraphique(jeu));
+                CollecteurEvenements collecteur = new ControleurMediateur(jeu);
+                GaufreGraphique vue = new GaufreGraphique(jeu, collecteur);
+                m.frame.add(vue);
+                collecteur.ajouteInterfaceUtilisateur(vue);
+                vue.addMouseListener(new AdaptateurSouris(vue, collecteur));
                 m.frame.revalidate();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
