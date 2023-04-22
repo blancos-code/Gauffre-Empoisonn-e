@@ -30,6 +30,7 @@ public class Parametres {
             prenom2 = s.nextLine();
             type_jeu = s.nextLine();
             type_IA = s.nextLine();
+            System.out.println("Type IA: " + type_IA);
         }
         in.close();
         s.close();
@@ -99,8 +100,8 @@ public class Parametres {
         Parametres parametres = new Parametres();
         System.out.println("Largeur: " + parametres.getLignes());
         System.out.println("Longueur: " + parametres.getColonnes());
-        System.out.println("PrÃ©nom: " + parametres.getPrenom1());
-        System.out.println("PrÃ©nom: " + parametres.getPrenom2());
+        System.out.println("Prénom: " + parametres.getPrenom1());
+        System.out.println("Prénom: " + parametres.getPrenom2());
         System.out.println("Jeu: " + parametres.getTypeJeu());
         System.out.println("TypeIA: " + parametres.getType_IA());
     }
