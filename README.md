@@ -21,7 +21,8 @@ La taille standard de la gaufre est $6*8 (a=5, b=7)$.
 | --- | --- |
 | 1 | <ul><li> - [x] Gaufre fonctionnelle : lorsqu'on clique sur une case, elle est correctement croquée </li></ul>
 | 1 | <ul><li> - [x] Affichage visuel de la gaufre                                                       </li></ul>
-| 2 | <ul><li> - [ ] Bouton "coup précédent" qui fonctionne (historique des coups)                       </li></ul>
+| 2 | <ul><li> - [x] Bouton "coup précédent" qui fonctionne (historique des coups)                       </li></ul>
+| 2 | <ul><li> - [ ] Affichage de la fin du jeu, et retour au menu principal                             </li></ul>
 | 3 | <ul><li> - [ ] Sauvegarde de la partie                                                             </li></ul>
 | 3 | <ul><li> - [ ] Charger la partie                                                                   </li></ul>
 | 3 | <ul><li> - [ ] IA aléatoire                                                                        </li></ul>
