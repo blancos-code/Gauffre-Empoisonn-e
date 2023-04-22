@@ -13,6 +13,7 @@ import java.io.IOException;
 public class MenuListener implements MouseListener {
 
     public Menu m;
+    public String type_jeu = "JcJ";
 
     public MenuListener(Menu menu) {
         super();
@@ -26,6 +27,7 @@ public class MenuListener implements MouseListener {
         int startx = m.posX_boutons;
         int starty = m.posY_jcj;
         if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
+            this.type_jeu = "JCJ";
             return true;
         }else return false;
     }
@@ -34,6 +36,7 @@ public class MenuListener implements MouseListener {
         int startx = m.posX_boutons;
         int starty = m.posY_jcia;
         if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
+            this.type_jeu = "JCAI";
             return true;
         }else return false;
     }
@@ -42,6 +45,7 @@ public class MenuListener implements MouseListener {
         int startx = m.posX_boutons;
         int starty = m.posY_ia;
         if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
+            this.type_jeu = "AICAI";
             return true;
         }else return false;
     }
@@ -59,10 +63,12 @@ public class MenuListener implements MouseListener {
         if(estCurseurSurBouton_JcJ(e)){
             //efface tout le contenu de la frame
             m.frame.getContentPane().removeAll();
-            //ajoute une gaufregraphique à la frame
+            //ajoute une gaufregraphique ï¿½ la frame
             Parametres p;
             try {
                 p = new Parametres();
+                p.setType_jeu(this.type_jeu);
+                p.lireFichierParametres();
                 Jeu jeu = new Jeu(p);
                 CollecteurEvenements collecteur = new ControleurMediateur(jeu);
                 GaufreGraphique vue = new GaufreGraphique(jeu, collecteur);

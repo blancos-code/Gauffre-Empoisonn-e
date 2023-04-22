@@ -38,14 +38,14 @@ public class GaufreGraphique extends JComponent implements Observateur {
         int hauteur = getSize().height;
         largeurCase = largeur / gaufre.colonnes();
         hauteurCase = (int) (hauteur*.8) / gaufre.lignes();
-        // On prend des cases carrées
+        // On prend des cases carrï¿½es
         largeurCase = Math.min(largeurCase, hauteurCase);
         hauteurCase = largeurCase;
         //dessine un rectangle qui fait toute la frame
         g.setColor(new Color(69, 69, 69));
         g.fillRect(0, 0, largeur, hauteur);
 
-        // Tracé de la gaufre
+        // Tracï¿½ de la gaufre
         for (int i = 0; i < gaufre.lignes(); i++) {
             for (int j = 0; j < gaufre.colonnes(); j++) {
                 if (i ==0 && j == 0) {
@@ -76,7 +76,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
         tracer(drawable, annuler, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
         tracer(drawable, refaire, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
 
-        //créer une barre de progression
+        //crï¿½er une barre de progression
         int progress = (int) (gaufre.progression());
         progressBar.setValue(progress);
         progressBar.setStringPainted(true);
