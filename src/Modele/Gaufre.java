@@ -62,7 +62,7 @@ public class Gaufre {
         return historique.peutRefaire();
     }
 
-    public void annuler() {
+    public boolean annuler() {
         if(peutAnnuler()) {
             LinkedList<Coup> liste_coups = historique.annuler().getListe_coups();
             LinkedList<Coup> liste_coups_copie = new LinkedList<>();
@@ -75,11 +75,13 @@ public class Gaufre {
                 fixeValeurCase(oldValeur, i, j);
                 nb_cases_pleines++;
             }
+            return true;
         }
+        return false;
     }
 
 
-    public void refaire() {
+    public boolean refaire() {
         if(peutRefaire()) {
             LinkedList<Coup> liste_coups = historique.refaire().getListe_coups();
             LinkedList<Coup> liste_coups_copie = new LinkedList<>();
@@ -92,7 +94,9 @@ public class Gaufre {
                 fixeValeurCase(oldValeur, i, j);
                 nb_cases_pleines--;
             }
+            return true;
         }
+        return false;
     }
 
     public void fixeValeurCase(int v, int i, int j) {

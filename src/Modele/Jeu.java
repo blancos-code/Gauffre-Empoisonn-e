@@ -51,14 +51,18 @@ public class Jeu extends Observable {
 
     public void annuler() {
         System.out.println("Annuler");
-        g.annuler();
-        metAJour();
+        if(g.annuler()){
+            changeJoueurCourant();
+            metAJour();
+        }
     }
 
     public void refaire() {
         System.out.println("Refaire");
-        g.refaire();
-        metAJour();
+        if(g.refaire()){
+            changeJoueurCourant();
+            metAJour();
+        }
     }
 
     public void sauvegarder() {
