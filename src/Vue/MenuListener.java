@@ -20,7 +20,7 @@ public class MenuListener implements MouseListener {
         m = menu;
         DetectionSurvol survol = new DetectionSurvol();
         m.addMouseMotionListener(survol);
-        m.metAJour();
+        //m.metAJour();
     }
 
     public boolean estCurseurSurBouton_JcJ(MouseEvent e){
@@ -95,7 +95,7 @@ public class MenuListener implements MouseListener {
         if(estCurseurSurBouton_Quitter(e)){
             System.exit(0);
         }
-        m.metAJour();
+        //m.metAJour();
     }
 
     @Override
@@ -125,7 +125,7 @@ public class MenuListener implements MouseListener {
         public void mouseMoved(MouseEvent e) {
             if (estCurseurSurBouton_JcJ(e)||estCurseurSurBouton_JcIA(e)||estCurseurSurBouton_IA(e)||estCurseurSurBouton_Quitter(e)) {
                 m.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                m.metAJour();
+                //m.metAJour();
             }else{
                 m.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
