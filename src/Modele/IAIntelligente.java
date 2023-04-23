@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class IAIntelligente extends IA {
 
-    Random r;
+    Random r = new Random();
 
     public static final int MAX_PROFONDEUR = 100; // pronfondeur max apres laquel on ce dit que meme avec un facteur de branchement faible ca fait trop.
     public static final long CALCUL_LIMIT = 30000000000L; // limite de caclul a partir de laquelle le pc ram. A modifier tu des petits pc !(3E10)
