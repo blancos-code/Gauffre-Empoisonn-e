@@ -109,7 +109,6 @@ public class Gaufre {
 
     public void sauvegarder() {
         try {
-
             FileOutputStream  f = new FileOutputStream("sauvegarde.txt");
             ObjectOutputStream out = new ObjectOutputStream(f);
             out.writeInt(lignes);
