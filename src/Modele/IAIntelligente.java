@@ -224,11 +224,11 @@ public class IAIntelligente extends IA {
      *
      * @return True si le coup a bien ete joue, False sinon
      */
-    Couple jouerCoupDifficile(Gaufre plateau) {
+    Couple jouerCoupDifficile(Plateau plateau) {
         //ajoute de ca pour tester un cas ou ca plante si on le laisse tourner
-        int[][] test = plateau.cases;
-        int htest = plateau.lignes;
-        int ltest = plateau.colonnes;
+        int[][] test = plateau.tab;
+        int htest = plateau.hauteur;
+        int ltest = plateau.largeur;
 
         if(ltest == 2 && htest == 2 && test[1][1] > 0 && test[0][1] == 0 && test[1][0] == 0) {
             int testrand = r.nextInt(2);
