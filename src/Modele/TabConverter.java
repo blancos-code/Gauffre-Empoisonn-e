@@ -274,65 +274,6 @@ public class TabConverter {
      *  @param N : le noeud
      */
     public static void FilsNoeud (Noeud N) {
-        //version vecteur de bit qui marche moyen (d'un point de vu algo pas implementation, je la laisse parceque c'est faisable)
-			/*
-			LinkedList<Noeud> filsN = new LinkedList<Noeud>(); // la linked list de fils a integrer
-			LinkedList<Integer> vector = new LinkedList<Integer>(); // la linked list de la representation binaire de la valeur du noeud
-			LinkedList<Integer> max = new LinkedList<Integer>(); // la linked list de la representation binaire du vecteur de bit maximal
-			LinkedList<Integer> current = new LinkedList<Integer>(); // la linked list de la representation binaire de l'entier traité
-			LinkedList<Integer> tmp = new LinkedList<Integer>();
-			int nbzero = 0; // nombre de 0 de la representation binaire de la valeur de N
-			int nbun = 0; // nombre de 1 de la representation binaire de la valeur de N
-
-			vector = intToBinary(N.valeur()); // valeur binaire de la valeur du noeud N
-
-			if(vector.size() >= 2) {
-				vector.removeFirst(); // on enleve le premier et dernier 1 de la liste (warning normal)
-				vector.removeLast();
-			}
-
-			nbun = nbunfun(vector);
-			nbzero = nbzerofun(vector);
-
-			int newNval = binaryToInt(vector);
-			System.out.println("le vecteur initial : "+ vector +" son int = "+ newNval);
-
-			for(int i = 0; i < nbun; i++) { // calcul du vecteur binaire maximal
-				max.addLast(1);
-			}
-			for(int i = 0; i < nbzero; i++) {
-				max.addLast(0);
-			}
-			int intmax = binaryToInt(max); // et de son INT correspondant
-
-			System.out.println("le vecteur maximal : "+ max +" et son int : "+ intmax);
-			System.out.println("fils : ");
-			int sorti = 0;
-			for(int i = 0; i < vector.size(); i++) {
-				sorti = vector.get(i);
-				if(sorti == 1) {
-					tmp = (LinkedList<Integer>) vector.clone(); // je sais pas enlever le warning
-					tmp.set(i, 0);
-					for(int j = 0; j < i; j++) {
-						if(j != i && tmp.get(j) == 0) {
-							current = (LinkedList<Integer>) tmp.clone();// je sais pas enlever le warning
-							current.set(j, 1);
-							System.out.println("un vecteur pris en compte : "+ tmp );
-							if( binaryToInt(current) <= intmax && binaryToInt(current) > newNval ) {
-								System.out.println("le vecteur courant : "+ current +" et son int : "+ binaryToInt(current));
-								current.addFirst(1); // parceque le premier et le dernier 1 sont depop par ToTab
-								current.addLast(1);
-								filsN.add(new Noeud(binaryToInt(current), N));
-							}
-						}
-					}
-				}
-			}
-			N.setFils(filsN); // assignation des fils
-			*/
-
-        // super version nulle en O(n puissance infini) mais qui marche
-
         LinkedList<Noeud> filsN = new LinkedList<Noeud>(); // la linked list de fils a integrer
         LinkedList<Integer> vector = new LinkedList<Integer>(); // la linked list de la representation binaire de la valeur du noeud
         vector = intToBinary(N.valeur()); // valeur binaire de la valeur du noeud N

@@ -167,12 +167,11 @@ public class Menu extends JPanel{
         posY_ia=posY_jcia+hauteur_background/6;
         posY_quitter=posY_ia+hauteur_background/6;
         afficheBackground(g2d);
+        afficheWaffle(g2d);
         afficheBoutonJoueurContreJoueur(g2d);
         afficheBoutonJoueurContreIA(g2d);
         afficheBoutonIAContreIA(g2d);
         afficheBoutonQuitter(g2d);
-        afficheWaffle(g2d);
-        //boucle();
     }
 
     public void boucle(){
