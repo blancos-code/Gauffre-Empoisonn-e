@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class IAIntelligente extends IA{
 
-    private SequenceListe<Coup>  coupsPossibles(int A,int[][] instance){
+    private SequenceListe<Coup> coupsPossibles(int A,int[][] instance){
         SequenceListe<Coup> coupsPossibles = new SequenceListe();
         for(int i=1;i< instance.length;i++){
             for(int j=1;j<instance[0].length;j++){
