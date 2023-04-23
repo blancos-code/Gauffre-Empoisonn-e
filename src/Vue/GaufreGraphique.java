@@ -78,7 +78,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
                     tracer(drawable, case_poison, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                 } else {
                     if(!gaufre.estMangee(i,j)) {
-                        if(i>=l && j>=c)
+                        if (i >= l && j >= c)
                             tracer(drawable, case_saine_select, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                         else
                             tracer(drawable, case_saine, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
@@ -151,6 +151,12 @@ public class GaufreGraphique extends JComponent implements Observateur {
     }
 
     private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
+        g.drawImage(i, x, y, l, h, null);
+    }
+
+    private void tracerAnim(Graphics2D g, Image i, int x, int y, int l, int h, float opacite) {
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacite);
+        g.setComposite(ac);
         g.drawImage(i, x, y, l, h, null);
     }
 
