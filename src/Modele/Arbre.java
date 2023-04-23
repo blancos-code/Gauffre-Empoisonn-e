@@ -1,46 +1,43 @@
 package Modele;
 
-import Structures.SequenceListe;
+import java.util.LinkedList;
 
 public class Arbre {
 
-    private int[][] courant;
-    private Arbre filsGauche;
+    private Noeud racine;
 
-    private Arbre filsDroit;
-    private Coup coup;
+    // Constructeurs
 
-    private boolean coupGagnant;
-
-    public Arbre(int[][] instanceCourante, Coup coupCourant, Arbre filsGauche, Arbre filsDroit, boolean coupGagnant){
-        this.courant = instanceCourante;
-        this.coup = coupCourant;
-        this.filsGauche = filsGauche;
-        this.filsDroit = filsDroit;
-        this.coupGagnant = coupGagnant;
-    }
-    public int[][] getCourant(){
-        return courant;
-    }
-    public Coup getCoupGagnat(){
-        return coup;
-    }
-    public Arbre getFilsGauche(){
-        return filsGauche;
-    }
-    public Arbre getFilsDroit(){
-        return filsDroit;
-    }
-    public boolean getCoupGagnant(){ return coupGagnant; }
-    public void setCoupGagnant(boolean estGagnant){
-        this.coupGagnant = estGagnant;
-    }
-    public void setFilsGauche(Arbre filsGauche){
-        this.filsGauche = filsGauche;
-    }
-    public void setFilsDroit(Arbre filsDroit){
-        this.filsDroit = filsDroit;
+    public Arbre() {
+        this.racine = new Noeud();
     }
 
+    /**
+     * Constructeur pour une feuille
+     *
+     * @param  v  	Valeur entiere
+     */
+    public Arbre(int v) {
+        this.racine = new Noeud(v);
+    }
 
+    /**
+     * Constructeur pour un arbre
+     *
+     * @param v valeur du noeud a la racine
+     * @param l liste des fils de la racine
+     */
+    public Arbre(int v, LinkedList<Noeud> l) {
+        this.racine = new Noeud(v);
+        racine.setFils(l);
+    }
+
+    /**
+     * Getteur pour l'etiquette de la racine de l'arbre
+     *
+     * @return valeur de l'etiquette de la racine
+     */
+    public Noeud racine() {
+        return this.racine;
+    }
 }

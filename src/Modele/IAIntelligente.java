@@ -1,183 +1,279 @@
 package Modele;
 
-import Structures.Sequence;
-import Structures.Maillon;
-import Structures.SequenceListe;
-
+import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class IAIntelligente extends IA{
+public class IAIntelligente extends IA {
 
-    /*private SequenceListe<Coup>  coupsPossibles(int A,int[][] instance){
-        SequenceListe<Coup> coupPossible = new SequenceListe();
-        for(int i=0;i< instance.length;i++){
-            for(int j=0;j<instance[0].length;j++){
-                if(instance[i][j]==0){
-                    if(i==0&&j==0) continue;
-                    coupPossible.insereTete(new Coup(i,j,0,1));
+    Random r;
+
+    public static final int MAX_PROFONDEUR = 100; // pronfondeur max apres laquel on ce dit que meme avec un facteur de branchement faible ca fait trop.
+    public static final long CALCUL_LIMIT = 30000000000L; // limite de caclul a partir de laquelle le pc ram. A modifier tu des petits pc !(3E10)
+
+
+    /**
+     * Trouve le coup pour passer d'un Plateau à un autre
+     * retourne (0,0) si le couple n'as pas ete trouve
+     *
+     * @param origin Plateau avant le coup joue
+     * @param nouveau Plateau après le coup joué
+     * @return un Couple c la position a cliquer pour passer de origin a nouveau
+     */
+    private Couple reconstruireCoup(Plateau origin, Plateau nouveau) {
+        Couple c;
+        for(int i=0;i < origin.largeur();i++) {
+            for(int j=0;j < origin.hauteur();j++) {
+                c = new Couple(j,i);
+                if(nouveau.estMangee(c) && !origin.estMangee(c)) {
+                    return c;
                 }
             }
         }
-        return coupPossible;
+        return new Couple(0,0);
     }
 
-    boolean estFeuille(int[][] instance){
-        //return (instance[1][0]==1&&instance[0][1]==0&&instance[0][2]==1)||(instance[0][1]==1&&instance[1][0]==0&&instance[2][0]==1);
-        return (instance[0][1]==1 && instance[1][0]==1);
-    }
-    int[][] copieInstance(int[][] instance){
-        int[][] instanceCopie = new int[instance.length][instance[0].length];
-        for(int i=0;i<instance.length;i++){
-            for(int j=0;j<instance[0].length;j++){
-                instanceCopie[i][j] = instance[i][j];
+    /**
+     * Renvois le nombre de cases mangeable de p
+     *
+     * @param p
+     * @return
+     */
+    private int nbCaseMangeable(Plateau p) {
+        int res = 0;
+        for(int i=0;i<p.hauteur();i++) {
+            for(int j=0;j<p.largeur();j++) {
+                if(p.getTab()[i][j] == 0) {
+                    res++;
+                }
             }
         }
-        return instanceCopie;
+        return res;
     }
 
-    Gaufre copieGaufre(Gaufre gaufre){
-        Gaufre copGaufre = new Gaufre(gaufre.lignes, gaufre.colonnes);
-        copGaufre.cases = gaufre.cases;
-        copGaufre.historique = gaufre.historique;
-        return copGaufre;
+    /**
+     * retourne la profondeur de l'arbre des configuration pour le plateau p
+     *
+     * @param p
+     * @return
+     */
+    private int evaluerProfondeur(Plateau p) {
+        int n = nbCaseMangeable(p);
+        if(n <= 13) {
+            return 1000;
+        } else {
+            return (7 - (n-13))>0?(6 - (n-13)):1;
+        }
     }
-    boolean calculJoueurA(Gaufre instance,Arbre pere){
-        System.out.println("A");
-        // C'est au joueur A de jouer, renvoie vrai si la configuration est gagnante
-        if(estFeuille(instance.cases)) return false;
-        else{
+
+    private int evaluerA(Noeud N) {
+        return Heuristique.calcule_heuristique(N);
+
+
+
+    }
+
+    private int evaluerB(Noeud N) {
+        return HeuristiqueB.calcule_heuristique(N);
+
+
+
+    }
+
+    /**
+     * Calcule si la configuration a la racine de l'arbre des configurations
+     * est gagnante pour le joueur A en sachant que c'est au joeur A de jouer
+     *
+     * @param n racine de l'arbre des configurations
+     * @return true si la configuration est gagnante pour le joueur A false sinon
+     */
+    private int minimaxA(Noeud n, HashMap<Integer,Integer> r, int profondeur) {
+        TabConverter.FilsNoeud(n);	//calcul des fils
+        int heuristique;
+        if (n.estFeuille() || profondeur == 0) {
+            // la configuration ne permet pas de jouer,
+            // le joueur B gagne
+            heuristique = evaluerA(n);
+            r.put(n.valeur(), heuristique);
+            n.setHeuristic(heuristique);
+            return heuristique;
+        } else {
             // Le joueur A doit jouer
-            SequenceListe<Coup> C = coupsPossibles(1,instance.cases); // Ensemble des coups jouables par A
-            boolean val = false;
-            //SequenceListe<Coup> coupsGagnants = new SequenceListe<>();
-            for(int i=0;i<C.taille();i++){
-                Coup coupCourant = C.extraitTete();
-                Gaufre instanceCourante = copieGaufre(instance);
-                instanceCourante.joue(coupCourant);
-                affiche(instanceCourante.cases);
-                //instanceCourante[coupCourant.getI()][coupCourant.getJ()] = 1;
-                Arbre fils = new Arbre(instanceCourante,coupCourant,null,null,val);
-
-                if(calculJoueurB(instanceCourante,fils)){
-                    val = true;
-                    //coupsGagnants.insereQueue(coupCourant);
-                    fils.setCoupGagnant(val);
+            heuristique = 0;
+            // On parcours l'ensemble des coups jouables par A
+            for(Noeud fils : n.fils()) {
+                int curr = minimaxB(fils, r, profondeur-1);
+                // Si fils n'as pas encore ete calcule, le faire et mettre a jour r
+                if(!r.containsKey(fils.valeur())) {
+                    r.put(fils.valeur(), curr);
                 }
-                if(pere.getFilsGauche()==null){
-                    pere.setFilsGauche(fils);
-                }else{
-                    pere = pere.getFilsGauche();
-                    while(pere.getFilsDroit()!=null){
-                        pere = pere.getFilsDroit();
-                    }
-                    pere.setFilsDroit(fils);
-                }
+                heuristique = Math.max(heuristique,r.get(fils.valeur()));
             }
-            return val;
+            r.put(n.valeur(), heuristique);
+            n.setHeuristic(heuristique);
+            return heuristique;
         }
     }
 
-    boolean calculJoueurB(Gaufre instance,Arbre pere){
-        System.out.println("B");
-        // C'est au joueur B de jouer, renvoie vrai si la configuration est gagnante pour A
-        if(estFeuille(instance.cases)) return false;
-        else{
+    /**
+     * Calcule si la configuration a la racine de l'arbre des configurations
+     * est gagnante pour le joueur A en sachant que c'est au joeur B de jouer
+     *
+     * @param n racine de l'arbre des configurations
+     * @return true si la configuration est gagnante pour le joueur A false sinon
+     */
+    private int minimaxB(Noeud n,HashMap<Integer,Integer> r, int profondeur) {
+        TabConverter.FilsNoeud (n);	//calcul des fils
+        int heuristique;
+        if (n.estFeuille() || profondeur == 0) {
+            // la configuration ne permet pas de jouer
+            // le joueur A gagne
+            heuristique = evaluerB(n);
+            r.put(n.valeur(), heuristique);
+            n.setHeuristic(heuristique);
+            return heuristique;
+        } else {
             // Le joueur B doit jouer
-            SequenceListe<Coup> C = coupsPossibles(0,instance.cases); // Ensemble des coups jouables par B
-            boolean val = true;
-            for(int i=0;i<C.taille();i++){
-                Coup coupCourant = C.extraitTete();
-                Gaufre instanceCourante = copieGaufre(instance);
-                instanceCourante.joue(coupCourant);
-                if(estFeuille(instanceCourante.cases)) return true;
-                affiche(instanceCourante.cases);
-                val = val&&calculJoueurA(instanceCourante,pere);
+            heuristique = 1000; // + infini
+            // On parcours l'ensemble des coups jouables par B
+            for(Noeud fils : n.fils()) {
+                int curr = minimaxA(fils, r, profondeur-1);
+                // Si fils n'as pas encore ete calcule , le faire et mettre a jour r
+                if(! r.containsKey(fils.valeur())) {
+                    r.put(fils.valeur(), curr);
+                }
+                heuristique = Math.min(heuristique,r.get(fils.valeur()));
             }
-            return val;
+            r.put(n.valeur(), heuristique);
+            n.setHeuristic(heuristique);
+            return heuristique;
         }
     }
 
-    private void affiche(int[][] niveau){
-        System.out.println("AFFICHAGE");
-        String niv = "";
-        for(int i=0;i< niveau.length;i++){
-            for(int j=0;j<niveau[0].length;j++){
-                niv = niv+(String.valueOf(niveau[i][j]));
-            }
-            niv = niv+("\n");
+    /**
+     * Joue un coup sur le plateau avec les regles d'IA faciles
+     * l'IA facile est un choix aleatoire du coup a jouer
+     *
+     * @return True si le coup a bien ete joue, False sinon
+     */
+    Couple jouerCoupFacile(Plateau plateau) {
+        int i, j;
+        int count = 0;
+        i = r.nextInt(plateau.hauteur());
+        j = r.nextInt(plateau.largeur());
+        // l'IA essaye de ne pas se suicider et de manger quelque chose
+        while (!plateau.estMangeable(new Couple(i,j)) && count < 100 || (i<=1 && j<=1)) {
+            i = r.nextInt(plateau.hauteur());
+            j = r.nextInt(plateau.largeur());
+            count++;
         }
-        System.out.println(niv);
+        if (count == 100) {
+            return new Couple(0,0); //si elle n'as rien trouvée elle se suicide
+        }
+        //plateau.manger(new Couple(i,j));
+        if(plateau.getTab()[i][j] == 0)
+            return new Couple(i,j);
+        else
+            return new Couple(0,0);
+
+    }
+
+    /**
+     * Joue un coup sur le plateau avec les regles d'IA moyennes (minimax avec un horizon de 1 equiveau a appliquer les regles heuristiques)
+     *
+     * @return True si le coup a bien ete joue, False sinon
+     */
+    Couple jouerCoupMoyen(Plateau plateau) {
+        //ajoute de ca pour tester un cas ou ca plante si on le laisse tourner
+        int[][] test = plateau.getTab();
+        int htest = plateau.hauteur();
+        int ltest = plateau.largeur();
+        if(ltest == 2 && htest == 2 && test[1][1] > 0 && test[0][1] == 0 && test[1][0] == 0) {
+            int testrand = r.nextInt(2);
+            if(testrand == 1)
+                return new Couple(1,0);
+            else
+                return new Couple(0,1);
+        }else if (test[0][1] > 0 && test[1][0] > 0)
+            return new Couple(0,0);
+
+        Arbre a = new Arbre(TabConverter.ToInt(plateau)); // construction de l'arbre des configurations
+        HashMap<Integer,Integer> memo = new HashMap<Integer,Integer>();
+        int profondeur = 1;
+        if(minimaxA(a.racine(),memo,profondeur) > 0) {
+            LinkedList<Noeud> cp;
+            if(( a.racine().filsTaggue().size()) != 0) {
+                cp = a.racine().filsTaggue(); //recuperations des solutions
+            }
+            else {
+                return jouerCoupFacile(plateau);
+            }
+            int rand = r.nextInt(cp.size()); //choix d'une solution admissible aleatoire
+            Plateau nouveau = TabConverter.ToTab(cp.get(rand).valeur()); //traduction de la solution en Plateau
+            Couple res = reconstruireCoup(plateau , nouveau); //traduction de la solution en Couple
+            //plateau.manger(res); //Appliquer solution
+            return res;
+        } else {
+            return jouerCoupFacile(plateau);
+        }
+    }
+
+    /**
+     * Joue un coup sur le plateau avec les regles d'IA difficiles
+     *
+     * @return True si le coup a bien ete joue, False sinon
+     */
+    Couple jouerCoupDifficile(Gaufre plateau) {
+        //ajoute de ca pour tester un cas ou ca plante si on le laisse tourner
+        int[][] test = plateau.cases;
+        int htest = plateau.lignes;
+        int ltest = plateau.colonnes;
+
+        if(ltest == 2 && htest == 2 && test[1][1] > 0 && test[0][1] == 0 && test[1][0] == 0) {
+            int testrand = r.nextInt(2);
+            if(testrand == 1)
+                return new Couple(1,0);
+            else
+                return new Couple(0,1);
+        }else if (test[0][1] > 0 && test[1][0] > 0)
+            return new Couple(0,0);
+
+        Arbre a = new Arbre(TabConverter.ToInt(plateau)); // construction de l'arbre des configurations
+        HashMap<Integer,Integer> memo = new HashMap<Integer,Integer>();
+        int profondeur = evaluerProfondeur(plateau);
+        if(minimaxA(a.racine(),memo,profondeur) > 0) {
+            LinkedList<Noeud> cp;
+            if(( a.racine().filsTaggue().size()) != 0) {
+                cp = a.racine().filsTaggue(); //recuperations des solutions
+            }
+            else {
+                return jouerCoupFacile(plateau);
+            }
+            int rand = r.nextInt(cp.size()); //choix d'une solution admissible aleatoire
+            Plateau nouveau = TabConverter.ToTab(cp.get(rand).valeur()); //traduction de la solution en Plateau
+            Couple res = reconstruireCoup(plateau , nouveau); //traduction de la solution en Couple
+            //plateau.manger(res); //Appliquer solution
+            return res;
+        } else {
+            return jouerCoupFacile(plateau);
+        }
+    }
+
+    public int delai() {
+        return 0;
+    }
+
+    public Couple prochainCoup(Plateau p) {
+        return jouerCoupDifficile(p);
     }
 
     public Coup joue() {
-        //int [][] instance = this.jeu.gaufre().cases;
-        Gaufre gaufreCourante = copieGaufre(this.jeu.gaufre());
+        Plateau p = new Plateau(this.jeu.gaufre().lignes,this.jeu.gaufre().colonnes,this.jeu.gaufre().cases);
+        Couple coup = jouerCoupDifficile(p);
 
+        return new Coup(coup.getI(), coup.getJ(), 1,0);
 
-        Arbre pere = new Arbre(gaufreCourante,null,null,null,true);
-        if(calculJoueurA(gaufreCourante,pere)){
-            System.out.println("pas aleatoire");
-            //affiche(pere.getFilsGauche().getCourant().cases);
-            return null;
-        }else{ // on choisit aléatoirement
-            System.out.println("aleatoire");
-            boolean estJouable = false;
-            int i = 0, j = 0;
-            while (!estJouable) {
-                Random r = new Random();
-
-                i = r.nextInt(this.jeu.gaufre().lignes());
-                j = r.nextInt(this.jeu.gaufre().colonnes());
-
-                if (!this.jeu.gaufre().estMangee(i, j) && !(i == 0 && j == 0)) {
-                    estJouable = true;
-                }
-            }
-
-            try {
-                TimeUnit.MILLISECONDS.sleep(200);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            return new Coup(i, j, 1, 0);
-        }
-    }
-    */
-
-    int peutFairePerdre(int[][] instance){
-        if(instance[1][0]==1) return 1;
-        else if(instance[0][1]==1) return 0;
-        else return -1;
-    }
-
-    public Coup joue() {
-        int valeur=peutFairePerdre(this.jeu.gaufre().cases);
-        if(valeur!=-1){
-            if(valeur==1) return new Coup(0,1,0,1);
-            else return new Coup(1,0,0,1);
-        }else{ // on choisit aléatoirement
-            System.out.println("aleatoire");
-            boolean estJouable = false;
-            int i = 0, j = 0;
-            while (!estJouable) {
-                Random r = new Random();
-
-                i = r.nextInt(this.jeu.gaufre().lignes());
-                j = r.nextInt(this.jeu.gaufre().colonnes());
-
-                if (!this.jeu.gaufre().estMangee(i, j) && !(i == 0 && j == 0)) {
-                    estJouable = true;
-                }
-            }
-
-            try {
-                TimeUnit.MILLISECONDS.sleep(200);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            return new Coup(i, j, 1, 0);
-        }
     }
 
 }
