@@ -132,20 +132,22 @@ public class Menu extends JPanel{
         int[] spec = new int[4];
         Random r = new Random();
 
-        int rand = r.nextInt(50);
+        int rand = 0;
         while(rand==0) rand = r.nextInt(5);
         int value = r.nextInt(8);
         while(value==0) value = r.nextInt(8);
         spec[0] = value;
         spec[1] = rand;
         spec[2] = r.nextInt(screenWidth);
-        spec[3] = -r.nextInt(1200);
+        int posY = 0;
+        while(posY<200) posY = r.nextInt(2000);
+        spec[3] = -posY;
         return spec;
     }
 
     public void afficheWaffle (Graphics g){
         for(int i=0;i<nombreGaufre;i++){
-            g.drawImage(waffles[specGaufre[i][0]], specGaufre[i][2], posWaffleY+specGaufre[i][3], 1000/specGaufre[i][1], 1000/specGaufre[i][1],null);
+            g.drawImage(waffles[specGaufre[i][0]], specGaufre[i][2], posWaffleY+specGaufre[i][3], largeur_bouton/specGaufre[i][1], largeur_bouton/specGaufre[i][1],null);
             if(posWaffleY==0){
                 specGaufre[i] = specificiteGaufre();
             }
@@ -186,7 +188,7 @@ public class Menu extends JPanel{
 
     public void metAJour() {
         posWaffleY++;
-        if(posWaffleY>screenHeight*1.35) posWaffleY = 0;
+        if(posWaffleY>screenHeight*1.7) posWaffleY = 0;
         repaint();
     }
 }
