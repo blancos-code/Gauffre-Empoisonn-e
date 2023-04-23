@@ -105,6 +105,7 @@ public class GaufreGraphiqueListener implements MouseListener {
                 if(l<g.j.gaufre().lignes() && c<g.j.gaufre().colonnes() && !g.j.gaufre().estMangee(l,c)) {
                     g.l=l;
                     g.c=c;
+                    g.setToolTipText("Manger ce morceau");
                     g.miseAJour();
                     return true;
                 }else{
