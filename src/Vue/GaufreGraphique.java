@@ -99,7 +99,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
         }
         //affiche le bouton quitter la partie
         double rapport_bouton = (double) 207/603;
-        largeur_bouton= (int) (largeurCase*1.8);
+        largeur_bouton= (int) Math.min(largeur*.29, hauteur*.29);
         hauteur_bouton= (int) (largeur_bouton*rapport_bouton);
         posY_bouton_quitter = (int) (hauteur*.10);
         if(select_quitter) {
