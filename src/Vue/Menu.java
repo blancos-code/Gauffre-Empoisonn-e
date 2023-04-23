@@ -3,6 +3,8 @@ package Vue;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,12 +13,16 @@ public class Menu extends JPanel{
     JLabel titre, progression;
     JToggleButton IA, animation;
     public Image bouton_jCj, bouton_jCIA, bouton_IACIA, bouton_quitter, background, bouton_jCj_select,
-            bouton_jCIA_select, bouton_IACIA_select, bouton_quitter_select;
+            bouton_jCIA_select, bouton_IACIA_select, bouton_quitter_select, ah;
+
+    private Image[] tonton; private boolean inverse=false; private boolean unefois=true;
     public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_quitter, posX_background, posY_background;
     Dimension tailleEcran, tailleFenetre;
     int screenWidth, screenHeight, frameWidth, frameHeight, largeur_background, hauteur_background, largeur_bouton, hauteur_bouton;
     public JFrame frame;
     public boolean select_jcj, select_jcia, select_ia, select_quitter;
+
+    private int indextonton=0;
 
     public Menu(JFrame f) throws IOException {
         //Chargement des images
@@ -30,6 +36,13 @@ public class Menu extends JPanel{
         bouton_jCIA_select = lisImage("JcIA_select");
         bouton_IACIA_select = lisImage("IAcIA_select");
         bouton_quitter_select = lisImage("quitter_select");
+        ah = ImageIO.read(new File("ressources/AH/ah_0.png"));
+        tonton = new Image[6];
+        for (int d = 5; d >= 0; d--)
+            if(d>3) tonton[d] = ImageIO.read(new File("ressources/AH/ah_"+0+".png"));
+            else tonton[d] = ImageIO.read(new File("ressources/AH/ah_"+d+".png"));
+
+
         //booléens
         select_jcj = false;
         select_jcia = false;
@@ -51,6 +64,7 @@ public class Menu extends JPanel{
         frameHeight=tailleFenetre.width;
         //Ajout d'une interaction avec les boutons
         addMouseListener(new MenuListener(this));
+        boucle();
     }
 
     private Image lisImage(String nom) throws IOException {
@@ -106,6 +120,9 @@ public class Menu extends JPanel{
             g.drawImage(bouton_quitter, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
     }
 
+    public void affichetonton(Graphics g,Image image){
+        g.drawImage(image,largeur_background/4, largeur_background/10, largeur_background, hauteur_background,null);
+    }
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -124,9 +141,24 @@ public class Menu extends JPanel{
         afficheBoutonJoueurContreIA(g2d);
         afficheBoutonIAContreIA(g2d);
         afficheBoutonQuitter(g2d);
+        affichetonton(g2d,ah);
+
+    }
+
+    public void boucle(){
+        Timer timer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                metAJour();
+            }
+        });
+        timer.start();
     }
 
     public void metAJour() {
+        if(indextonton==0) indextonton=5;
+        else indextonton--;
+        ah = tonton[indextonton];
         repaint();
     }
 }
