@@ -188,18 +188,17 @@ public class GaufreGraphique extends JComponent implements Observateur {
         int hauteur = getSize().height;
         if(j.gaufre().estFinit()){
             videGaufre(g);
-            tracer(drawable, victoire, (int)(posX_boutons/2.475), 0, (int)(largeurCase*1.5), (int)(hauteurCase*1.5));
+            tracer(drawable, victoire, (int)(posX_boutons/2.475), 0, (int)(getHeight()*0.30), (int)(getHeight()*0.30));
             drawable.setColor(Color.ORANGE);
-            Font font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.30));
+            Font font = new Font("Roboto", Font.BOLD, (int)(getHeight()*0.060));
             drawable.setFont(font);
-            drawable.drawString("Partie terminée", (int)(posX_boutons/2.475)-("Partie terminée".length()*font.getSize()/12), (int) (hauteur*.30));
-            font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.22));
+            drawable.drawString("Partie terminée", (int)(posX_boutons/2.475)-("Partie terminée".length()*font.getSize()/12), (int) (hauteur*.40));
+            font = new Font("Roboto", Font.BOLD, (int)(getHeight()*0.044));
             drawable.setFont(font);
             Color color = new Color(255, 144, 0);
             drawable.setColor(color);
             String phraseVictoire = j.gagnant()+" a gagné la partie";
-            System.out.println("taille : "+phraseVictoire.length());
-            drawable.drawString(phraseVictoire,(int)(posX_boutons/2.5)-((phraseVictoire.length()*font.getSize())/11), (int) (hauteur*.40));
+            drawable.drawString(phraseVictoire,(int)(posX_boutons/2.5)-((phraseVictoire.length()*font.getSize())/11), (int) (hauteur*.48));
         }
     }
 
