@@ -28,6 +28,20 @@ public class IAResolveur extends IA{
 
     }
 
+    public boolean[][] convertit(int[][] configuration){//convertit un tableau d'entiers contenant des 0 et des  en tableau de booleens
+        boolean[][] resultat = new boolean[configuration.length][configuration[0].length];
+        for (int i = 0; i < configuration.length; i++) {
+            for (int j = 0; j < configuration[0].length; j++) {
+                if(configuration[i][j] == 0){
+                    resultat[i][j] = false;
+                }else{
+                    resultat[i][j] = true;
+                }
+            }
+        }
+        return resultat;
+    }
+
     public int calcul_Joueur_A(int[][] configuration, int horizon){
         if(horizon == 0){
             return evaluation(configuration);
