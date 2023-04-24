@@ -321,7 +321,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
     }
     public void appelSinge(Graphics g){
         singe = singes[singe_index];
-        System.out.println("bouton a voler : "+boutonAvoler);
+        //System.out.println("bouton a voler : "+boutonAvoler);
         g.drawImage(singe, (int)(posX_boutons/2.475)+singepos, boutonAvoler, hauteur_bouton, hauteur_bouton,this);
     }
 
