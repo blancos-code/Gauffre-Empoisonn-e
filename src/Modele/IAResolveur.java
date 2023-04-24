@@ -47,6 +47,7 @@ public class IAResolveur extends IA{
                 }
             }
         }
+
         Collections.shuffle(meilleurs_coups);
         System.out.println("Joue " + meilleurs_coups.get(0));
         return meilleurs_coups.get(0);
