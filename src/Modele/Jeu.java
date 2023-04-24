@@ -77,9 +77,9 @@ public class Jeu extends Observable {
     public String gagnant(){
         if(g.estFinit()){
             if(joueurCourant == 0){
-                return joueur2.prenom;
-            }else{
                 return joueur1.prenom;
+            }else{
+                return joueur2.prenom;
             }
         }
         return null;

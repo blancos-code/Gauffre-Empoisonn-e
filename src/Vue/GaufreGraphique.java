@@ -164,7 +164,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
         Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.6));
         drawable.setFont(font);
         if(!j.gaufre().estFinit()) {
-            if (j.joueurCourant() == 1) {
+            if (j.joueurCourant() == 0) {
                 drawable.setColor(Color.RED);
                 drawable.drawString(j.getJoueur1(), (int) (posX_boutons * 1.015), (int) (hauteur * .70));
             } else {

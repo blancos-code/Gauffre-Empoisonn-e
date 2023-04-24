@@ -45,7 +45,6 @@ public class GaufreGraphiqueListener implements MouseListener {
     }
 
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
-        if(g.finPartie) return false;
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_quitter;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
