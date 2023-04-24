@@ -39,6 +39,7 @@ public class Menu extends JPanel{
     private JSlider slider_lignes, slider_colonnes;
     public boolean select_jcj, select_jcia, select_ia, select_options, select_quitter, clicOptions;
 
+    Cursor idle_cursor;
     public Menu(JFrame f) throws IOException {
         //Chargement des images
         String CHEMIN = "ressources/";
@@ -258,6 +259,7 @@ public class Menu extends JPanel{
         afficheBoutonIAContreIA(g2d);
         afficheBoutonOptions(g2d);
         afficheBoutonQuitter(g2d);
+
         try {
             afficheMenuParametres(g2d);
         } catch (IOException e) {
