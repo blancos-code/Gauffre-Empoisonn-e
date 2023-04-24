@@ -199,7 +199,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
             drawable.setColor(color);
             String phraseVictoire = j.gagnant()+" a gagné la partie";
             System.out.println("taille : "+phraseVictoire.length());
-            //drawable.drawString(phraseVictoire, (int) (phraseVictoire.length()*font.getSize()/1.16666), (int) (hauteur*.40));
             drawable.drawString(phraseVictoire,(int)(posX_boutons/2.5)-((phraseVictoire.length()*font.getSize())/11), (int) (hauteur*.40));
         }
     }
