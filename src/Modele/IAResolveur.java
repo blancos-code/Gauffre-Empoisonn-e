@@ -1,7 +1,6 @@
 package Modele;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 public class IAResolveur extends IA{
 
@@ -12,27 +11,77 @@ public class IAResolveur extends IA{
         super();
     }
 
+    ArrayList<Coup> meilleurs_coups = new ArrayList<>();
+    int HORIZON = 6;
+
     public Coup joue() {
+        meilleurs_coups.clear();
         Arbre2 configuration = new Arbre2(convertit(this.jeu.gaufre().getCases()));
-        int valeur = calcul_Joueur_A(configuration, 1);
-        return jouerCoup(configuration, valeur);
+
+        boolean[][] config = configuration.getConfig();
+        if ((!config[0][1] && config[1][0])) {
+            return new Coup(0, 1, 0, 1);
+
+        }
+        if ((config[0][1] && !config[1][0])) {
+            return new Coup(1, 0, 0, 1);
+        }
+
+        int val = Integer.MIN_VALUE;
+
+        for (int i = 0; i < this.jeu.gaufre().getCases().length; i++) {
+            for (int j = 0; j < this.jeu.gaufre().getCases()[0].length; j++) {
+                if (!this.jeu.gaufre().estMangee(i, j) && !(i == 0 && j == 0)) {
+                    Coup coup = new Coup(i, j, 0, 1);
+                    Arbre2 newConfig = joueUnCoup(configuration, coup);
+
+                    int current_val = calcul_Joueur_A(newConfig, HORIZON);
+                    if (current_val == val) {
+                        meilleurs_coups.add(coup);
+                    }
+                    if (current_val > val) {
+                        val = current_val;
+                        meilleurs_coups.clear();
+                        meilleurs_coups.add(coup);
+                    }
+                }
+            }
+        }
+
+        Collections.shuffle(meilleurs_coups);
+        System.out.println("Joue " + meilleurs_coups.get(0));
+        return meilleurs_coups.get(0);
     }
 
-    public Coup jouerCoup(Arbre2 configuration, int valeur){
+    public Coup jouerCoup(Arbre2 configuration){
+        int valeur = calcul_Joueur_A(configuration, 10);
         return null;
     }
 
     public int evaluation(Arbre2 a){
         boolean[][] config = a.getConfig();
+
+        // Heuristique nb case restante
         int nb_cases = 0;
         for(int i = 0; i < config.length; i++){
             for(int j = 0; j < config[0].length; j++){
-                if(config[i][j] == false){
+                if(config[i][j] == true){
                     nb_cases++;
                 }
             }
         }
-        return nb_cases;
+
+        // Favorise état pair pour l'adversaire
+        return nb_cases + ((nb_cases + 1)%2) * 6;
+    }
+
+    public void afficheConfig(boolean[][] config) {
+        for(int i = 0; i < config.length; i++){
+            for(int j = 0; j < config[0].length; j++){
+                System.out.print(config[i][j]);
+            }
+            System.out.println();
+        }
     }
 
     public LinkedList<Coup> coupsJouables(Arbre2 configuration){
@@ -41,9 +90,16 @@ public class IAResolveur extends IA{
         for(int i = 0; i < config.length; i++){
             for(int j = 0; j < config[0].length; j++){
                 if(config[i][j] == false && !(i == 0 && j == 0)){
-                    coups.add(new Coup(i, j, 0, 1));
+                    Coup coup = new Coup(i, j, 0, 1);
+                    coups.add(coup);
+                    //System.out.println(coup);
                 }
             }
+        }
+        if (!coups.isEmpty()) {
+            //System.out.println("========================================================================");
+            //afficheConfig(config);
+            //System.out.println("========================================================================");
         }
         return coups;
     }
@@ -75,18 +131,37 @@ public class IAResolveur extends IA{
         return configuration;
     }
 
+    public boolean[][] copyConfig(boolean[][] config) {
+        boolean[][] newconfig = new boolean[config.length][config[0].length];
+        for (int i = 0; i < config.length; i++) {
+            for (int j = 0; j < config[0].length; j++) {
+                newconfig[i][j] = config[i][j];
+            }
+        }
+        return newconfig;
+    }
+
     public int calcul_Joueur_A(Arbre2 configuration, int horizon){
+        //System.out.println("B: " + horizon);
+
         HashMap<boolean[][],Integer> h = new HashMap<>();
-        if(configuration.estFeuille() || horizon == 0){
+
+        if(horizon == 0){
             int eval = evaluation(configuration);
             h.put(configuration.getConfig(), eval);
             return eval;
         }else {//le joueur A doit jouer
+            //System.out.println("A");
             LinkedList<Coup> coups = coupsJouables(configuration);
+            if (coups.isEmpty()) {
+                int eval = 0;
+                h.put(configuration.getConfig(), eval);
+                return eval;
+            }
             int valeur = Integer.MIN_VALUE;
-
             while (!coups.isEmpty()) {
                 Coup c = coups.removeFirst();
+                //System.out.println("A, " + c);
                 Arbre2 newConfig = joueUnCoup(configuration, c);
                 int valeur_B = calcul_Joueur_B(newConfig, horizon - 1);
                 if(!h.containsKey(newConfig.getConfig())){
@@ -100,23 +175,34 @@ public class IAResolveur extends IA{
     }
 
     public int calcul_Joueur_B(Arbre2 configuration, int horizon){
+        //System.out.println(horizon);
+
+        //System.out.println("B: " + horizon);
         HashMap<boolean[][],Integer> h = new HashMap<>();
-        if(configuration.estFeuille() || horizon == 0){
+        if(horizon == 0){
             int eval = evaluation(configuration);
             h.put(configuration.getConfig(), eval);
             return eval;
         }else {//le joueur A doit jouer
+            //System.out.println("B");
             LinkedList<Coup> coups = coupsJouables(configuration);
+            if (coups.isEmpty()) {
+                int eval = 0;
+                h.put(configuration.getConfig(), eval);
+                return eval;
+            }
             int valeur = Integer.MAX_VALUE;
 
             while (!coups.isEmpty()) {
                 Coup c = coups.removeFirst();
+                //System.out.println("B, " + c);
                 Arbre2 newConfig = joueUnCoup(configuration, c);
-                int valeur_B = calcul_Joueur_B(newConfig, horizon - 1);
+
+                int valeur_A = calcul_Joueur_A(newConfig, horizon - 1);
                 if(!h.containsKey(newConfig.getConfig())){
-                    h.put(newConfig.getConfig(), valeur_B);
+                    h.put(newConfig.getConfig(), valeur_A);
                 }
-                valeur = Math.min(valeur, valeur_B);
+                valeur = Math.min(valeur, valeur_A);
             }
             h.put(configuration.getConfig(), valeur);
             return valeur;

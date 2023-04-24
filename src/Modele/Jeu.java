@@ -87,13 +87,13 @@ public class Jeu extends Observable {
                     score[0]++;
                     g.fini = false;
                 }
-                return joueur2.prenom;
+                return joueur1.prenom;
             }else{
                 if(g.fini) {
                     score[1]++;
                     g.fini = false;
                 }
-                return joueur1.prenom;
+                return joueur2.prenom;
             }
         }
         return null;

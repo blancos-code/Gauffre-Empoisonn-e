@@ -10,6 +10,7 @@ import java.io.IOException;
 public class GaufreGraphiqueListener implements MouseListener {
 
     GaufreGraphique g;
+    JLabel gifLabel;
 
 
     public GaufreGraphiqueListener(GaufreGraphique gaufre) {
@@ -45,7 +46,6 @@ public class GaufreGraphiqueListener implements MouseListener {
     }
 
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
-        if(g.finPartie) return false;
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_quitter;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
@@ -103,26 +103,26 @@ public class GaufreGraphiqueListener implements MouseListener {
         int l = e.getY()/g.hauteurCase;
         if(e.getX() >= startx && e.getX() <= startx+g.largeurCase*g.colonnes() && e.getY() >= starty && e.getY() <= starty+g.hauteurCase*g.lignes()){
             if(e.getX()<=startx+g.largeurCase && e.getY()<=starty+g.hauteurCase){
-                g.miseAJour();
+                //g.miseAJour();
                 return false;
             }else{
                 if(l<g.j.gaufre().lignes() && c<g.j.gaufre().colonnes() && !g.j.gaufre().estMangee(l,c)) {
                     g.l=l;
                     g.c=c;
                     g.setToolTipText("Manger ce morceau");
-                    g.miseAJour();
+                    //.miseAJour();
                     return true;
                 }else{
                     g.l=g.lignes();
                     g.c=g.colonnes();
-                    g.miseAJour();
+                    //g.miseAJour();
                     return false;
                 }
             }
         }
         g.l=g.lignes();
         g.c=g.colonnes();
-        g.miseAJour();
+        //g.miseAJour();
         return false;
     }
 
@@ -151,11 +151,11 @@ public class GaufreGraphiqueListener implements MouseListener {
         }
         if(estCurseurSurBouton_Annuler(e)) {
             g.collecteur.clicAnnuler();
-            g.miseAJour();
+            //g.miseAJour();
         }
         if(estCurseurSurBouton_Refaire(e)) {
             g.collecteur.clicRefaire();
-            g.miseAJour();
+            //g.miseAJour();
         }
         if(estCurseurSurBouton_Save(e)) {
             g.collecteur.clicSauvegarder();
@@ -165,7 +165,7 @@ public class GaufreGraphiqueListener implements MouseListener {
         }
         if(estCurseurSurBouton_Reset(e)) {
             g.collecteur.clicRecommencer();
-            g.miseAJour();
+            //g.miseAJour();
         }
     }
 
@@ -197,7 +197,7 @@ public class GaufreGraphiqueListener implements MouseListener {
             if (estCurseurSurBouton_Quitter(e)||estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||
                     estCurseurSurBouton_Save(e)||estCurseurSurBouton_Load(e)||estCurseurSurGaufre(e)||estCurseurSurBouton_Reset(e)) {
                 g.setCursor(new Cursor(Cursor.HAND_CURSOR));
-                g.miseAJour();
+                //g.miseAJour();
             }else{
                 if(!estCurseurSur_Poison(e)) {
                     g.setToolTipText(null);

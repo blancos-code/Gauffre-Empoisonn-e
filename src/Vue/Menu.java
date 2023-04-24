@@ -4,6 +4,8 @@ import Modele.Parametres;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +36,10 @@ public class Menu extends JPanel{
             largeur_menu_options, hauteur_menu_options;
     public JFrame frame;
     private JTextField field_joueur1, field_joueur2, field_lignes, field_colonnes;
+    private JSlider slider_lignes, slider_colonnes;
     public boolean select_jcj, select_jcia, select_ia, select_options, select_quitter, clicOptions;
+
+    Cursor idle_cursor;
     public Menu(JFrame f) throws IOException {
         //Chargement des images
         String CHEMIN = "ressources/";
@@ -115,6 +120,8 @@ public class Menu extends JPanel{
             int posY_joueur2 = posY_joueur1+(int)(hauteur_menu_options*0.2);
             int posY_lignes = posY_joueur2+(int)(hauteur_menu_options*0.2);
             int posY_colonnes = posY_lignes+(int)(hauteur_menu_options*0.2);
+            int posY_slider1 = posY_joueur2+(int)(hauteur_menu_options*0.15);
+            int posY_slider2 = posY_slider1+(int)(hauteur_menu_options*0.2);
             Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.4));
             g.setFont(font);
             g.setColor(Color.WHITE);
@@ -123,6 +130,27 @@ public class Menu extends JPanel{
             g.drawString(p.getPrenom2(), posX_textes, posY_joueur2);
             g.drawString(String.valueOf(p.getLignes()), posX_chiffres, posY_lignes);
             g.drawString(String.valueOf(p.getColonnes()), posX_chiffres, posY_colonnes);
+            //affiche les slider
+            slider_lignes = new JSlider(JSlider.HORIZONTAL, 3, 20, 5);
+            //définit le placement du slider sur la fenêtre
+            Color couleur = new Color(135,135,134);
+            slider_lignes.setBounds((int) (posX_menu_options*1.01), posY_slider1, (int)(largeur_menu_options*0.95), (int)(hauteur_bouton*0.8));
+            slider_lignes.setMajorTickSpacing(5);
+            slider_lignes.setPaintTicks(true);// affiche les traits
+            slider_lignes.setPaintLabels(true);// affiche les chiffres
+            slider_lignes.setBackground(couleur);
+            slider_lignes.setForeground(Color.WHITE);
+            slider_lignes.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    System.out.println(slider_lignes.getValue());
+                }
+            });
+            slider_colonnes = new JSlider(JSlider.HORIZONTAL, 3, 30, 8);
+            slider_colonnes.setMajorTickSpacing(1);
+            slider_colonnes.setPaintTicks(true);// affiche les traits
+            slider_colonnes.setPaintLabels(true);// affiche les chiffres
+            //add(slider_lignes);
         }else{
             posX_menu_options = frameWidth;
         }
@@ -231,6 +259,7 @@ public class Menu extends JPanel{
         afficheBoutonIAContreIA(g2d);
         afficheBoutonOptions(g2d);
         afficheBoutonQuitter(g2d);
+
         try {
             afficheMenuParametres(g2d);
         } catch (IOException e) {

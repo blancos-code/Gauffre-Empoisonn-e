@@ -1,6 +1,7 @@
 package Vue;
 
 import Controleur.ControleurMediateur;
+import Modele.Gif;
 import Modele.Jeu;
 import Modele.Parametres;
 
@@ -12,6 +13,8 @@ import java.io.IOException;
 
 public class MenuListener implements MouseListener {
 
+    Cursor idle_cursor;
+    Cursor click_cursor;
     public Menu m;
     public String type_jeu = "JcJ";
 
@@ -21,6 +24,14 @@ public class MenuListener implements MouseListener {
         DetectionSurvol survol = new DetectionSurvol();
         m.addMouseMotionListener(survol);
         //m.metAJour();
+
+        Image cursorImage = Toolkit.getDefaultToolkit().getImage("ressources/normal_cursor.png");
+        Image cursorImage2 = Toolkit.getDefaultToolkit().getImage("ressources/click_cursor.png");
+
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Point hotspot = new Point(0, 0); // Définissez les coordonnées du point d'ancrage du curseur si nécessaire
+        idle_cursor = toolkit.createCustomCursor(cursorImage, hotspot, "Custom Cursor");
+        click_cursor = toolkit.createCustomCursor(cursorImage2, hotspot, "Custom Cursor");
     }
 
     public boolean estCurseurSurBouton_JcJ(MouseEvent e){
@@ -142,10 +153,10 @@ public class MenuListener implements MouseListener {
         @Override
         public void mouseMoved(MouseEvent e) {
             if (estCurseurSurBouton_JcJ(e)||estCurseurSurBouton_JcIA(e)||estCurseurSurBouton_IA(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)) {
-                m.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                m.setCursor(idle_cursor);
                 //m.metAJour();
             }else{
-                m.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                m.setCursor(idle_cursor);
             }
         }
     }
