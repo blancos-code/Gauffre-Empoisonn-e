@@ -220,7 +220,7 @@ public class GaufreGraphiqueListener implements MouseListener {
 
             if (estCurseurSurBouton_Quitter(e)||estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||
                     estCurseurSurBouton_Save(e)||estCurseurSurBouton_Load(e)||estCurseurSurGaufre(e)||estCurseurSurBouton_Reset(e)) {
-                g.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                //g.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 if (estCurseurSurGaufre(e)) {
                     g.setCursor(gaufre_cursor);
                     //g.miseAJour();

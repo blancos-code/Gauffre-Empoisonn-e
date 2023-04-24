@@ -25,7 +25,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
             annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, singe;
     Jeu j;
 
-    int ProbaSinge = 30;
+    int ProbaSinge = 40;
     Image[] singes = new Image[8];
     Image[] balayeurs = new Image[13];
 
@@ -267,10 +267,10 @@ public class GaufreGraphique extends JComponent implements Observateur {
         Font font2 = new Font("Roboto",Font.BOLD,(int)(hauteur_bouton*0.4));
         drawable.setFont(font2);
         drawable.setColor(Color.green);
-        drawable.drawString("Score ",(int)(posX_boutons*1.32),(int) (hauteur*0.3));
+        drawable.drawString("Score ",(int)(posX_boutons*1.25),(int) (hauteur*0.3));
         drawable.setColor(Color.ORANGE);
-        drawable.drawString(j.getJoueur1()+" : "+j.getScorej1(),(int)(posX_boutons*1.30),(int) (hauteur*0.4));
-        drawable.drawString(j.getJoueur2()+" : "+j.getScorej2(),(int)(posX_boutons*1.30),(int) (hauteur*0.5));
+        drawable.drawString(j.getJoueur1()+" : "+j.getScorej1(),(int)(posX_boutons*1.25),(int) (hauteur*0.4));
+        drawable.drawString(j.getJoueur2()+" : "+j.getScorej2(),(int)(posX_boutons*1.25),(int) (hauteur*0.5));
         Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.6));
         drawable.setFont(font);
         if (j.joueurCourant() == 0) {
@@ -406,10 +406,12 @@ public class GaufreGraphique extends JComponent implements Observateur {
         return boutonVoler[0]==1 && boutonVoler[1]==1 && boutonVoler[2]==1 && boutonVoler[3]==1;
     }
     private void aleaSinge(){
-        if(SingePeur && getSingePosition()<0-(getWidth()/2)) unefoisSinge=false;
-        Random r = new Random();
-        int value = r.nextInt(ProbaSinge);
-        if(value==0 && !aVolerTousBoutons()) SingeAnim = true;
+        if(j.gaufre().getCases()[j.gaufre().lignes()-1][j.gaufre().colonnes()-1]==1) {
+            if (SingePeur && getSingePosition() < 0 - (getWidth() / 2)) unefoisSinge = false;
+            Random r = new Random();
+            int value = r.nextInt(ProbaSinge);
+            if (value == 0 && !aVolerTousBoutons()) SingeAnim = true;
+        }
     }
 
     private void animSinge(){

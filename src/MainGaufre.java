@@ -14,7 +14,7 @@ public class MainGaufre {
         ImageIcon icon = new ImageIcon("ressources/icon.png");
         frame.setIconImage(icon.getImage());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1280, 720);
+        frame.setSize(1380, 720);
         Menu menu = new Menu(frame);
         frame.add(menu);
         frame.setVisible(true);
