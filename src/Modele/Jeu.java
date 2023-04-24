@@ -5,6 +5,10 @@ import Patterns.Observable;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class Jeu extends Observable {
@@ -16,12 +20,14 @@ public class Jeu extends Observable {
     Object[] joueurs = new Object[2];
     Parametres p;
 
+    int[]score =new int[2];
 
     public Jeu(Parametres p){
         this.p = p;
         int lignes = p.getLignes();
         int colonnes = p.getColonnes();
-
+        score[0]= 0;
+        score[1]=0;
         String type_jeu = p.getTypeJeu();
         switch (type_jeu) {
             case "JcJ":
@@ -77,8 +83,16 @@ public class Jeu extends Observable {
     public String gagnant(){
         if(g.estFinit()){
             if(joueurCourant == 0){
+                if(g.fini){
+                    score[0]++;
+                    g.fini = false;
+                }
                 return joueur2.prenom;
             }else{
+                if(g.fini) {
+                    score[1]++;
+                    g.fini = false;
+                }
                 return joueur1.prenom;
             }
         }
@@ -176,11 +190,13 @@ public class Jeu extends Observable {
 
     public void sauvegarder() {
         g.sauvegarder();
+        SaveScore();
         metAJour();
     }
 
     public void charger() {
         g.charger();
+        LoadScore();
         metAJour();
     }
 
@@ -188,5 +204,32 @@ public class Jeu extends Observable {
         g.reinitialise();
         lancePartie();
         metAJour();
+    }
+
+    public int getScorej1() {return score[0];}
+    public int getScorej2() {return score[1];}
+
+    public void SaveScore (){
+        try {
+            FileOutputStream  f = new FileOutputStream("sauvegarde1.txt");
+            ObjectOutputStream out = new ObjectOutputStream(f);
+            out.writeInt(score[0]);
+            out.writeInt(score[1]);
+            out.close();
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+
+        }
+    public void LoadScore (){
+        try {
+            FileInputStream fichier = new FileInputStream("sauvegarde1.txt");
+            ObjectInputStream in = new ObjectInputStream(fichier);
+            score[0]=in.readInt();
+            score[1]=in.readInt();
+            in.close();
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
     }
 }

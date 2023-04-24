@@ -21,10 +21,8 @@ public class AdaptateurSouris extends MouseAdapter {
         if(l<g.lignes() && c<g.colonnes() && !(l==0 && c==0)){
             g.l = l;
             g.c = c;
-            if(collecteur.clicSouris(l, c)){//si le coup joué renvoie à une victoire d'un joueur
-                //affiche une fenêtre "Victoire" animée pendant 1 seconde.
-                System.out.println("Victoire !");
-            }
+            collecteur.clicSouris(l, c);//si le coup joué renvoie à une victoire d'un joueur
+
         }
     }
 }

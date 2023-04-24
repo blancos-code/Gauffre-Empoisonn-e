@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class GaufreGraphique extends JComponent implements Observateur {
-    Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, quitter_select,
+    Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, quitter_select,score,
             annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes;
     Jeu j;
     int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load,
@@ -136,6 +136,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
             tracer(drawable, annuler_lock, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
             tracer(drawable, refaire_lock, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
         }
+
         //affiche le bouton reset
         posY_reset = (int) (hauteur*.46);
         if(select_reset)
@@ -160,7 +161,20 @@ public class GaufreGraphique extends JComponent implements Observateur {
         }else {
             tracer(drawable, save_lock, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
         }
+        //affiche le score
+
         //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
+
+
+
+
+        Font font2 = new Font("Roboto",Font.BOLD,(int)(hauteur_bouton*0.4));
+        drawable.setFont(font2);
+        drawable.setColor(Color.green);
+        drawable.drawString("Score ",(int)(posX_boutons*1.32),(int) (hauteur*0.3));
+        drawable.setColor(Color.ORANGE);
+        drawable.drawString(j.getJoueur1()+" : "+j.getScorej1(),(int)(posX_boutons*1.30),(int) (hauteur*0.4));
+        drawable.drawString(j.getJoueur2()+" : "+j.getScorej2(),(int)(posX_boutons*1.30),(int) (hauteur*0.5));
         Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.6));
         drawable.setFont(font);
         if(!j.gaufre().estFinit()) {
