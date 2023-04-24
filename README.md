@@ -35,3 +35,8 @@ La taille standard de la gaufre est $6*8 (a=5, b=7)$.
 | 5 | <ul><li> - [x] Femme de ménage                                                                     </li></ul>
 | 5 | <ul><li> - [x] Pluie de gaufres                                                                    </li></ul>
 
+
+## Screenshots
+![image](https://user-images.githubusercontent.com/79577721/234116964-ebafdac6-c0f9-4ac8-adcf-47aa7841ad69.png)
+![image](https://user-images.githubusercontent.com/79577721/234117059-8a88b13d-f6e7-482b-ad4d-360c7a9c0cf7.png)
+![image](https://user-images.githubusercontent.com/79577721/234117088-375a0ef8-739c-4ea0-a928-b5234e2d6dd8.png)
