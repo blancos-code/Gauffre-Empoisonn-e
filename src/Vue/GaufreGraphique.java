@@ -159,7 +159,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
                         }
                     }
                     if (afficher) {
-                        tracer(drawable, balayeurs[balayeur_index], j * largeurCase - largeurCase / 2, i * hauteurCase - hauteurCase / 2, largeurCase, hauteurCase);
+                        tracer(drawable, balayeurs[balayeur_index], j * largeurCase - largeurCase / 3, i * hauteurCase - hauteurCase / 3, largeurCase, hauteurCase);
                         i = 0;
                         j = 0;
                     }
@@ -169,9 +169,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
 
 
         Calendar calendar = Calendar.getInstance();
-        int seconds = calendar.get(Calendar.SECOND);
-        System.out.println(seconds);
-        if (seconds % 2 == 0) {
+        int seconds = calendar.get(Calendar.MILLISECOND);
+        if (seconds % 8 == 0) {
             if (clean) {
                 for (int i = gaufre.lignes() - 1; i > 0; i--) {
                     for (int j = gaufre.colonnes() - 1; j > 0; j--) {
@@ -372,6 +371,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
     public void miseAJourBalayeur() {
         if(balayeur_index==12) balayeur_index=0;
         balayeur_index++;
+        repaint();
     }
 
     public class Coords {
