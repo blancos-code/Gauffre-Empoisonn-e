@@ -22,12 +22,14 @@ import javax.swing.JLabel;
 
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, quitter_select,
-            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, clean_1, singe;
+            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, singe;
     Jeu j;
 
     Image[] singes = new Image[8];
+    Image[] balayeurs = new Image[13];
 
-    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load, singe_index, singepos, boutonAvoler,
+
+    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load, singe_index, balayeur_index, singepos, boutonAvoler,
             largeur_load_save, posY_bouton_quitter, posY_reset;
     JProgressBar progressBar;
     CollecteurEvenements collecteur;
@@ -68,8 +70,11 @@ public class GaufreGraphique extends JComponent implements Observateur {
         for(int i=1;i<9;i++){
             singes[i-1] = lisImage("Singe/monkey_run_"+i);
         }
+        for(int i=1;i<13;i++){
+            balayeurs[i-1] = lisImage("Balayeur/balayeur_frame_"+i);
+        }
+        balayeur_index = 0;
         singepos = -50;
-        clean_1 = lisImage("clean_1");
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
         l = j.gaufre().lignes();
@@ -154,7 +159,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
                         }
                     }
                     if (afficher) {
-                        tracer(drawable, clean_1, j * largeurCase - largeurCase / 2, i * hauteurCase - hauteurCase / 2, largeurCase, hauteurCase);
+                        tracer(drawable, balayeurs[balayeur_index], j * largeurCase - largeurCase / 2, i * hauteurCase - hauteurCase / 2, largeurCase, hauteurCase);
                         i = 0;
                         j = 0;
                     }
@@ -349,6 +354,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
             @Override
             public void actionPerformed(ActionEvent e) {
                 miseAJour();
+                miseAJourBalayeur();
             }
         });
         timer.start();
@@ -361,6 +367,11 @@ public class GaufreGraphique extends JComponent implements Observateur {
         singe_index++;
         singepos+=5;
         repaint();
+    }
+
+    public void miseAJourBalayeur() {
+        if(balayeur_index==12) balayeur_index=0;
+        balayeur_index++;
     }
 
     public class Coords {
