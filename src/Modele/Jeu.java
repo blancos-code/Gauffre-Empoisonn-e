@@ -89,6 +89,14 @@ public class Jeu extends Observable {
         return joueurCourant;
     }
 
+    public String getJoueur1(){
+        return joueur1.prenom;
+    }
+
+    public String getJoueur2(){
+        return joueur2.prenom;
+    }
+
     public void changeJoueurCourant(){
         if(joueurCourant == 0){
             joueurCourant = 1;

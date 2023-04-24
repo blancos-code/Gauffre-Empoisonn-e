@@ -66,7 +66,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
         drawable = (Graphics2D) g;
         drawable.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         Gaufre gaufre = j.gaufre();
-        Parametres p = j.getParametres();
         if(j.gaufre().estFinit()){
             finPartie = true;
         }else{
@@ -104,10 +103,10 @@ public class GaufreGraphique extends JComponent implements Observateur {
         posX_boutons = (int) (gaufre.colonnes()*largeurCase+largeurCase*0.2);
         if (j.joueurCourant() == 1) {
             drawable.setColor(Color.RED);
-            drawable.drawString(p.getPrenom1(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
+            drawable.drawString(j.getJoueur1(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
         } else {
             drawable.setColor(Color.ORANGE);
-            drawable.drawString(p.getPrenom2(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
+            drawable.drawString(j.getJoueur2(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
         }
         //affiche le bouton quitter la partie
         double rapport_bouton = (double) 207/603;
