@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, quitter_select,
-            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock;
+            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes;
     Jeu j;
     int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load,
     largeur_load_save, posY_bouton_quitter, posY_reset;
@@ -49,6 +49,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
         reset = lisImage("reinitialiser");
         reset_select = lisImage("reinitialiser_select");
         victoire = lisImage("victoire");
+        miettes = lisImage("Gaufres/miettes");
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
         l = j.gaufre().lignes();
@@ -62,11 +63,20 @@ public class GaufreGraphique extends JComponent implements Observateur {
         finPartie = false;
     }
 
+    public void videGaufre(Graphics g){
+        Gaufre gaufre = j.gaufre();
+        for (int i = 0; i < gaufre.lignes(); i++) {
+            for (int j = 0; j < gaufre.colonnes(); j++) {
+                tracer(drawable, lisImage("Gaufres/fond"), j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
+            }
+        }
+        repaint();
+    }
+
     public void paintComponent(Graphics g) {
         drawable = (Graphics2D) g;
         drawable.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         Gaufre gaufre = j.gaufre();
-        Parametres p = j.getParametres();
         if(j.gaufre().estFinit()){
             finPartie = true;
         }else{
@@ -76,9 +86,10 @@ public class GaufreGraphique extends JComponent implements Observateur {
         int hauteur = getSize().height;
         largeurCase = largeur / gaufre.colonnes();
         hauteurCase = (int) (hauteur*.8) / gaufre.lignes();
-        // On prend des cases carr?es
+        // On prend des cases carrées
         largeurCase = Math.min(largeurCase, hauteurCase);
         hauteurCase = largeurCase;
+        posX_boutons = (int) (gaufre.colonnes()*largeurCase+largeurCase*0.2);
         //dessine un rectangle qui fait toute la frame
         g.setColor(new Color(69, 69, 69));
         g.fillRect(0, 0, largeur, hauteur);
@@ -94,20 +105,11 @@ public class GaufreGraphique extends JComponent implements Observateur {
                             tracer(drawable, case_saine_select, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                         else
                             tracer(drawable, case_saine, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
+                    }else{
+                        tracer(drawable, miettes, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                     }
                 }
             }
-        }
-        //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
-        Font font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.3));
-        drawable.setFont(font);
-        posX_boutons = (int) (gaufre.colonnes()*largeurCase+largeurCase*0.2);
-        if (j.joueurCourant() == 1) {
-            drawable.setColor(Color.RED);
-            drawable.drawString(p.getPrenom1(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
-        } else {
-            drawable.setColor(Color.ORANGE);
-            drawable.drawString(p.getPrenom2(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
         }
         //affiche le bouton quitter la partie
         double rapport_bouton = (double) 207/603;
@@ -142,7 +144,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
             tracer(drawable, reset, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
         //affiche les boutons save et load
         double rapport_bouton_save_load = 1.0;
-        largeur_load_save = (int) (largeurCase*0.55);
+        largeur_load_save = (int) (hauteur_bouton*0.8);
         posY_save_load = 0;
         posX_save = posX_boutons + (int) (largeur_bouton*0.12);
         posX_load = posX_save + (int) (largeur_bouton*0.45);
@@ -158,16 +160,28 @@ public class GaufreGraphique extends JComponent implements Observateur {
         }else {
             tracer(drawable, save_lock, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
         }
+        //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
+        Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.6));
+        drawable.setFont(font);
+        if(!j.gaufre().estFinit()) {
+            if (j.joueurCourant() == 1) {
+                drawable.setColor(Color.RED);
+                drawable.drawString(j.getJoueur1(), (int) (posX_boutons * 1.015), (int) (hauteur * .70));
+            } else {
+                drawable.setColor(Color.ORANGE);
+                drawable.drawString(j.getJoueur2(), (int) (posX_boutons * 1.015), (int) (hauteur * .70));
+            }
+        }
         //affichage si victoire
         affichevictoire(drawable);
         //créer une barre de progression
         int progress = (int) (gaufre.progression());
         progressBar.setValue(progress);
         progressBar.setStringPainted(true);
-        progressBar.setBounds(0, (int) (hauteur*.85), largeur, (int) (hauteurCase*0.3));
+        progressBar.setBounds(0, (int) (hauteur*.85), largeur, (int) (hauteur_bouton*0.5));
         progressBar.setForeground(new Color(58, 170, 53));
         progressBar.setString("Progression : " + progress + "%");
-        Font progressFont = new Font("Roboto", Font.BOLD, largeurCase/5);
+        Font progressFont = new Font("Roboto", Font.BOLD, hauteur_bouton/4);
         progressBar.setFont(progressFont);
         add(progressBar);
     }
@@ -175,16 +189,20 @@ public class GaufreGraphique extends JComponent implements Observateur {
     public void affichevictoire(Graphics g){
         int hauteur = getSize().height;
         if(j.gaufre().estFinit()){
-            tracer(drawable, victoire, (int)(posX_boutons/2.1), 0, (int)(largeurCase*1.5), (int)(hauteurCase*1.5));
+            videGaufre(g);
+            tracer(drawable, victoire, (int)(posX_boutons/2.1), 0, (int)(largeur_bouton*0.8), (int)(largeur_bouton*0.8));
             drawable.setColor(Color.ORANGE);
-            Font font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.30));
+            Font font = new Font("Roboto", Font.BOLD, (int)(largeur_bouton*0.2));
             drawable.setFont(font);
-            drawable.drawString("Partie terminée", (int)(posX_boutons/2.25), (int) (hauteur*.30));
-            font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.22));
+            drawable.drawString("Partie terminée", (int)(posX_boutons/2.5), (int) (hauteur*.30));
+            font = new Font("Roboto", Font.BOLD, (int)(largeur_bouton*0.1));
             drawable.setFont(font);
             Color color = new Color(255, 144, 0);
             drawable.setColor(color);
-            drawable.drawString(j.gagnant()+" a gagné la partie", (int)(largeurCase*1.5), (int) (hauteur*.40));
+            drawable.drawString(j.gagnant()+" a gagné la partie", (int)(largeur_bouton*1.5), (int) (hauteur*.40));
+            progressBar.setVisible(false);
+        }else{
+            progressBar.setVisible(true);
         }
     }
 
