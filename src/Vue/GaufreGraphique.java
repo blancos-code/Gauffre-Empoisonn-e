@@ -245,7 +245,18 @@ public class GaufreGraphique extends JComponent implements Observateur {
             tracer(drawable, save_lock, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save * rapport_bouton_save_load));
         }
         //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
-        Font font = new Font("Roboto", Font.BOLD, (int) (hauteur_bouton * 0.6));
+
+
+
+
+        Font font2 = new Font("Roboto",Font.BOLD,(int)(hauteur_bouton*0.4));
+        drawable.setFont(font2);
+        drawable.setColor(Color.green);
+        drawable.drawString("Score ",(int)(posX_boutons*1.32),(int) (hauteur*0.3));
+        drawable.setColor(Color.ORANGE);
+        drawable.drawString(j.getJoueur1()+" : "+j.getScorej1(),(int)(posX_boutons*1.30),(int) (hauteur*0.4));
+        drawable.drawString(j.getJoueur2()+" : "+j.getScorej2(),(int)(posX_boutons*1.30),(int) (hauteur*0.5));
+        Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.6));
         drawable.setFont(font);
         if (j.joueurCourant() == 0) {
             drawable.setColor(Color.RED);
@@ -254,7 +265,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
             drawable.setColor(Color.ORANGE);
             drawable.drawString(j.getJoueur2(), (int) (posX_boutons * 1.015), (int) (hauteur * .70));
         }
-
         //affichage si victoire
         affichevictoire(drawable);
         //créer une barre de progression
@@ -273,8 +283,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
             unefoisSinge=true;
         }
     }
-
-
 
     public void affichevictoire(Graphics g) {
         int hauteur = getSize().height;

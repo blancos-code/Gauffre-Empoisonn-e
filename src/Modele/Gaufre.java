@@ -11,7 +11,12 @@ public class Gaufre {
     private int nb_cases;
     public Historique historique;
 
+    boolean fini ;
+
+
+
     public Gaufre(int i, int j) {
+        fini = true;
         cases = new int[i][j];
         lignes = i;
         colonnes = j;
@@ -144,6 +149,7 @@ public class Gaufre {
                 }
             }
             historique = (Historique)in.readObject();
+            in.close();
         }catch (Exception e){
             throw new RuntimeException();
         }
@@ -153,6 +159,7 @@ public class Gaufre {
         cases = new int[lignes][colonnes];
         nb_cases = lignes * colonnes;
         nb_cases_pleines = nb_cases-1;
+        fini=true;
         historique = new Historique();
     }
 
