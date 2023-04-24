@@ -12,11 +12,22 @@ public class GaufreGraphiqueListener implements MouseListener {
     GaufreGraphique g;
     JLabel gifLabel;
 
+    Cursor idle_cursor;
+    Cursor gaufre_cursor;
+
     public GaufreGraphiqueListener(GaufreGraphique gaufre) {
         super();
         g = gaufre;
         DetectionSurvol survol = new DetectionSurvol();
         g.addMouseMotionListener(survol);
+
+        Image cursorImage = Toolkit.getDefaultToolkit().getImage("ressources/normal_cursor.png");
+        Image cursorImage2 = Toolkit.getDefaultToolkit().getImage("ressources/gaufre_cursor.png");
+
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Point hotspot = new Point(0, 0); // Définissez les coordonnées du point d'ancrage du curseur si nécessaire
+        idle_cursor = toolkit.createCustomCursor(cursorImage, hotspot, "Custom Cursor");
+        gaufre_cursor = toolkit.createCustomCursor(cursorImage2, hotspot, "Custom Cursor");
     }
 
     public boolean estCurseurSurBouton_Save(MouseEvent e){
@@ -193,15 +204,14 @@ public class GaufreGraphiqueListener implements MouseListener {
     public class DetectionSurvol extends MouseMotionAdapter {
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (estCurseurSurBouton_Quitter(e)||estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||
-                    estCurseurSurBouton_Save(e)||estCurseurSurBouton_Load(e)||estCurseurSurGaufre(e)||estCurseurSurBouton_Reset(e)) {
-                g.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            if (estCurseurSurGaufre(e)) {
+                g.setCursor(gaufre_cursor);
                 //g.miseAJour();
             }else{
                 if(!estCurseurSur_Poison(e)) {
                     g.setToolTipText(null);
                 }
-                g.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                g.setCursor(idle_cursor);
             }
         }
     }
