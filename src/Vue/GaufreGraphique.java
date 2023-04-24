@@ -95,6 +95,9 @@ public class GaufreGraphique extends JComponent implements Observateur {
         finPartie = false;
         SingeAnim = false;
         boucle();
+
+
+
     }
 
     public void videGaufre(Graphics g) {
