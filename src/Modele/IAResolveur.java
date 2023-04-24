@@ -72,6 +72,7 @@ public class IAResolveur extends IA{
             }
         }
         configuration.setConfig(config);
+        return configuration;
     }
 
     public int calcul_Joueur_A(Arbre2 configuration, int horizon){
@@ -90,6 +91,17 @@ public class IAResolveur extends IA{
     }
 
     public int calcul_Joueur_B(Arbre2 configuration, int horizon){
-        return 0;
+        if(configuration.estFeuille() || horizon == 0){
+            return evaluation(configuration);
+        }else {//le joueur A doit jouer
+            LinkedList<Coup> coups = coupsJouables(configuration);
+            int valeur = Integer.MAX_VALUE;
+
+            while (!coups.isEmpty()) {
+                Coup c = coups.removeFirst();
+                valeur = Math.min(valeur, calcul_Joueur_A(joueUnCoup(configuration, c), horizon - 1));
+            }
+            return valeur;
+        }
     }
 }
