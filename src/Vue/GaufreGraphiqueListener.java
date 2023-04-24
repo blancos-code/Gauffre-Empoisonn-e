@@ -20,6 +20,7 @@ public class GaufreGraphiqueListener implements MouseListener {
     }
 
     public boolean estCurseurSurBouton_Save(MouseEvent e){
+        if(g.finPartie) return false;
         int startx = g.posX_save;
         int starty = g.posY_save_load;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_load_save && e.getY() >= starty && e.getY() <= starty+g.largeur_load_save) {
@@ -44,6 +45,7 @@ public class GaufreGraphiqueListener implements MouseListener {
     }
 
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
+        if(g.finPartie) return false;
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_quitter;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
@@ -56,6 +58,7 @@ public class GaufreGraphiqueListener implements MouseListener {
     }
 
     public boolean estCurseurSurBouton_Annuler(MouseEvent e){
+        if(g.finPartie) return false;
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_annuler;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
@@ -68,6 +71,7 @@ public class GaufreGraphiqueListener implements MouseListener {
     }
 
     public boolean estCurseurSurBouton_Refaire(MouseEvent e){
+        if(g.finPartie) return false;
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_refaire;
         if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {

@@ -1,5 +1,7 @@
 package Vue;
 
+import Modele.Parametres;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -19,18 +21,20 @@ public class Menu extends JPanel{
     JToggleButton IA, animation;
 
     int nombreGaufre = 50;
-    public Image bouton_jCj, bouton_jCIA, bouton_IACIA, bouton_quitter, background, bouton_jCj_select,
-            bouton_jCIA_select, bouton_IACIA_select, bouton_quitter_select;
+    public Image bouton_jCj, bouton_jCIA, bouton_IACIA, bouton_options, bouton_quitter, background, bouton_jCj_select,
+            bouton_jCIA_select, bouton_IACIA_select, bouton_quitter_select, bouton_options_select, menu_options;
 
-    public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_quitter, posX_background, posY_background,posWaffleY,posWaffleX;
+    public int posX_boutons, posY_jcj, posY_jcia, posY_ia, posY_options, posY_quitter, posX_background, posY_background,posWaffleY,
+            posWaffleX, posX_menu_options, posY_menu_options;
 
     public Image[] waffles = new Image[9];
     private int[][] specGaufre = new int[nombreGaufre][5];
     Dimension tailleEcran, tailleFenetre;
-    int screenWidth, screenHeight, frameWidth, frameHeight, largeur_background, hauteur_background, largeur_bouton, hauteur_bouton;
+    int screenWidth, screenHeight, frameWidth, frameHeight, largeur_background, hauteur_background, largeur_bouton, hauteur_bouton,
+            largeur_menu_options, hauteur_menu_options;
     public JFrame frame;
-    public boolean select_jcj, select_jcia, select_ia, select_quitter;
-
+    private JTextField field_joueur1, field_joueur2, field_lignes, field_colonnes;
+    public boolean select_jcj, select_jcia, select_ia, select_options, select_quitter, clicOptions;
     public Menu(JFrame f) throws IOException {
         //Chargement des images
         String CHEMIN = "ressources/";
@@ -38,11 +42,25 @@ public class Menu extends JPanel{
         bouton_jCj = lisImage("Jcj");
         bouton_jCIA = lisImage("JcIA");
         bouton_IACIA = lisImage("IAcIA");
+        bouton_options = lisImage("options");
         bouton_quitter = lisImage("quitter");
+        menu_options = lisImage("menu_options");
         bouton_jCj_select = lisImage("Jcj_select");
         bouton_jCIA_select = lisImage("JcIA_select");
         bouton_IACIA_select = lisImage("IAcIA_select");
+        bouton_options_select = lisImage("options_select");
         bouton_quitter_select = lisImage("quitter_select");
+        Parametres p = new Parametres();
+        field_joueur1 = new JTextField(p.getPrenom1());
+        field_joueur2 = new JTextField(p.getPrenom2());
+        field_lignes = new JTextField(p.getLignes());
+        field_colonnes = new JTextField(p.getColonnes());
+        field_joueur1.setBounds(100, 100, 100, 100);
+        field_joueur1.setVisible(false);
+        field_joueur2.setVisible(true);
+        field_lignes.setVisible(true);
+        field_colonnes.setVisible(true);
+
         for(int i=0;i<waffles.length;i++){
             waffles[i] = lisImage("Gaufres/gaufre_"+i);
         }
@@ -50,13 +68,17 @@ public class Menu extends JPanel{
         select_jcj = false;
         select_jcia = false;
         select_ia = false;
+        select_options = false;
         select_quitter = false;
+        clicOptions = false;
         // Eléments de l'interface
         frame = f;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1280, 720);
         //centrer la fenetre
         frame.setLocationRelativeTo(null);
+        //ajout des éléments à la frame
+        frame.add(field_joueur1);
         frame.setVisible(true);
         //Définition des dimensions de la fenêtre
         tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
@@ -65,6 +87,7 @@ public class Menu extends JPanel{
         tailleFenetre=frame.getSize();
         frameWidth=tailleFenetre.width;
         frameHeight=tailleFenetre.width;
+        posX_menu_options = frameWidth;
 
         for(int i=0;i<nombreGaufre;i++){
             specGaufre[i] = specificiteGaufre();
@@ -73,6 +96,37 @@ public class Menu extends JPanel{
         //Ajout d'une interaction avec les boutons
         addMouseListener(new MenuListener(this));
         boucle();
+    }
+
+    public void afficheMenuParametres(Graphics g) throws IOException {
+        int posX_menu_options_arrivee = posX_boutons+(int)(largeur_bouton*1.07);
+        if(clicOptions){
+            if(posX_menu_options > posX_menu_options_arrivee){
+                posX_menu_options-=10;
+            }
+            if(posX_menu_options < posX_menu_options_arrivee){
+                posX_menu_options = posX_menu_options_arrivee;
+            }
+            g.drawImage(menu_options, posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options, null);
+            //affiche un texte
+            int posX_textes = posX_menu_options+(int)(largeur_menu_options*0.25);
+            int posX_chiffres = posX_menu_options+(int)(largeur_menu_options*0.45);
+            int posY_joueur1 = posY_menu_options+(int)(hauteur_menu_options*0.34);
+            int posY_joueur2 = posY_joueur1+(int)(hauteur_menu_options*0.2);
+            int posY_lignes = posY_joueur2+(int)(hauteur_menu_options*0.2);
+            int posY_colonnes = posY_lignes+(int)(hauteur_menu_options*0.2);
+            Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.4));
+            g.setFont(font);
+            g.setColor(Color.WHITE);
+            Parametres p = new Parametres();
+            g.drawString(p.getPrenom1(), posX_textes, posY_joueur1);
+            g.drawString(p.getPrenom2(), posX_textes, posY_joueur2);
+            g.drawString(String.valueOf(p.getLignes()), posX_chiffres, posY_lignes);
+            g.drawString(String.valueOf(p.getColonnes()), posX_chiffres, posY_colonnes);
+        }else{
+            posX_menu_options = frameWidth;
+        }
+        posY_menu_options = posY_jcj;
     }
 
     private Image lisImage(String nom) throws IOException {
@@ -99,21 +153,18 @@ public class Menu extends JPanel{
         }
         g.drawImage(background, posX_background, posY_background, largeur_background, hauteur_background, null);
     }
-
     public void afficheBoutonJoueurContreJoueur(Graphics g) {
         if(select_jcj)
             g.drawImage(bouton_jCj_select, posX_boutons, posY_jcj, largeur_bouton, hauteur_bouton, null);
         else
             g.drawImage(bouton_jCj, posX_boutons, posY_jcj, largeur_bouton, hauteur_bouton, null);
     }
-
     public void afficheBoutonJoueurContreIA(Graphics g) {
         if(select_jcia)
             g.drawImage(bouton_jCIA_select, posX_boutons, posY_jcia, largeur_bouton, hauteur_bouton,null);
         else
             g.drawImage(bouton_jCIA, posX_boutons, posY_jcia, largeur_bouton, hauteur_bouton,null);
     }
-
     public void afficheBoutonIAContreIA(Graphics g) {
         if(select_ia)
             g.drawImage(bouton_IACIA_select, posX_boutons, posY_ia, largeur_bouton, hauteur_bouton,null);
@@ -121,6 +172,12 @@ public class Menu extends JPanel{
             g.drawImage(bouton_IACIA, posX_boutons, posY_ia, largeur_bouton, hauteur_bouton,null);
     }
 
+    public void afficheBoutonOptions(Graphics g) {
+        if(select_options)
+            g.drawImage(bouton_options_select, posX_boutons, posY_options, largeur_bouton, hauteur_bouton,null);
+        else
+            g.drawImage(bouton_options, posX_boutons, posY_options, largeur_bouton, hauteur_bouton,null);
+    }
     public void afficheBoutonQuitter(Graphics g) {
         if(select_quitter)
             g.drawImage(bouton_quitter_select, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
@@ -131,30 +188,25 @@ public class Menu extends JPanel{
     public int[] specificiteGaufre(){
         int[] spec = new int[4];
         Random r = new Random();
-
-        int rand = 0;
-        while(rand==0) rand = r.nextInt(5);
+        int taille_max = Math.min(frameWidth/4, frameHeight/4);
+        int rand = r.nextInt(taille_max);
+        while(rand==0) rand = r.nextInt(taille_max);
         int value = r.nextInt(8);
         while(value==0) value = r.nextInt(8);
         spec[0] = value;
-        spec[1] = rand;
+        spec[1] = Math.max(40,rand);
         spec[2] = r.nextInt(screenWidth);
-        int posY = 0;
-        while(posY<200) posY = r.nextInt(2000);
-        spec[3] = -posY;
+        spec[3] = -r.nextInt(1200);
         return spec;
     }
-
-    public void afficheWaffle (Graphics g){
+    public void afficheWaffle(Graphics g){
         for(int i=0;i<nombreGaufre;i++){
-            g.drawImage(waffles[specGaufre[i][0]], specGaufre[i][2], posWaffleY+specGaufre[i][3], largeur_bouton/specGaufre[i][1], largeur_bouton/specGaufre[i][1],null);
+            g.drawImage(waffles[specGaufre[i][0]], specGaufre[i][2], posWaffleY+specGaufre[i][3], specGaufre[i][1], specGaufre[i][1],null);
             if(posWaffleY==0){
                 specGaufre[i] = specificiteGaufre();
             }
         }
     }
-
-
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -164,16 +216,26 @@ public class Menu extends JPanel{
         largeur_bouton=Math.min(largeur_background/4, frameWidth/4);
         hauteur_bouton=(int)(largeur_bouton*rapport_bouton);
         posX_boutons=posX_background+largeur_background/2-largeur_bouton/2;
-        posY_jcj=posY_background+hauteur_background/6-hauteur_bouton/2;
-        posY_jcia=posY_jcj+hauteur_background/6;
-        posY_ia=posY_jcia+hauteur_background/6;
-        posY_quitter=posY_ia+hauteur_background/6;
+        posY_jcj=posY_background+hauteur_background/8-hauteur_bouton/2;
+        posY_jcia=posY_jcj+hauteur_background/8;
+        posY_ia=posY_jcia+hauteur_background/8;
+        posY_options=posY_ia+hauteur_background/8;
+        posY_quitter=posY_options+hauteur_background/8;
+        double rapport_menu_options = 1.0980140935297885970531710442024;//rapport de 1714/1561
+        largeur_menu_options = hauteur_background/2;
+        hauteur_menu_options = (int)(largeur_menu_options*rapport_menu_options);
         afficheBackground(g2d);
         afficheWaffle(g2d);
         afficheBoutonJoueurContreJoueur(g2d);
         afficheBoutonJoueurContreIA(g2d);
         afficheBoutonIAContreIA(g2d);
+        afficheBoutonOptions(g2d);
         afficheBoutonQuitter(g2d);
+        try {
+            afficheMenuParametres(g2d);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void boucle(){
@@ -188,7 +250,7 @@ public class Menu extends JPanel{
 
     public void metAJour() {
         posWaffleY++;
-        if(posWaffleY>screenHeight*1.7) posWaffleY = 0;
+        if(posWaffleY>screenHeight*1.35) posWaffleY = 0;
         repaint();
     }
 }
