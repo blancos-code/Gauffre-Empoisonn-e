@@ -59,6 +59,17 @@ public class MenuListener implements MouseListener {
         return false;
     }
 
+    public boolean estCurseurSurBouton_Options(MouseEvent e){
+        int startx = m.posX_boutons;
+        int starty = m.posY_options;
+        if(e.getX() >= startx && e.getX() <= startx+m.largeur_bouton && e.getY() >= starty && e.getY() <= starty+m.hauteur_bouton) {
+            m.select_options = true;
+            return true;
+        }
+        m.select_options = false;
+        return false;
+    }
+
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
         int startx = m.posX_boutons;
         int starty = m.posY_quitter;
@@ -71,10 +82,10 @@ public class MenuListener implements MouseListener {
     }
 
     public void verif(MouseEvent e){
-        if(estCurseurSurBouton_JcJ(e) || estCurseurSurBouton_JcIA(e)){
+        if(estCurseurSurBouton_JcJ(e) || estCurseurSurBouton_JcIA(e) || estCurseurSurBouton_IA(e)){
             //efface tout le contenu de la frame
             m.frame.getContentPane().removeAll();
-            //ajoute une gaufregraphique � la frame
+            //ajoute une gaufregraphique à la frame
             Parametres p;
             try {
                 p = new Parametres();
@@ -90,6 +101,13 @@ public class MenuListener implements MouseListener {
                 m.frame.revalidate();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            }
+        }
+        if(estCurseurSurBouton_Options(e)){
+            if(m.clicOptions) {
+                m.clicOptions = false;
+            }else {
+                m.clicOptions = true;
             }
         }
         if(estCurseurSurBouton_Quitter(e)){
@@ -123,7 +141,7 @@ public class MenuListener implements MouseListener {
     public class DetectionSurvol extends MouseMotionAdapter {
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (estCurseurSurBouton_JcJ(e)||estCurseurSurBouton_JcIA(e)||estCurseurSurBouton_IA(e)||estCurseurSurBouton_Quitter(e)) {
+            if (estCurseurSurBouton_JcJ(e)||estCurseurSurBouton_JcIA(e)||estCurseurSurBouton_IA(e)||estCurseurSurBouton_Options(e)||estCurseurSurBouton_Quitter(e)) {
                 m.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 //m.metAJour();
             }else{

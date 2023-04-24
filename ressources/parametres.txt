@@ -2,5 +2,5 @@
 8
 SachaLeGauchiste
 KillianLeRaciste
-JcAI
+AIcAI
 tropSmart
