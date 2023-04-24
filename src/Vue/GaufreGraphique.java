@@ -89,6 +89,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
         // On prend des cases carrées
         largeurCase = Math.min(largeurCase, hauteurCase);
         hauteurCase = largeurCase;
+        posX_boutons = (int) (gaufre.colonnes()*largeurCase+largeurCase*0.2);
         //dessine un rectangle qui fait toute la frame
         g.setColor(new Color(69, 69, 69));
         g.fillRect(0, 0, largeur, hauteur);
@@ -162,7 +163,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
         //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
         Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.6));
         drawable.setFont(font);
-        posX_boutons = (int) (gaufre.colonnes()*largeurCase+largeurCase*0.2);
         if (j.joueurCourant() == 1) {
             drawable.setColor(Color.RED);
             drawable.drawString(j.getJoueur1(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
