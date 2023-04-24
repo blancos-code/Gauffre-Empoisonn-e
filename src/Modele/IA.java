@@ -15,10 +15,11 @@ public abstract class IA {
                 resultat = new IAAleatoire();
                 break;
             case "tropSmart":
-                resultat = new IAIntelligente();
+                resultat = new IAIntelligente();//new IAResolveur();
                 break;
             default:
-                System.out.println("IA non supportée.");
+                System.err.println("IA non supportée.");
+                System.exit(1);
         }
         if (resultat != null) {
             resultat.jeu = j;

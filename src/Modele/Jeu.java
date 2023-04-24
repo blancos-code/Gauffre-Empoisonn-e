@@ -57,7 +57,7 @@ public class Jeu extends Observable {
         if (estJoueurCourantUneIA()) {
             // Pour pas que l'IA joue directement
             // Attendez un certain temps avant d'exécuter l'action finale
-            int delai = 1000; // delai en millisecondes (1à00 ms = 1 s)
+            int delai = 1000; // delai en millisecondes (1000 ms = 1 s)
             Timer timer = new Timer(delai, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -65,7 +65,7 @@ public class Jeu extends Observable {
                 }
             });
 
-            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-la une seule fois
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
         }
     }

@@ -180,46 +180,6 @@ public class IAIntelligente extends IA {
     }
 
     /**
-     * Joue un coup sur le plateau avec les regles d'IA moyennes (minimax avec un horizon de 1 equiveau a appliquer les regles heuristiques)
-     *
-     * @return True si le coup a bien ete joue, False sinon
-     */
-    Couple jouerCoupMoyen(Plateau plateau) {
-        //ajoute de ca pour tester un cas ou ca plante si on le laisse tourner
-        int[][] test = plateau.getTab();
-        int htest = plateau.hauteur();
-        int ltest = plateau.largeur();
-        if(ltest == 2 && htest == 2 && test[1][1] > 0 && test[0][1] == 0 && test[1][0] == 0) {
-            int testrand = r.nextInt(2);
-            if(testrand == 1)
-                return new Couple(1,0);
-            else
-                return new Couple(0,1);
-        }else if (test[0][1] > 0 && test[1][0] > 0)
-            return new Couple(0,0);
-
-        Arbre a = new Arbre(TabConverter.ToInt(plateau)); // construction de l'arbre des configurations
-        HashMap<Integer,Integer> memo = new HashMap<Integer,Integer>();
-        int profondeur = 1;
-        if(minimaxA(a.racine(),memo,profondeur) > 0) {
-            LinkedList<Noeud> cp;
-            if(( a.racine().filsTaggue().size()) != 0) {
-                cp = a.racine().filsTaggue(); //recuperations des solutions
-            }
-            else {
-                return jouerCoupFacile(plateau);
-            }
-            int rand = r.nextInt(cp.size()); //choix d'une solution admissible aleatoire
-            Plateau nouveau = TabConverter.ToTab(cp.get(rand).valeur()); //traduction de la solution en Plateau
-            Couple res = reconstruireCoup(plateau , nouveau); //traduction de la solution en Couple
-            //plateau.manger(res); //Appliquer solution
-            return res;
-        } else {
-            return jouerCoupFacile(plateau);
-        }
-    }
-
-    /**
      * Joue un coup sur le plateau avec les regles d'IA difficiles
      *
      * @return True si le coup a bien ete joue, False sinon
