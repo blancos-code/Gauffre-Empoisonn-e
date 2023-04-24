@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, quitter_select,
-            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock;
+            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes;
     Jeu j;
     int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load,
     largeur_load_save, posY_bouton_quitter, posY_reset;
@@ -49,6 +49,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
         reset = lisImage("reinitialiser");
         reset_select = lisImage("reinitialiser_select");
         victoire = lisImage("victoire");
+        miettes = lisImage("Gaufres/miettes");
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
         l = j.gaufre().lignes();
@@ -60,6 +61,16 @@ public class GaufreGraphique extends JComponent implements Observateur {
         select_load = false;
         select_reset = false;
         finPartie = false;
+    }
+
+    public void videGaufre(Graphics g){
+        Gaufre gaufre = j.gaufre();
+        for (int i = 0; i < gaufre.lignes(); i++) {
+            for (int j = 0; j < gaufre.colonnes(); j++) {
+                tracer(drawable, lisImage("Gaufres/fond"), j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
+            }
+        }
+        repaint();
     }
 
     public void paintComponent(Graphics g) {
@@ -93,6 +104,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
                             tracer(drawable, case_saine_select, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                         else
                             tracer(drawable, case_saine, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
+                    }else{
+                        tracer(drawable, miettes, j * largeurCase, i * hauteurCase, largeurCase, hauteurCase);
                     }
                 }
             }
@@ -174,6 +187,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
     public void affichevictoire(Graphics g){
         int hauteur = getSize().height;
         if(j.gaufre().estFinit()){
+            videGaufre(g);
             tracer(drawable, victoire, (int)(posX_boutons/2.1), 0, (int)(largeurCase*1.5), (int)(hauteurCase*1.5));
             drawable.setColor(Color.ORANGE);
             Font font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.30));
