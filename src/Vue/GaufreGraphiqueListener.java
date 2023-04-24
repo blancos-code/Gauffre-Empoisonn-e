@@ -10,6 +10,7 @@ import java.io.IOException;
 public class GaufreGraphiqueListener implements MouseListener {
 
     GaufreGraphique g;
+    JLabel gifLabel;
 
 
     public GaufreGraphiqueListener(GaufreGraphique gaufre) {

@@ -1,6 +1,7 @@
 package Vue;
 
 import Controleur.ControleurMediateur;
+import Modele.Gif;
 import Modele.Jeu;
 import Modele.Parametres;
 
