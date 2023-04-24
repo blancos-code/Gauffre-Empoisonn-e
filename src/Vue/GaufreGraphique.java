@@ -163,12 +163,14 @@ public class GaufreGraphique extends JComponent implements Observateur {
         //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
         Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.6));
         drawable.setFont(font);
-        if (j.joueurCourant() == 1) {
-            drawable.setColor(Color.RED);
-            drawable.drawString(j.getJoueur1(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
-        } else {
-            drawable.setColor(Color.ORANGE);
-            drawable.drawString(j.getJoueur2(), (int)(posX_boutons*1.015), (int) (hauteur*.70));
+        if(!j.gaufre().estFinit()) {
+            if (j.joueurCourant() == 1) {
+                drawable.setColor(Color.RED);
+                drawable.drawString(j.getJoueur1(), (int) (posX_boutons * 1.015), (int) (hauteur * .70));
+            } else {
+                drawable.setColor(Color.ORANGE);
+                drawable.drawString(j.getJoueur2(), (int) (posX_boutons * 1.015), (int) (hauteur * .70));
+            }
         }
         //affichage si victoire
         affichevictoire(drawable);
@@ -188,16 +190,19 @@ public class GaufreGraphique extends JComponent implements Observateur {
         int hauteur = getSize().height;
         if(j.gaufre().estFinit()){
             videGaufre(g);
-            tracer(drawable, victoire, (int)(posX_boutons/2.1), 0, (int)(largeurCase*1.5), (int)(hauteurCase*1.5));
+            tracer(drawable, victoire, (int)(posX_boutons/2.1), 0, (int)(largeur_bouton*0.8), (int)(largeur_bouton*0.8));
             drawable.setColor(Color.ORANGE);
-            Font font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.30));
+            Font font = new Font("Roboto", Font.BOLD, (int)(largeur_bouton*0.2));
             drawable.setFont(font);
-            drawable.drawString("Partie terminée", (int)(posX_boutons/2.25), (int) (hauteur*.30));
-            font = new Font("Roboto", Font.BOLD, (int)(hauteurCase*0.22));
+            drawable.drawString("Partie terminée", (int)(posX_boutons/2.5), (int) (hauteur*.30));
+            font = new Font("Roboto", Font.BOLD, (int)(largeur_bouton*0.1));
             drawable.setFont(font);
             Color color = new Color(255, 144, 0);
             drawable.setColor(color);
-            drawable.drawString(j.gagnant()+" a gagné la partie", (int)(largeurCase*1.5), (int) (hauteur*.40));
+            drawable.drawString(j.gagnant()+" a gagné la partie", (int)(largeur_bouton*1.5), (int) (hauteur*.40));
+            progressBar.setVisible(false);
+        }else{
+            progressBar.setVisible(true);
         }
     }
 
