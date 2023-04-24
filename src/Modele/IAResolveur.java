@@ -1,6 +1,7 @@
 package Modele;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class IAResolveur extends IA{
 
@@ -34,8 +35,17 @@ public class IAResolveur extends IA{
         return nb_cases;
     }
 
-    public Coup coupsJouables(Arbre2 configuration){
-
+    public LinkedList<Coup> coupsJouables(Arbre2 configuration){
+        boolean[][] config = configuration.getConfig();
+        LinkedList<Coup> coups = new LinkedList<>();
+        for(int i = 0; i < config.length; i++){
+            for(int j = 0; j < config[0].length; j++){
+                if(config[i][j] == false && !(i == 0 && j == 0)){
+                    coups.add(new Coup(i, j, 0, 1));
+                }
+            }
+        }
+        return coups;
     }
 
     public boolean[][] convertit(int[][] configuration){//convertit un tableau d'entiers contenant des 0 et des  en tableau de booleens
