@@ -156,6 +156,10 @@ public class Gaufre {
         historique = new Historique();
     }
 
+    public int[][] getCases(){
+        return cases;
+    }
+
     public void affiche(){
         for (int i = 0; i<= lignes -1; i++) {
             for (int j = 0; j<= colonnes -1; j++)
