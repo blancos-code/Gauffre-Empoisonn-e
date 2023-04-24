@@ -26,7 +26,7 @@ public class Gaufre {
     }
 
     public boolean estFinit() {
-        return nb_cases_pleines == 0;
+        return nb_cases_pleines == 0 || (cases[0][1]==1 && cases[1][0]==1);
     }
 
     public boolean estMangee(int i, int j) {

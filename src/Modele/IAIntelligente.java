@@ -197,7 +197,7 @@ public class IAIntelligente extends IA {
             else
                 return new Couple(0,1);
         }else if (test[0][1] > 0 && test[1][0] > 0)
-            return new Couple(0,0);
+            return null;
 
         Arbre a = new Arbre(TabConverter.ToInt(plateau)); // construction de l'arbre des configurations
         HashMap<Integer,Integer> memo = new HashMap<Integer,Integer>();
@@ -232,6 +232,7 @@ public class IAIntelligente extends IA {
         Plateau p = new Plateau(this.jeu.gaufre().lignes,this.jeu.gaufre().colonnes,this.jeu.gaufre().cases);
         Couple coup = jouerCoupDifficile(p);
 
+        if(coup==null || (coup.getI()==1&&coup.getJ()==1)) return new Coup(1,1,1,0);
         return new Coup(coup.getI(), coup.getJ(), 1,0);
 
     }
