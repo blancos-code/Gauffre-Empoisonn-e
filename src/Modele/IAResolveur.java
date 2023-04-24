@@ -12,19 +12,29 @@ public class IAResolveur extends IA{
     }
 
     public Coup joue() {
-        int valeur = calcul_Joueur_A(jeu.gaufre().getCases(), 1);
-        return jouerCoup(jeu.gaufre().getCases(), valeur);
+        Arbre2 configuration = new Arbre2(convertit(this.jeu.gaufre().getCases()));
+        int valeur = calcul_Joueur_A(configuration, 1);
+        return jouerCoup(configuration, valeur);
     }
 
-    public Coup jouerCoup(int[][] configuration, int valeur){
+    public Coup jouerCoup(Arbre2 configuration, int valeur){
         return null;
     }
 
-    public int evaluation(int[][] configuration){
-        return 0;
+    public int evaluation(Arbre2 a){
+        boolean[][] config = a.getConfig();
+        int nb_cases = 0;
+        for(int i = 0; i < config.length; i++){
+            for(int j = 0; j < config[0].length; j++){
+                if(config[i][j] == false){
+                    nb_cases++;
+                }
+            }
+        }
+        return nb_cases;
     }
 
-    public Coup coupsJouables(int[][] configuration){
+    public Coup coupsJouables(Arbre2 configuration){
 
     }
 
@@ -42,8 +52,8 @@ public class IAResolveur extends IA{
         return resultat;
     }
 
-    public int calcul_Joueur_A(int[][] configuration, int horizon){
-        if(horizon == 0){
+    public int calcul_Joueur_A(Arbre2 configuration, int horizon){
+        if(configuration.estFeuille() || horizon == 0){
             return evaluation(configuration);
         }else {//le joueur A doit jouer
             int max = Integer.MIN_VALUE;

@@ -5,12 +5,20 @@ import java.util.LinkedList;
 public class Arbre2 {
     private Arbre2 pere;
     private LinkedList<Arbre2> fils;
-    private int valeur;
+    private boolean[][] config;
 
 
     public Arbre2(boolean[][] configuration) {
-        this.pere = pere;
-        this.valeur = valeur;
+        this.pere = null;
+        this.config = configuration;
         this.fils = new LinkedList<Arbre2>();
+    }
+
+    public boolean estFeuille(){
+        return this.fils.isEmpty();
+    }
+
+    public boolean[][] getConfig() {
+        return config;
     }
 }
