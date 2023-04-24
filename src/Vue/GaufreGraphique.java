@@ -170,7 +170,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
 
         Calendar calendar = Calendar.getInstance();
         int seconds = calendar.get(Calendar.MILLISECOND);
-        if (seconds % 8 == 0) {
+        if (seconds % 15 == 0) {
             if (clean) {
                 for (int i = gaufre.lignes() - 1; i > 0; i--) {
                     for (int j = gaufre.colonnes() - 1; j > 0; j--) {
