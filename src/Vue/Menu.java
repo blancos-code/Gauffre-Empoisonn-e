@@ -33,6 +33,7 @@ public class Menu extends JPanel{
     int screenWidth, screenHeight, frameWidth, frameHeight, largeur_background, hauteur_background, largeur_bouton, hauteur_bouton,
             largeur_menu_options, hauteur_menu_options;
     public JFrame frame;
+    private JTextField field_joueur1, field_joueur2, field_lignes, field_colonnes;
     public boolean select_jcj, select_jcia, select_ia, select_options, select_quitter, clicOptions;
     public Menu(JFrame f) throws IOException {
         //Chargement des images
@@ -50,14 +51,10 @@ public class Menu extends JPanel{
         bouton_options_select = lisImage("options_select");
         bouton_quitter_select = lisImage("quitter_select");
         Parametres p = new Parametres();
-        JTextField field_joueur1 = new JTextField(p.getPrenom1());
-        JTextField field_joueur2 = new JTextField(p.getPrenom2());
-        JTextField field_lignes = new JTextField(p.getLignes());
-        JTextField field_colonnes = new JTextField(p.getColonnes());
-        field_joueur1.setBounds(100, 100, 200, 100);
-        field_joueur2.setBounds(200, 100, 100, 100);
-        field_lignes.setBounds(300, 100, 100, 100);
-        field_colonnes.setBounds(400, 100, 100, 100);
+        field_joueur1 = new JTextField(p.getPrenom1());
+        field_joueur2 = new JTextField(p.getPrenom2());
+        field_lignes = new JTextField(p.getLignes());
+        field_colonnes = new JTextField(p.getColonnes());
         field_joueur1.setVisible(true);
         field_joueur2.setVisible(true);
         field_lignes.setVisible(true);
@@ -161,8 +158,15 @@ public class Menu extends JPanel{
             if(posX_menu_options > posX_menu_options_arrivee){
                 posX_menu_options-=10;
             }
-            //affiche un JTextField
-
+            if(posX_menu_options < posX_menu_options_arrivee){
+                posX_menu_options = posX_menu_options_arrivee;
+            }
+            //affiche un JTextField field_options
+            JTextField field_options = new JTextField("Options");
+            field_options.setBounds(posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options);
+            field_options.setFont(new Font("Arial", Font.BOLD, 20));
+            field_options.setForeground(Color.BLACK);
+            field_options.setVisible(true);
             g.drawImage(menu_options, posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options, null);
         }else{
             posX_menu_options = frameWidth;
@@ -173,20 +177,21 @@ public class Menu extends JPanel{
     public int[] specificiteGaufre(){
         int[] spec = new int[4];
         Random r = new Random();
-
-        int rand = r.nextInt(50);
-        while(rand==0) rand = r.nextInt(5);
+        int taille_max = Math.min(frameWidth/4, frameHeight/4);
+        int rand = r.nextInt(taille_max);
+        while(rand==0) rand = r.nextInt(taille_max);
         int value = r.nextInt(8);
         while(value==0) value = r.nextInt(8);
         spec[0] = value;
-        spec[1] = rand;
+        spec[1] = Math.max(40,rand);
+        System.out.println("rand : "+rand);
         spec[2] = r.nextInt(screenWidth);
         spec[3] = -r.nextInt(1200);
         return spec;
     }
     public void afficheWaffle(Graphics g){
         for(int i=0;i<nombreGaufre;i++){
-            g.drawImage(waffles[specGaufre[i][0]], specGaufre[i][2], posWaffleY+specGaufre[i][3], 1000/specGaufre[i][1], 1000/specGaufre[i][1],null);
+            g.drawImage(waffles[specGaufre[i][0]], specGaufre[i][2], posWaffleY+specGaufre[i][3], specGaufre[i][1], specGaufre[i][1],null);
             if(posWaffleY==0){
                 specGaufre[i] = specificiteGaufre();
             }
