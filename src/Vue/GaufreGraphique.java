@@ -81,7 +81,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
             balayeurs[i-1] = lisImage("Balayeur/balayeur_frame_"+i);
         }
         balayeur_index = 0;
-        singepos = -50;
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
         l = j.gaufre().lignes();
