@@ -12,7 +12,6 @@ public class GaufreGraphiqueListener implements MouseListener {
     GaufreGraphique g;
     JLabel gifLabel;
 
-
     public GaufreGraphiqueListener(GaufreGraphique gaufre) {
         super();
         g = gaufre;
