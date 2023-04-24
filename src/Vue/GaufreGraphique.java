@@ -94,9 +94,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
         finPartie = false;
         SingeAnim = false;
         boucle();
-
-
-
     }
 
     public void videGaufre(Graphics g) {
@@ -163,8 +160,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
             }
         }
 
-        for (int i = gaufre.lignes() - 1; i > 0; i--) {
-            for (int j = gaufre.colonnes() - 1; j > 0; j--) {
+        for (int i = gaufre.lignes() - 1; i >= 0; i--) {
+            for (int j = gaufre.colonnes() - 1; j >= 0; j--) {
                 if (gaufre.estMangee(i, j)) {
                     boolean afficher = true;
                     for (int k = 0; k < balayees.size(); k++) {
@@ -267,10 +264,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
             tracer(drawable, save_lock, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
         }
         //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
-
-
-
-
         Font font2 = new Font("Roboto",Font.BOLD,(int)(hauteur_bouton*0.4));
         drawable.setFont(font2);
         drawable.setColor(Color.green);
@@ -311,6 +304,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
     public void affichevictoire(Graphics g){
         int hauteur = getSize().height;
         if(j.gaufre().estFinit()){
+            tuerSinge();
             quitter = lisImage("quitter_partie");
             annuler = lisImage("annuler");
             refaire = lisImage("refaire");
