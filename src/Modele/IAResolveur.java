@@ -66,14 +66,21 @@ public class IAResolveur extends IA{
         if(configuration.estFeuille() || horizon == 0){
             return evaluation(configuration);
         }else {//le joueur A doit jouer
-            int max = Integer.MIN_VALUE;
+            LinkedList<Coup> coups = coupsJouables(configuration);
+            int valeur = Integer.MIN_VALUE;
+
+            while (!coups.isEmpty()) {
+                Coup coup = coups.removeFirst();
+                valeur = Math.max(valeur, calcul_Joueur_B, horizon-1);
+            }
+
             for (int i = 0; i < configuration.length; i++) {
                 for (int j = 0; j < configuration[0].length; j++) {
                     if(configuration[i][j] == 0){
                         configuration[i][j] = 1;
                         int min = calcul_Joueur_B(configuration,horizon-1);
-                        if(min > max){
-                            max = min;
+                        if(min > valeur){
+                            valeur = min;
                         }
                         configuration[i][j] = 0;
                     }
