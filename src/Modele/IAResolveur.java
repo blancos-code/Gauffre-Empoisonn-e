@@ -76,31 +76,49 @@ public class IAResolveur extends IA{
     }
 
     public int calcul_Joueur_A(Arbre2 configuration, int horizon){
+        HashMap<boolean[][],Integer> h = new HashMap<>();
         if(configuration.estFeuille() || horizon == 0){
-            return evaluation(configuration);
+            int eval = evaluation(configuration);
+            h.put(configuration.getConfig(), eval);
+            return eval;
         }else {//le joueur A doit jouer
             LinkedList<Coup> coups = coupsJouables(configuration);
             int valeur = Integer.MIN_VALUE;
 
             while (!coups.isEmpty()) {
                 Coup c = coups.removeFirst();
-                valeur = Math.max(valeur, calcul_Joueur_B(joueUnCoup(configuration, c), horizon - 1));
+                Arbre2 newConfig = joueUnCoup(configuration, c);
+                int valeur_B = calcul_Joueur_B(newConfig, horizon - 1);
+                if(!h.containsKey(newConfig.getConfig())){
+                    h.put(newConfig.getConfig(), valeur_B);
+                }
+                valeur = Math.max(valeur, valeur_B);
             }
+            h.put(configuration.getConfig(), valeur);
             return valeur;
         }
     }
 
     public int calcul_Joueur_B(Arbre2 configuration, int horizon){
+        HashMap<boolean[][],Integer> h = new HashMap<>();
         if(configuration.estFeuille() || horizon == 0){
-            return evaluation(configuration);
+            int eval = evaluation(configuration);
+            h.put(configuration.getConfig(), eval);
+            return eval;
         }else {//le joueur A doit jouer
             LinkedList<Coup> coups = coupsJouables(configuration);
             int valeur = Integer.MAX_VALUE;
 
             while (!coups.isEmpty()) {
                 Coup c = coups.removeFirst();
-                valeur = Math.min(valeur, calcul_Joueur_A(joueUnCoup(configuration, c), horizon - 1));
+                Arbre2 newConfig = joueUnCoup(configuration, c);
+                int valeur_B = calcul_Joueur_B(newConfig, horizon - 1);
+                if(!h.containsKey(newConfig.getConfig())){
+                    h.put(newConfig.getConfig(), valeur_B);
+                }
+                valeur = Math.min(valeur, valeur_B);
             }
+            h.put(configuration.getConfig(), valeur);
             return valeur;
         }
     }
