@@ -9,8 +9,11 @@ import Patterns.Observateur;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.ImageIcon;
@@ -20,8 +23,12 @@ import javax.swing.JLabel;
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, quitter_select,
             annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, clean_1;
+            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, singe;
     Jeu j;
-    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load,
+
+    Image[] singes = new Image[8];
+
+    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load, singe_index, singepos, boutonAvoler,
             largeur_load_save, posY_bouton_quitter, posY_reset;
     JProgressBar progressBar;
     CollecteurEvenements collecteur;
@@ -30,7 +37,7 @@ public class GaufreGraphique extends JComponent implements Observateur {
     public int l, c;
 
     ArrayList<Coords> balayees = new ArrayList<>();
-    boolean select_quitter, select_annuler, select_refaire, select_save, select_load, select_reset, finPartie;
+    boolean select_quitter, select_annuler, select_refaire, select_save, select_load, select_reset, finPartie, unefoisSinge;
 
     public GaufreGraphique(JFrame frame, Jeu jeu, CollecteurEvenements col) throws IOException {
         f = frame;
@@ -57,6 +64,10 @@ public class GaufreGraphique extends JComponent implements Observateur {
         reset_select = lisImage("reinitialiser_select");
         victoire = lisImage("victoire");
         miettes = lisImage("Gaufres/miettes");
+        for(int i=1;i<9;i++){
+            singes[i-1] = lisImage("Singe/monkey_run_"+i);
+        }
+        singepos = -50;
         clean_1 = lisImage("clean_1");
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
@@ -69,6 +80,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
         select_load = false;
         select_reset = false;
         finPartie = false;
+        boucle();
+
 
 
     }
@@ -244,7 +257,14 @@ public class GaufreGraphique extends JComponent implements Observateur {
         Font progressFont = new Font("Roboto", Font.BOLD, hauteur_bouton / 4);
         progressBar.setFont(progressFont);
         add(progressBar);
+        appelSinge(g);
+        if(unefoisSinge){
+            boutonAvoler = choisirBoutonVoler();
+            unefoisSinge=true;
+        }
     }
+
+
 
     public void affichevictoire(Graphics g) {
         int hauteur = getSize().height;
@@ -262,6 +282,29 @@ public class GaufreGraphique extends JComponent implements Observateur {
             String phraseVictoire = j.gagnant() + " a gagné la partie";
             drawable.drawString(phraseVictoire, (int) (posX_boutons / 2.5) - ((phraseVictoire.length() * font.getSize()) / 11), (int) (hauteur * .48));
         }
+    }
+
+    private int choisirBoutonVoler(){
+        int valeur;
+        Random r = new Random();
+        int boutton = r.nextInt(3);
+        // on choisit aleatoirement un bouton à voler
+        if(boutton==0){
+            valeur = (int) (getSize().height*.10);
+        } else if (boutton==1) {
+            valeur = (int) (getSize().height*.22);
+        } else if (boutton==1) {
+            valeur = (int) (getSize().height*.34);
+        } else{
+            valeur = (int) (getSize().height*.46);
+        }
+
+        return valeur;
+    }
+    public void appelSinge(Graphics g){
+        singe = singes[singe_index];
+        System.out.println("bouton a voler : "+boutonAvoler);
+        g.drawImage(singe, (int)(posX_boutons/2.475)+singepos, boutonAvoler, hauteur_bouton, hauteur_bouton,this);
     }
 
     private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
@@ -295,8 +338,22 @@ public class GaufreGraphique extends JComponent implements Observateur {
         return img;
     }
 
+    public void boucle(){
+        Timer timer = new Timer(20, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                miseAJour();
+            }
+        });
+        timer.start();
+    }
+
+
     @Override
     public void miseAJour() {
+        if(singe_index==7) singe_index=0;
+        singe_index++;
+        singepos+=5;
         repaint();
     }
 
