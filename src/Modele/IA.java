@@ -9,7 +9,6 @@ public abstract class IA {
         IA resultat = null;
 
         String type = p.getType_IA();
-        System.out.println(type);
         switch (type) {
             case "Aléatoire":
                 resultat = new IAAleatoire();

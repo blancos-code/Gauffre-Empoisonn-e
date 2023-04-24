@@ -148,6 +148,7 @@ public class Jeu extends Observable {
     }
 
     public void joueIA() {
+        System.out.println("IA ???? : " + p.getTypeJeu());
         if (!estJoueurCourantUneIA()) {
             return;
         }
@@ -156,6 +157,21 @@ public class Jeu extends Observable {
             return;
         }
         joue(c);
+
+        if (p.getTypeJeu().compareTo("AIcAI") == 0) {
+            System.out.println("Oui");
+            // Attendez un certain temps avant d'exécuter l'action finale
+            int delai = 500; // delai en millisecondes (500 ms = 0.5 s)
+            Timer timer = new Timer(delai, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    joueIA();
+                }
+            });
+
+            timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-la une seule fois
+            timer.start(); // Démarrez le timer
+        }
     }
 
     public boolean joue(Coup c){
