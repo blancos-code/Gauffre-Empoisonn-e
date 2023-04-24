@@ -58,7 +58,7 @@ public class GaufreGraphiqueListener implements MouseListener {
     public boolean estCurseurSurBouton_Quitter(MouseEvent e){
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_quitter;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton && g.boutonVoler[0]==0) {
             g.select_quitter = true;
             g.setToolTipText("Quitter la partie et revenir au menu du jeu");
             return true;
@@ -71,7 +71,7 @@ public class GaufreGraphiqueListener implements MouseListener {
         if(g.finPartie) return false;
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_annuler;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton && g.boutonVoler[1]==0) {
             g.select_annuler = true;
             g.setToolTipText("Annuler le coup");
             return true;
@@ -84,7 +84,7 @@ public class GaufreGraphiqueListener implements MouseListener {
         if(g.finPartie) return false;
         int startx = g.posX_boutons;
         int starty = g.posY_bouton_refaire;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton && g.boutonVoler[2]==0) {
             g.select_refaire = true;
             g.setToolTipText("Refaire le coup");
             return true;
@@ -96,7 +96,7 @@ public class GaufreGraphiqueListener implements MouseListener {
     public boolean estCurseurSurBouton_Reset(MouseEvent e){
         int startx = g.posX_boutons;
         int starty = g.posY_reset;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+        if(e.getX() >= startx && e.getX() <= startx+g.largeur_bouton && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton && g.boutonVoler[3]==0) {
             g.select_reset = true;
             g.setToolTipText("Recommencer la partie");
             return true;
@@ -106,17 +106,18 @@ public class GaufreGraphiqueListener implements MouseListener {
     }
 
     public boolean estCurseurSurGaufre(MouseEvent e){
+        if(estCurseurSurSinge(e)) return false;
         if(g.largeurCase == 0 || g.hauteurCase == 0) return false;
         int startx = 0;
         int starty = 0;
         int c = e.getX()/g.largeurCase;
         int l = e.getY()/g.hauteurCase;
-        if(e.getX() >= startx && e.getX() <= startx+g.largeurCase*g.colonnes() && e.getY() >= starty && e.getY() <= starty+g.hauteurCase*g.lignes()){
+        if(e.getX() >= startx && e.getX() <= startx+g.largeurCase*g.colonnes() && e.getY() >= starty && e.getY() <= starty+g.hauteurCase*g.lignes() && !estCurseurSurSinge(e)){
             if(e.getX()<=startx+g.largeurCase && e.getY()<=starty+g.hauteurCase){
                 //g.miseAJour();
                 return false;
             }else{
-                if(l<g.j.gaufre().lignes() && c<g.j.gaufre().colonnes() && !g.j.gaufre().estMangee(l,c)) {
+                if(l<g.j.gaufre().lignes() && c<g.j.gaufre().colonnes() && !g.j.gaufre().estMangee(l,c) && !estCurseurSurSinge(e)) {
                     g.l=l;
                     g.c=c;
                     g.setToolTipText("Manger ce morceau");
@@ -145,6 +146,17 @@ public class GaufreGraphiqueListener implements MouseListener {
         }else{
             return false;
         }
+    }
+
+    public boolean estCurseurSurSinge(MouseEvent e){
+        int startx = g.getSingePosition();
+        int starty = g.getPosYBoutonAvoler();
+        if(e.getX() >= startx && e.getX() <= startx+(g.largeur_bouton/2) && e.getY() >= starty && e.getY() <= starty+g.hauteur_bouton) {
+            g.select_reset = true;
+            g.setToolTipText("Recommencer la partie");
+            return true;
+        }
+        return false;
     }
 
     public void verif(MouseEvent e){
@@ -204,14 +216,20 @@ public class GaufreGraphiqueListener implements MouseListener {
     public class DetectionSurvol extends MouseMotionAdapter {
         @Override
         public void mouseMoved(MouseEvent e) {
-            if (estCurseurSurGaufre(e)) {
-                g.setCursor(gaufre_cursor);
-                //g.miseAJour();
-            }else{
-                if(!estCurseurSur_Poison(e)) {
-                    g.setToolTipText(null);
+            if(estCurseurSurSinge(e)) if(!g.SingePeur && !g.arriveSinge) g.tuerSinge();
+
+            if (estCurseurSurBouton_Quitter(e)||estCurseurSurBouton_Annuler(e)||estCurseurSurBouton_Refaire(e)||
+                    estCurseurSurBouton_Save(e)||estCurseurSurBouton_Load(e)||estCurseurSurGaufre(e)||estCurseurSurBouton_Reset(e)) {
+                g.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                if (estCurseurSurGaufre(e)) {
+                    g.setCursor(gaufre_cursor);
+                    //g.miseAJour();
+                } else {
+                    if (!estCurseurSur_Poison(e)) {
+                        g.setToolTipText(null);
+                    }
+                    g.setCursor(idle_cursor);
                 }
-                g.setCursor(idle_cursor);
             }
         }
     }

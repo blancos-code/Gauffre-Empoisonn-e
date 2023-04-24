@@ -25,22 +25,25 @@ public class GaufreGraphique extends JComponent implements Observateur {
             annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, singe;
     Jeu j;
 
+    int ProbaSinge = 30;
     Image[] singes = new Image[8];
     Image[] balayeurs = new Image[13];
 
+    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load, singe_index, singepos, boutonAvoler, boutonposSinge,balayeur_index,
+    largeur_load_save, posY_bouton_quitter, posY_reset;
 
-    int largeurCase, hauteurCase, largeur_bouton, hauteur_bouton, posX_boutons, posY_bouton_annuler, posY_bouton_refaire, posX_save, posX_load, posY_save_load, singe_index, balayeur_index, singepos, boutonAvoler,
-            largeur_load_save, posY_bouton_quitter, posY_reset;
     JProgressBar progressBar;
     CollecteurEvenements collecteur;
     Graphics2D drawable;
     JFrame f;
     public int l, c;
 
+    int[] boutonVoler = new int[4];
+    boolean select_quitter, select_annuler, select_refaire, select_save, select_load, select_reset, finPartie, unefoisSinge,arriveSinge, SingeAnim, SingePeur;
+
     boolean clean = true;
 
     ArrayList<Coords> balayees = new ArrayList<>();
-    boolean select_quitter, select_annuler, select_refaire, select_save, select_load, select_reset, finPartie, unefoisSinge;
 
     public GaufreGraphique(JFrame frame, Jeu jeu, CollecteurEvenements col) throws IOException {
         f = frame;
@@ -70,11 +73,14 @@ public class GaufreGraphique extends JComponent implements Observateur {
         for(int i=1;i<9;i++){
             singes[i-1] = lisImage("Singe/monkey_run_"+i);
         }
+        for(int i=0;i<4;i++){
+            boutonVoler[i] = 0;
+        }
+        singepos = -500;
         for(int i=1;i<13;i++){
             balayeurs[i-1] = lisImage("Balayeur/balayeur_frame_"+i);
         }
         balayeur_index = 0;
-        singepos = -50;
         progressBar = new JProgressBar(0, 100);
         addMouseListener(new GaufreGraphiqueListener(this));
         l = j.gaufre().lignes();
@@ -86,10 +92,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
         select_load = false;
         select_reset = false;
         finPartie = false;
+        SingeAnim = false;
         boucle();
-
-
-
     }
 
     public void videGaufre(Graphics g) {
@@ -113,6 +117,13 @@ public class GaufreGraphique extends JComponent implements Observateur {
         }
         int largeur = getSize().width;
         int hauteur = getSize().height;
+        if(!unefoisSinge){
+            for(int i=1;i<9;i++){
+                singes[i-1] = lisImage("Singe/monkey_run_"+i);
+            }
+            boutonAvoler = choisirBoutonVoler(hauteur);
+            unefoisSinge=true;
+        }
         largeurCase = largeur / gaufre.colonnes();
         hauteurCase = (int) (hauteur * .8) / gaufre.lignes();
         // On prend des cases carrées
@@ -149,8 +160,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
             }
         }
 
-        for (int i = gaufre.lignes() - 1; i > 0; i--) {
-            for (int j = gaufre.colonnes() - 1; j > 0; j--) {
+        for (int i = gaufre.lignes() - 1; i >= 0; i--) {
+            for (int j = gaufre.colonnes() - 1; j >= 0; j--) {
                 if (gaufre.estMangee(i, j)) {
                     boolean afficher = true;
                     for (int k = 0; k < balayees.size(); k++) {
@@ -196,59 +207,63 @@ public class GaufreGraphique extends JComponent implements Observateur {
         }
 
         //affiche le bouton quitter la partie
-        double rapport_bouton = (double) 207 / 603;
-        largeur_bouton = (int) Math.min(largeur * .29, hauteur * .29);
-        hauteur_bouton = (int) (largeur_bouton * rapport_bouton);
-        posY_bouton_quitter = (int) (hauteur * .10);
-        if (select_quitter) {
-            tracer(drawable, quitter_select, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
-        } else
-            tracer(drawable, quitter, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
+        double rapport_bouton = (double) 207/603;
+        largeur_bouton= (int) Math.min(largeur*.29, hauteur*.29);
+        hauteur_bouton= (int) (largeur_bouton*rapport_bouton);
+        posY_bouton_quitter = (int) (hauteur*.10);
+        if(select_quitter) {
+            if(boutonAvoler==posY_bouton_quitter) tracer(drawable, quitter_select, posX_boutons+boutonposSinge, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
+            else tracer(drawable, quitter_select, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
+        }else
+            if(boutonAvoler==posY_bouton_quitter) tracer(drawable, quitter, posX_boutons+boutonposSinge, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
+            else tracer(drawable, quitter, posX_boutons, posY_bouton_quitter, largeur_bouton, hauteur_bouton);
         //affiche les boutons annuler et refaire
-        posY_bouton_annuler = (int) (hauteur * .22);
-        posY_bouton_refaire = (int) (hauteur * .34);
-        if (!finPartie) {
+        posY_bouton_annuler = (int) (hauteur*.22);
+        posY_bouton_refaire = (int) (hauteur*.34);
+        if(!finPartie) {
             if (select_annuler)
-                tracer(drawable, annuler_select, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
+                if(boutonAvoler==posY_bouton_annuler) tracer(drawable, annuler_select, posX_boutons+boutonposSinge, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
+                else tracer(drawable, annuler_select, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
             else
-                tracer(drawable, annuler, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
+                if(boutonAvoler==posY_bouton_annuler) tracer(drawable, annuler, posX_boutons+boutonposSinge, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
+                else tracer(drawable, annuler, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
             if (select_refaire)
-                tracer(drawable, refaire_select, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
+                if(boutonAvoler==posY_bouton_refaire) tracer(drawable, refaire_select, posX_boutons+boutonposSinge, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
+                else tracer(drawable, refaire_select, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
             else
-                tracer(drawable, refaire, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
-        } else {
+                if(boutonAvoler==posY_bouton_refaire) tracer(drawable, refaire, posX_boutons+boutonposSinge, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
+                else tracer(drawable, refaire, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
+        }else {
             tracer(drawable, annuler_lock, posX_boutons, posY_bouton_annuler, largeur_bouton, hauteur_bouton);
             tracer(drawable, refaire_lock, posX_boutons, posY_bouton_refaire, largeur_bouton, hauteur_bouton);
         }
         //affiche le bouton reset
-        posY_reset = (int) (hauteur * .46);
-        if (select_reset)
-            tracer(drawable, reset_select, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
+        posY_reset = (int) (hauteur*.46);
+        if(select_reset)
+            if(boutonAvoler==posY_reset) tracer(drawable, reset_select, posX_boutons+boutonposSinge, posY_reset, largeur_bouton, hauteur_bouton);
+            else tracer(drawable, reset_select, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
         else
-            tracer(drawable, reset, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
+            if(boutonAvoler==posY_reset) tracer(drawable, reset, posX_boutons+boutonposSinge, posY_reset, largeur_bouton, hauteur_bouton);
+            else tracer(drawable, reset, posX_boutons, posY_reset, largeur_bouton, hauteur_bouton);
         //affiche les boutons save et load
         double rapport_bouton_save_load = 1.0;
-        largeur_load_save = (int) (hauteur_bouton * 0.8);
+        largeur_load_save = (int) (hauteur_bouton*0.8);
         posY_save_load = 0;
-        posX_save = posX_boutons + (int) (largeur_bouton * 0.12);
-        posX_load = posX_save + (int) (largeur_bouton * 0.45);
-        if (select_load)
-            tracer(drawable, load_select, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save * rapport_bouton_save_load));
+        posX_save = posX_boutons + (int) (largeur_bouton*0.12);
+        posX_load = posX_save + (int) (largeur_bouton*0.45);
+        if(select_load)
+            tracer(drawable, load_select, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
         else
-            tracer(drawable, load, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save * rapport_bouton_save_load));
-        if (!finPartie) {
-            if (select_save)
-                tracer(drawable, save_select, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save * rapport_bouton_save_load));
+            tracer(drawable, load, posX_load, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
+        if(!finPartie) {
+            if(select_save)
+                tracer(drawable, save_select, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
             else
-                tracer(drawable, save, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save * rapport_bouton_save_load));
-        } else {
-            tracer(drawable, save_lock, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save * rapport_bouton_save_load));
+                tracer(drawable, save, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
+        }else {
+            tracer(drawable, save_lock, posX_save, posY_save_load, largeur_load_save, (int) (largeur_load_save*rapport_bouton_save_load));
         }
         //affiche un texte "joueur 1" ou "joueur 2" en fonction du joueur courant
-
-
-
-
         Font font2 = new Font("Roboto",Font.BOLD,(int)(hauteur_bouton*0.4));
         drawable.setFont(font2);
         drawable.setColor(Color.green);
@@ -278,77 +293,95 @@ public class GaufreGraphique extends JComponent implements Observateur {
         progressBar.setFont(progressFont);
         add(progressBar);
         appelSinge(g);
-        if(unefoisSinge){
-            boutonAvoler = choisirBoutonVoler();
-            unefoisSinge=true;
+    }
+
+    private void reinitialiseButtonsVoler(){
+        for(int i=0;i<boutonVoler.length;i++){
+            boutonVoler[i]=0;
         }
     }
 
-    public void affichevictoire(Graphics g) {
+    public void affichevictoire(Graphics g){
         int hauteur = getSize().height;
-        if (j.gaufre().estFinit()) {
+        if(j.gaufre().estFinit()){
+            tuerSinge();
+            quitter = lisImage("quitter_partie");
+            annuler = lisImage("annuler");
+            refaire = lisImage("refaire");
+            reset = lisImage("reinitialiser");
+            reinitialiseButtonsVoler();
             videGaufre(g);
-            tracer(drawable, victoire, (int) (posX_boutons / 2.475), 0, (int) (getHeight() * 0.30), (int) (getHeight() * 0.30));
+            tracer(drawable, victoire, (int)(posX_boutons/2.475), 0, (int)(getHeight()*0.30), (int)(getHeight()*0.30));
             drawable.setColor(Color.ORANGE);
-            Font font = new Font("Roboto", Font.BOLD, (int) (getHeight() * 0.060));
+            Font font = new Font("Roboto", Font.BOLD, (int)(getHeight()*0.060));
             drawable.setFont(font);
-            drawable.drawString("Partie terminée", (int) (posX_boutons / 2.475) - ("Partie terminée".length() * font.getSize() / 12), (int) (hauteur * .40));
-            font = new Font("Roboto", Font.BOLD, (int) (getHeight() * 0.044));
+            drawable.drawString("Partie terminée", (int)(posX_boutons/2.475)-("Partie terminée".length()*font.getSize()/12), (int) (hauteur*.40));
+            font = new Font("Roboto", Font.BOLD, (int)(getHeight()*0.044));
             drawable.setFont(font);
             Color color = new Color(255, 144, 0);
             drawable.setColor(color);
-            String phraseVictoire = j.gagnant() + " a gagné la partie";
-            drawable.drawString(phraseVictoire, (int) (posX_boutons / 2.5) - ((phraseVictoire.length() * font.getSize()) / 11), (int) (hauteur * .48));
+            String phraseVictoire = j.gagnant()+" a gagné la partie";
+            drawable.drawString(phraseVictoire,(int)(posX_boutons/2.5)-((phraseVictoire.length()*font.getSize())/11), (int) (hauteur*.48));
         }
     }
 
-    private int choisirBoutonVoler(){
+    private int choisirBoutonVoler(int hauteur){
         int valeur;
-        Random r = new Random();
-        int boutton = r.nextInt(3);
-        // on choisit aleatoirement un bouton à voler
-        if(boutton==0){
-            valeur = (int) (getSize().height*.10);
-        } else if (boutton==1) {
-            valeur = (int) (getSize().height*.22);
-        } else if (boutton==1) {
-            valeur = (int) (getSize().height*.34);
-        } else{
-            valeur = (int) (getSize().height*.46);
-        }
+        if(!aVolerTousBoutons()){
+            Random r = new Random();
+            int boutton = r.nextInt(4);
+            while(boutonVoler[boutton]==1 || boutton==4){
+                boutton = r.nextInt(4);
+                System.out.println("bouton: "+boutton);
+            }
+            // on choisit aleatoirement un bouton à voler
+            if(boutton==0){
+                valeur = (int) (hauteur*.10);
+            } else if (boutton==1) {
+                valeur = (int) (hauteur*.22);
+            } else if (boutton==2) {
+                valeur = (int) (hauteur*.34);
+            } else{
+                valeur = (int) (hauteur*.46);
+            }
+        }else valeur=0;
 
+        arriveSinge = false;
+        SingePeur = false;
+        boutonposSinge = 0;
         return valeur;
     }
     public void appelSinge(Graphics g){
-        singe = singes[singe_index];
-        //System.out.println("bouton a voler : "+boutonAvoler);
-        g.drawImage(singe, (int)(posX_boutons/2.475)+singepos, boutonAvoler, hauteur_bouton, hauteur_bouton,this);
+        if(SingeAnim){
+            singe = singes[singe_index];
+            g.drawImage(singe, (int)(posX_boutons/2.475)+singepos, boutonAvoler, hauteur_bouton, hauteur_bouton,this);
+        }
     }
 
     private void tracer(Graphics2D g, Image i, int x, int y, int l, int h) {
         g.drawImage(i, x, y, l, h, null);
     }
 
-    public int largeurCase() {
+    public int largeurCase(){
         return largeurCase;
     }
 
-    public int hauteurCase() {
+    public int hauteurCase(){
         return hauteurCase;
     }
 
-    public int colonnes() {
+    public int colonnes(){
         return j.gaufre().colonnes();
     }
 
-    public int lignes() {
+    public int lignes(){
         return j.gaufre().lignes();
     }
 
     private Image lisImage(String nom) {
         String CHEMIN = "ressources/";
         Image img = null;
-        try {
+        try{
             img = ImageIO.read(new File(CHEMIN + nom + ".png"));
         } catch (IOException e) {
             System.err.println("Impossible de charger l'image " + nom);
@@ -362,17 +395,69 @@ public class GaufreGraphique extends JComponent implements Observateur {
             public void actionPerformed(ActionEvent e) {
                 miseAJour();
                 miseAJourBalayeur();
+                aleaSinge();
             }
         });
         timer.start();
     }
 
 
-    @Override
-    public void miseAJour() {
+    private boolean aVolerTousBoutons(){
+        return boutonVoler[0]==1 && boutonVoler[1]==1 && boutonVoler[2]==1 && boutonVoler[3]==1;
+    }
+    private void aleaSinge(){
+        if(SingePeur && getSingePosition()<0-(getWidth()/2)) unefoisSinge=false;
+        Random r = new Random();
+        int value = r.nextInt(ProbaSinge);
+        if(value==0 && !aVolerTousBoutons()) SingeAnim = true;
+    }
+
+    private void animSinge(){
         if(singe_index==7) singe_index=0;
         singe_index++;
-        singepos+=5;
+        if(!arriveSinge) singepos+=5;
+        else{
+            if(boutonAvoler==posY_bouton_quitter && !SingePeur){
+                boutonVoler[0]=1;
+            } else if (boutonAvoler==posY_bouton_annuler && !SingePeur) {
+                boutonVoler[1]=1;
+            } else if (boutonAvoler==posY_bouton_refaire && !SingePeur) {
+                boutonVoler[2]=1;
+            } else if (boutonAvoler==posY_reset && !SingePeur) {
+                boutonVoler[3]=1;
+            }
+
+            for(int i=1;i<9;i++){
+                singes[i-1] = lisImage("Singe/monkey_run_back"+i);
+            }
+            singepos-=5;
+            if(!SingePeur) boutonposSinge-=5;
+            if(((int)(posX_boutons/2.475)+singepos)<0-(getWidth()/2)) tuerSinge();
+        }
+        if(((int)(posX_boutons/2.475)+singepos)>=posX_boutons+(largeur_bouton/2)){
+            arriveSinge= true;
+        }
+    }
+
+    public int getSingePosition(){
+        return (int)(posX_boutons/2.475)+singepos;
+    }
+
+    public void tuerSinge(){
+        if(boutonVoler[0]==1) quitter=null;
+        if(boutonVoler[1]==1) annuler=null;
+        if(boutonVoler[2]==1) refaire=null;
+        if(boutonVoler[3]==1) reset=null;
+        arriveSinge=true;
+        SingePeur = true;
+        SingeAnim = false;
+    }
+    public int getPosYBoutonAvoler(){
+        return boutonAvoler;
+    }
+    @Override
+    public void miseAJour() {
+        if(SingeAnim)animSinge();
         repaint();
     }
 
