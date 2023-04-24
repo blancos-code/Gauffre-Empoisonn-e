@@ -62,6 +62,18 @@ public class IAResolveur extends IA{
         return resultat;
     }
 
+    public Arbre2 joueUnCoup(Arbre2 configuration, Coup c){
+        boolean[][] config = configuration.getConfig();
+        for (int i = c.getI(); i<= jeu.gaufre().lignes()-1; i++) {
+            for (int j = c.getJ(); j <= jeu.gaufre().colonnes() - 1; j++) {
+                if (config[i][j] == false) {
+                    config[i][j] = true;
+                }
+            }
+        }
+        configuration.setConfig(config);
+    }
+
     public int calcul_Joueur_A(Arbre2 configuration, int horizon){
         if(configuration.estFeuille() || horizon == 0){
             return evaluation(configuration);
@@ -70,24 +82,14 @@ public class IAResolveur extends IA{
             int valeur = Integer.MIN_VALUE;
 
             while (!coups.isEmpty()) {
-                Coup coup = coups.removeFirst();
-                valeur = Math.max(valeur, calcul_Joueur_B, horizon-1);
+                Coup c = coups.removeFirst();
+                valeur = Math.max(valeur, calcul_Joueur_B(joueUnCoup(configuration, c), horizon - 1));
             }
-
-            for (int i = 0; i < configuration.length; i++) {
-                for (int j = 0; j < configuration[0].length; j++) {
-                    if(configuration[i][j] == 0){
-                        configuration[i][j] = 1;
-                        int min = calcul_Joueur_B(configuration,horizon-1);
-                        if(min > valeur){
-                            valeur = min;
-                        }
-                        configuration[i][j] = 0;
-                    }
-                }
-            }
-            return max;
+            return valeur;
         }
+    }
+
+    public int calcul_Joueur_B(Arbre2 configuration, int horizon){
         return 0;
     }
 }

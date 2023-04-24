@@ -21,4 +21,8 @@ public class Arbre2 {
     public boolean[][] getConfig() {
         return config;
     }
+
+    public void setConfig(boolean[][] config) {
+        this.config = config;
+    }
 }
