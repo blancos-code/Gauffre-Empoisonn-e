@@ -22,8 +22,7 @@ import javax.swing.JLabel;
 
 public class GaufreGraphique extends JComponent implements Observateur {
     Image case_saine, case_poison, quitter, annuler, refaire, save, load, reset, case_saine_select, quitter_select,
-            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, clean_1;
-            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, singe;
+            annuler_select, refaire_select, save_select, load_select, reset_select, victoire, annuler_lock, refaire_lock, save_lock, miettes, clean_1, singe;
     Jeu j;
 
     Image[] singes = new Image[8];
@@ -35,6 +34,8 @@ public class GaufreGraphique extends JComponent implements Observateur {
     Graphics2D drawable;
     JFrame f;
     public int l, c;
+
+    boolean clean = true;
 
     ArrayList<Coords> balayees = new ArrayList<>();
     boolean select_quitter, select_annuler, select_refaire, select_save, select_load, select_reset, finPartie, unefoisSinge;
@@ -161,28 +162,33 @@ public class GaufreGraphique extends JComponent implements Observateur {
             }
         }
 
+
         Calendar calendar = Calendar.getInstance();
         int seconds = calendar.get(Calendar.SECOND);
         System.out.println(seconds);
-        if (seconds % 4 == 0) {
-            for (int i = gaufre.lignes() - 1; i > 0; i--) {
-                for (int j = gaufre.colonnes() - 1; j > 0; j--) {
-                    if (gaufre.estMangee(i, j)) {
-                        boolean dejabalayee = false;
-                        for (int k = 0; k < balayees.size(); k++) {
-                            if (balayees.get(k).i == i && balayees.get(k).j == j) {
-                                dejabalayee = true;
+        if (seconds % 2 == 0) {
+            if (clean) {
+                for (int i = gaufre.lignes() - 1; i > 0; i--) {
+                    for (int j = gaufre.colonnes() - 1; j > 0; j--) {
+                        if (gaufre.estMangee(i, j)) {
+                            boolean dejabalayee = false;
+                            for (int k = 0; k < balayees.size(); k++) {
+                                if (balayees.get(k).i == i && balayees.get(k).j == j) {
+                                    dejabalayee = true;
+                                }
+                            }
+                            if (!dejabalayee) {
+                                balayees.add(new Coords(i, j));
+                                i = 0;
+                                j = 0;
+                                clean = false;
                             }
                         }
-                        if (!dejabalayee) {
-                            balayees.add(new Coords(i, j));
-                            i = 0;
-                            j = 0;
-                        }
-
                     }
                 }
             }
+        } else {
+            clean = true;
         }
 
         //affiche le bouton quitter la partie
