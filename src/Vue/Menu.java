@@ -55,7 +55,8 @@ public class Menu extends JPanel{
         field_joueur2 = new JTextField(p.getPrenom2());
         field_lignes = new JTextField(p.getLignes());
         field_colonnes = new JTextField(p.getColonnes());
-        field_joueur1.setVisible(true);
+        field_joueur1.setBounds(100, 100, 100, 100);
+        field_joueur1.setVisible(false);
         field_joueur2.setVisible(true);
         field_lignes.setVisible(true);
         field_colonnes.setVisible(true);
@@ -77,6 +78,7 @@ public class Menu extends JPanel{
         //centrer la fenetre
         frame.setLocationRelativeTo(null);
         //ajout des éléments à la frame
+        frame.add(field_joueur1);
         frame.setVisible(true);
         //Définition des dimensions de la fenêtre
         tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
@@ -94,6 +96,37 @@ public class Menu extends JPanel{
         //Ajout d'une interaction avec les boutons
         addMouseListener(new MenuListener(this));
         boucle();
+    }
+
+    public void afficheMenuParametres(Graphics g) throws IOException {
+        int posX_menu_options_arrivee = posX_boutons+(int)(largeur_bouton*1.07);
+        if(clicOptions){
+            if(posX_menu_options > posX_menu_options_arrivee){
+                posX_menu_options-=10;
+            }
+            if(posX_menu_options < posX_menu_options_arrivee){
+                posX_menu_options = posX_menu_options_arrivee;
+            }
+            g.drawImage(menu_options, posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options, null);
+            //affiche un texte
+            int posX_textes = posX_menu_options+(int)(largeur_menu_options*0.25);
+            int posX_chiffres = posX_menu_options+(int)(largeur_menu_options*0.45);
+            int posY_joueur1 = posY_menu_options+(int)(hauteur_menu_options*0.34);
+            int posY_joueur2 = posY_joueur1+(int)(hauteur_menu_options*0.2);
+            int posY_lignes = posY_joueur2+(int)(hauteur_menu_options*0.2);
+            int posY_colonnes = posY_lignes+(int)(hauteur_menu_options*0.2);
+            Font font = new Font("Roboto", Font.BOLD, (int)(hauteur_bouton*0.4));
+            g.setFont(font);
+            g.setColor(Color.WHITE);
+            Parametres p = new Parametres();
+            g.drawString(p.getPrenom1(), posX_textes, posY_joueur1);
+            g.drawString(p.getPrenom2(), posX_textes, posY_joueur2);
+            g.drawString(String.valueOf(p.getLignes()), posX_chiffres, posY_lignes);
+            g.drawString(String.valueOf(p.getColonnes()), posX_chiffres, posY_colonnes);
+        }else{
+            posX_menu_options = frameWidth;
+        }
+        posY_menu_options = posY_jcj;
     }
 
     private Image lisImage(String nom) throws IOException {
@@ -152,28 +185,6 @@ public class Menu extends JPanel{
             g.drawImage(bouton_quitter, posX_boutons, posY_quitter, largeur_bouton, hauteur_bouton,null);
     }
 
-    public void afficheMenuParametres(Graphics g){
-        int posX_menu_options_arrivee = posX_boutons+(int)(largeur_bouton*1.07);
-        if(clicOptions){
-            if(posX_menu_options > posX_menu_options_arrivee){
-                posX_menu_options-=10;
-            }
-            if(posX_menu_options < posX_menu_options_arrivee){
-                posX_menu_options = posX_menu_options_arrivee;
-            }
-            //affiche un JTextField field_options
-            JTextField field_options = new JTextField("Options");
-            field_options.setBounds(posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options);
-            field_options.setFont(new Font("Arial", Font.BOLD, 20));
-            field_options.setForeground(Color.BLACK);
-            field_options.setVisible(true);
-            g.drawImage(menu_options, posX_menu_options, posY_menu_options, largeur_menu_options, hauteur_menu_options, null);
-        }else{
-            posX_menu_options = frameWidth;
-        }
-        posY_menu_options = posY_jcj;
-    }
-
     public int[] specificiteGaufre(){
         int[] spec = new int[4];
         Random r = new Random();
@@ -184,7 +195,6 @@ public class Menu extends JPanel{
         while(value==0) value = r.nextInt(8);
         spec[0] = value;
         spec[1] = Math.max(40,rand);
-        System.out.println("rand : "+rand);
         spec[2] = r.nextInt(screenWidth);
         spec[3] = -r.nextInt(1200);
         return spec;
@@ -221,7 +231,11 @@ public class Menu extends JPanel{
         afficheBoutonIAContreIA(g2d);
         afficheBoutonOptions(g2d);
         afficheBoutonQuitter(g2d);
-        afficheMenuParametres(g2d);
+        try {
+            afficheMenuParametres(g2d);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void boucle(){

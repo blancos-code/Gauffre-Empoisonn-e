@@ -50,6 +50,10 @@ public class Jeu extends Observable {
         lancePartie();
     }
 
+    public Parametres getParametres(){
+        return p;
+    }
+
     public void lancePartie(){
         //random entre 0 et 1 pour choisir le joueur qui joue en premier
         joueurCourant = (int) (Math.random() * 2);
@@ -68,6 +72,17 @@ public class Jeu extends Observable {
             timer.setRepeats(false); // Ne répétez pas l'action finale, exécutez-là une seule fois
             timer.start(); // Démarrez le timer
         }
+    }
+
+    public String gagnant(){
+        if(g.estFinit()){
+            if(joueurCourant == 0){
+                return joueur2.prenom;
+            }else{
+                return joueur1.prenom;
+            }
+        }
+        return null;
     }
 
     public int joueurCourant(){
