@@ -23,10 +23,20 @@ La taille standard de la gaufre est $6*8 (a=5, b=7)$.
 | 1 | <ul><li> - [x] Affichage visuel de la gaufre                                                       </li></ul>
 | 2 | <ul><li> - [x] Bouton "coup précédent" qui fonctionne (historique des coups)                       </li></ul>
 | 2 | <ul><li> - [x] Bouton quitter la partie                                                            </li></ul>
-| 2 | <ul><li> - [ ] Affichage de la fin du jeu, et retour au menu principal                             </li></ul>
+| 2 | <ul><li> - [x] Affichage de la fin du jeu, et retour au menu principal                             </li></ul>
 | 3 | <ul><li> - [x] Sauvegarde de la partie                                                             </li></ul>
 | 3 | <ul><li> - [x] Charger la partie                                                                   </li></ul>
 | 3 | <ul><li> - [x] IA aléatoire                                                                        </li></ul>
-| 3 | <ul><li> - [ ] IA intelligente utilisant un arbre ET/OU                                            </li></ul>
+| 3 | <ul><li> - [x] IA intelligente utilisant un arbre ET/OU                                            </li></ul>
+| 3 | <ul><li> - [x] Score                                                                               </li></ul>
 | 4 | <ul><li> - [x] Menu de jeu                                                                         </li></ul>
-| 4 | <ul><li> - [ ] Boutons qui changent d'apparence si la souris les survole                        </li></ul>
+| 4 | <ul><li> - [x] Boutons qui changent d'apparence si la souris les survole                           </li></ul>
+| 5 | <ul><li> - [x] Singe qui vole les boutons                                                          </li></ul>
+| 5 | <ul><li> - [x] Femme de ménage                                                                     </li></ul>
+| 5 | <ul><li> - [x] Pluie de gaufres                                                                    </li></ul>
+
+
+## Screenshots
+![image](https://user-images.githubusercontent.com/79577721/234116964-ebafdac6-c0f9-4ac8-adcf-47aa7841ad69.png)
+![image](https://user-images.githubusercontent.com/79577721/234117059-8a88b13d-f6e7-482b-ad4d-360c7a9c0cf7.png)
+![image](https://user-images.githubusercontent.com/79577721/234117088-375a0ef8-739c-4ea0-a928-b5234e2d6dd8.png)
