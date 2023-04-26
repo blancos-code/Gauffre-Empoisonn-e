@@ -332,7 +332,6 @@ public class GaufreGraphique extends JComponent implements Observateur {
             int boutton = r.nextInt(4);
             while(boutonVoler[boutton]==1 || boutton==4){
                 boutton = r.nextInt(4);
-                System.out.println("bouton: "+boutton);
             }
             // on choisit aleatoirement un bouton à voler
             if(boutton==0){

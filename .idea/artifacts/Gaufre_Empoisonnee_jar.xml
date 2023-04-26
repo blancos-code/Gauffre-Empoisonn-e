@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Gaufre-Empoisonnee:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Gaufre_Empoisonnee_jar</output-path>
+    <root id="archive" name="Gaufre-Empoisonnee.jar">
+      <element id="module-output" name="Gaufre-Empoisonnee" />
+    </root>
+  </artifact>
+</component>
