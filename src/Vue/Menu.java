@@ -157,9 +157,15 @@ public class Menu extends JPanel{
         posY_menu_options = posY_jcj;
     }
 
-    private Image lisImage(String nom) throws IOException {
+    public BufferedImage lisImage(String nom) throws IOException {
         String CHEMIN = "ressources/";
-        return ImageIO.read(new File(CHEMIN + nom + ".png"));
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(new File(CHEMIN + nom + ".png"));
+        }catch (IOException e){
+            System.err.println("L'image "+nom+" n'a pas été trouvée");
+        }
+        return image;
     }
 
     public void afficheBackground(Graphics g) {
@@ -235,6 +241,8 @@ public class Menu extends JPanel{
             }
         }
     }
+
+    @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

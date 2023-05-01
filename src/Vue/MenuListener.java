@@ -129,6 +129,7 @@ public class MenuListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println("clic en (" + e.getX() + "," + e.getY() + ")");
         verif(e);
     }
 
